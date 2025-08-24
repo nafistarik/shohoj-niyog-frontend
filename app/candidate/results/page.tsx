@@ -22,16 +22,34 @@ interface CandidateResultWithSession extends CandidateResponse {
 }
 
 // Dummy results data
+
+// [
+//   {
+//     id: "68a3ca3a48ab2dff2b722a11",
+//     session_id: "689b58bc6606fbf9088d8105",
+//     candidate_id: "uuid",
+//     candidate_name: "user1",
+//     candidate_mail: "user1@gmail.com",
+//     responses: [{ question_id: "q2fa82f31", given_answer: "...", score: 3.22 }],
+//     total_score: 6.16,
+//     decision: "pending",
+//   },
+//   {
+//     id: "68a3ca3a48ab2dff2b722a11",
+//     session_id: "689b58bc6606fbf9088d8105",
+//     candidate_id: "uuid",
+//     candidate_name: "user1",
+//     candidate_mail: "user1@gmail.com",
+//     responses: [{ question_id: "q2fa82f31", given_answer: "...", score: 3.22 }],
+//     total_score: 6.16,
+//     decision: "pending",
+//   },
+// ];
+
 const results = [
   {
     id: "res_1",
-    total_score: 8.2,
     decision: "interested",
-    responses: [
-      { question_id: "q1", score: 9 },
-      { question_id: "q2", score: 8 },
-      { question_id: "q3", score: 7.5 },
-    ],
     session: {
       id: "sess_1",
       position: "Frontend Developer",
@@ -41,13 +59,7 @@ const results = [
   },
   {
     id: "res_2",
-    total_score: 6.5,
     decision: "pending",
-    responses: [
-      { question_id: "q1", score: 7 },
-      { question_id: "q2", score: 6 },
-      { question_id: "q3", score: 6.5 },
-    ],
     session: {
       id: "sess_2",
       position: "Backend Developer",
@@ -57,13 +69,7 @@ const results = [
   },
   {
     id: "res_3",
-    total_score: 5.8,
     decision: "reject",
-    responses: [
-      { question_id: "q1", score: 6 },
-      { question_id: "q2", score: 5.5 },
-      { question_id: "q3", score: 6 },
-    ],
     session: {
       id: "sess_3",
       position: "Full Stack Engineer",
@@ -72,7 +78,6 @@ const results = [
     },
   },
 ];
-
 
 export default function CandidateResultsPage() {
   // const [results, setResults] = useState<CandidateResultWithSession[]>([])
@@ -147,12 +152,6 @@ export default function CandidateResultsPage() {
     return "Needs Improvement";
   };
 
-  const averageScore =
-    results.length > 0
-      ? results.reduce((sum, result) => sum + result.total_score, 0) /
-        results.length
-      : 0;
-
   // if (isLoading) {
   //   return (
   //     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -185,11 +184,6 @@ export default function CandidateResultsPage() {
             </div>
             <div className="text-right">
               <div className="text-sm text-slate-600">Overall Performance</div>
-              <div
-                className={`text-2xl font-bold ${getScoreColor(averageScore)}`}
-              >
-                {averageScore.toFixed(1)}/10
-              </div>
             </div>
           </div>
         </div>
@@ -218,25 +212,6 @@ export default function CandidateResultsPage() {
                       </div>
                       <div className="text-sm text-slate-600">
                         Interviews Completed
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-2">
-                    <Star className="w-5 h-5 text-yellow-500" />
-                    <div>
-                      <div
-                        className={`text-2xl font-bold ${getScoreColor(
-                          averageScore
-                        )}`}
-                      >
-                        {averageScore.toFixed(1)}
-                      </div>
-                      <div className="text-sm text-slate-600">
-                        Average Score
                       </div>
                     </div>
                   </div>
@@ -300,18 +275,6 @@ export default function CandidateResultsPage() {
                         </CardDescription>
                       </div>
                       <div className="flex items-center space-x-4">
-                        <div className="text-right">
-                          <div
-                            className={`text-2xl font-bold ${getScoreColor(
-                              result.total_score
-                            )}`}
-                          >
-                            {result.total_score.toFixed(1)}
-                          </div>
-                          <div className="text-xs text-slate-500">
-                            {getScoreGrade(result.total_score)}
-                          </div>
-                        </div>
                         <Badge className={getDecisionColor(result.decision)}>
                           {getDecisionText(result.decision)}
                         </Badge>
@@ -320,46 +283,7 @@ export default function CandidateResultsPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      <div>
-                        <h4 className="font-medium text-sm text-slate-900 mb-2">
-                          Question Performance
-                        </h4>
-                        <div className="grid gap-2">
-                          {result.responses.map((response, index) => (
-                            <div
-                              key={response.question_id}
-                              className="flex items-center justify-between p-2 bg-slate-50 rounded"
-                            >
-                              <span className="text-sm text-slate-700">
-                                Question {index + 1}
-                              </span>
-                              <div className="flex items-center space-x-2">
-                                <div
-                                  className={`font-medium ${getScoreColor(
-                                    response.score
-                                  )}`}
-                                >
-                                  {response.score.toFixed(1)}/10
-                                </div>
-                                <div className="w-16 bg-slate-200 rounded-full h-2">
-                                  <div
-                                    className={`h-2 rounded-full ${
-                                      response.score >= 8
-                                        ? "bg-green-500"
-                                        : response.score >= 6
-                                        ? "bg-yellow-500"
-                                        : "bg-red-500"
-                                    }`}
-                                    style={{
-                                      width: `${(response.score / 10) * 100}%`,
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                      
 
                       {result.decision === "pending" && (
                         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">

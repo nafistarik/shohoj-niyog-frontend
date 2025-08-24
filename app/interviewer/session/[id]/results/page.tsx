@@ -63,7 +63,7 @@ const results = [
       { question_id: "q2fa82f31", given_answer: "...", score: 3.22 },
     ],
     total_score: 6.16,
-    decision: "pending",
+    decision: "interested",
   },
   {
     id: "68a3ca3a48ab2dff2b722a11",
