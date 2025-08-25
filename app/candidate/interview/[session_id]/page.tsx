@@ -4,14 +4,13 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 type Question = {
-  id: number;
-  text: string;
+  question: string;
 };
 
 const questions: Question[] = [
-  { id: 1, text: "Tell me about yourself." },
-  { id: 2, text: "Why do you want to work here?" },
-  { id: 3, text: "Describe a challenge you solved." },
+  { question: "Tell me about yourself." },
+  { question: "Why do you want to work here?" },
+  { question: "Describe a challenge you solved." },
 ];
 
 const MAX_TIME = 120; // 2 minutes in seconds
@@ -78,7 +77,10 @@ const VideoInterview: React.FC = () => {
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state !== "inactive"
+    ) {
       mediaRecorderRef.current.stop();
     }
   };
@@ -114,18 +116,24 @@ const VideoInterview: React.FC = () => {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
-    router.push('/candidate/dashboard')
+    router.push("/candidate/dashboard");
   };
-
 
   return (
     <div className="flex flex-col items-center gap-4 p-6">
       <h2 className="text-xl font-bold">Question {currentQIndex + 1}</h2>
-      <p className="mb-4">{questions[currentQIndex].text}</p>
+      <p className="mb-4">{questions[currentQIndex].question}</p>
 
-      <video ref={videoRef} autoPlay muted className="w-96 h-72 rounded-lg border" />
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        className="w-96 h-72 rounded-lg border"
+      />
 
-      <div className="mt-2 text-red-600 font-semibold">Time left: {timeLeft}s</div>
+      <div className="mt-2 text-red-600 font-semibold">
+        Time left: {timeLeft}s
+      </div>
 
       <button
         onClick={handleNext}
