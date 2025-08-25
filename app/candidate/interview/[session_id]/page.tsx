@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 type Question = {
@@ -19,7 +20,7 @@ const VideoInterview: React.FC = () => {
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(MAX_TIME);
   const [recordings, setRecordings] = useState<Record<number, Blob>>({});
-
+  const router = useRouter();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -76,25 +77,21 @@ const VideoInterview: React.FC = () => {
     setTimeLeft(MAX_TIME);
   };
 
-  // Stop recording for current question
   const stopRecording = () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
       mediaRecorderRef.current.stop();
     }
   };
 
-  // Handle Next Question or Submit
   const handleNext = () => {
     stopRecording();
     if (currentQIndex < questions.length - 1) {
       setCurrentQIndex((prev) => prev + 1);
     } else {
-      // last question → defer submit until onstop finishes
       isSubmittingRef.current = true;
     }
   };
 
-  // Timer countdown
   useEffect(() => {
     if (timeLeft <= 0) {
       handleNext();
@@ -104,7 +101,6 @@ const VideoInterview: React.FC = () => {
     return () => clearTimeout(timer);
   }, [timeLeft]);
 
-  // Restart recording when question changes
   useEffect(() => {
     if (streamRef.current) {
       startRecording();
@@ -115,7 +111,12 @@ const VideoInterview: React.FC = () => {
     console.log("Submitting recordings:", finalRecordings);
     stopRecording();
     streamRef.current?.getTracks().forEach((t) => t.stop());
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    router.push('/candidate/dashboard')
   };
+
 
   return (
     <div className="flex flex-col items-center gap-4 p-6">
