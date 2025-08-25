@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 type Question = {
   question: string;
@@ -109,14 +110,38 @@ const VideoInterview: React.FC = () => {
     }
   }, [currentQIndex]);
 
-  const handleSubmit = (finalRecordings: Record<number, Blob>) => {
-    console.log("Submitting recordings:", finalRecordings);
-    stopRecording();
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
+  const handleSubmit = async (finalRecordings: Record<number, Blob>) => {
+    try {
+      const formData = new FormData();
+      formData.append("session_id", "12345"); // hardcoded session id
+
+      // append each question’s video
+      Object.entries(finalRecordings).forEach(([index, blob]) => {
+        formData.append("video", blob, `ques${Number(index) + 1}.mp4`);
+      });
+
+      for (const [key, val] of formData.entries()) {
+        console.log(key, val);
+      }
+
+      // send to API
+      // await axios.post("/api/response/", formData, {
+      //   headers: { "Content-Type": "multipart/form-data" },
+      // });
+
+      console.log("✅ Recordings uploaded successfully!");
+
+      // cleanup: stop camera + mic
+      stopRecording();
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+
+      router.push("/candidate/dashboard");
+    } catch (err) {
+      console.error("❌ Upload failed:", err);
     }
-    router.push("/candidate/dashboard");
   };
 
   return (
