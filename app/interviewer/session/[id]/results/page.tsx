@@ -170,7 +170,7 @@ export default function SessionResultsPage() {
 
   const updateDecision = async (
     candidateId: string,
-    decision: CandidateResponse["decision"]
+    decision: string
   ) => {
     console.log({ candidateId, decision, sessionId: session.id });
     // try {
@@ -199,7 +199,7 @@ export default function SessionResultsPage() {
     // }
   };
 
-  const getDecisionColor = (decision: CandidateResponse["decision"]) => {
+  const getDecisionColor = (decision: string) => {
     switch (decision) {
       case "interested":
         return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800";
