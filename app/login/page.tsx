@@ -43,10 +43,10 @@ export default function LoginPage() {
     // }
   }
 
-return (
-    <div className="min-h-screen flex">
-      {/* Left side with image and branding */}
-      <div className="hidden lg:flex lg:w-1/2 relative gradient-bg">
+  return (
+    <div className="min-h-screen flex gradient-bg">
+      {/* Overlay only on the left side */}
+      <div className="hidden lg:flex lg:w-1/2 relative">
         <div className="absolute inset-0 bg-black/20 z-10"></div>
         <Image
           src={loginIllustrator}
@@ -69,20 +69,12 @@ return (
               <h1 className="text-3xl font-bold">Shohoj Niyog</h1>
             </div>
             <h2 className="text-4xl font-bold mb-4">Welcome back to your account</h2>
-            {/* <p className="text-white/80 text-lg">
-              Sign in to continue your interview preparation journey and access your personalized dashboard.
-            </p> */}
-            
-            <div className="flex items-center mt-8 space-x-2 text-white/80">
-              <Sparkles className="w-4 h-4" />
-              <span className="text-sm">AI-powered interview simulations</span>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Right side with login form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 bg-background">
+      {/* Right side with login form - no overlay here */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-20">
         <div className="w-full max-w-md space-y-8">
           {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
@@ -90,7 +82,7 @@ return (
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <Video className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span>InterviewFlow</span>
+              <span>Shohoj Niyog</span>
             </Link>
             <p className="text-muted-foreground mt-2">Welcome back to your account</p>
           </div>
