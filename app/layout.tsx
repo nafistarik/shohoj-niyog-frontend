@@ -17,9 +17,9 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "InterviewFlow - Professional Video Interview Platform",
+  title: "Shohoj Niyog - Video Interview Platform",
   description: "Streamline your hiring process with our comprehensive video interview platform",
-  generator: "v0.app",
+  generator: "Md. Nafis Tarik",
 }
 
 export default function RootLayout({
