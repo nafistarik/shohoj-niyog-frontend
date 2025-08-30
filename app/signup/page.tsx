@@ -15,9 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Video, Eye, EyeOff, Users, UserCheck } from "lucide-react";
+import { Video, Eye, EyeOff, Users, UserCheck, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import loginIllustrator from "@/assets/auth/login-illustrator.svg";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -98,229 +100,292 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-slate-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center space-x-2 text-2xl font-heading font-bold text-slate-900"
-          >
-            <div className="w-10 h-10 bg-sky-600 rounded-lg flex items-center justify-center">
-              <Video className="w-6 h-6 text-white" />
-            </div>
-            <span>InterviewFlow</span>
-          </Link>
-          <p className="text-slate-600 mt-2">
-            Create your account to get started
-          </p>
-        </div>
+    <div className="min-h-screen flex gradient-bg overflow-hidden">
+      {/* Left side with login form */}
+      <div className="w-full lg:w-1/2 flex items-center p-4 sm:p-8 relative z-20 overflow-y-auto">
+        <div className="w-full max-w-md space-y-8 mx-auto">
+          {/* Mobile logo */}
+          {/* <div className="lg:hidden text-center mb-8">
+            <Link href="/" className="inline-flex items-center space-x-2 text-2xl font-bold text-foreground">
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                <Video className="w-6 h-6 text-primary-foreground" />
+              </div>
+              <span>Shohoj Niyog</span>
+            </Link>
+            <p className="text-muted-foreground mt-2">
+              Create your account to get started
+            </p>
+          </div> */}
 
-        <Card className="border-slate-200 shadow-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-heading">Sign Up</CardTitle>
-            <CardDescription>
-              Choose your role and create your account
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
+          <div className="text-center lg:hidden">
+            <Link
+              href="/"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center"
+            >
+              <ArrowLeft className="w-4 h-4 mr-1" /> Back to homepage
+            </Link>
+          </div>
 
-              {success && (
-                <Alert className="border-green-200 bg-green-50 text-green-800">
-                  <AlertDescription>{success}</AlertDescription>
-                </Alert>
-              )}
+          <Card className="border-border shadow-soft overflow-hidden">
+            <div className="h-2 bg-primary w-full"></div>
+            <CardHeader className="text-center space-y-2 pb-4">
+              <CardTitle className="text-2xl font-heading">Sign Up</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Choose your role and create your account
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="max-h-[60vh] overflow-y-auto">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {error && (
+                  <Alert
+                    variant="destructive"
+                    className="bg-destructive/15 border-destructive/50 animate-fade-in"
+                  >
+                    <AlertDescription className="text-destructive-foreground">
+                      {error}
+                    </AlertDescription>
+                  </Alert>
+                )}
 
-              {/* Role Selection */}
-              <div className="space-y-3">
-                <Label>I am a...</Label>
-                <RadioGroup
-                  value={formData.role}
-                  onValueChange={(value) => handleInputChange("role", value)}
-                  className="grid grid-cols-2 gap-4"
+                {success && (
+                  <Alert className="border-green-200 bg-green-50 text-green-800 animate-fade-in">
+                    <AlertDescription>{success}</AlertDescription>
+                  </Alert>
+                )}
+
+                {/* Role Selection */}
+                <div
+                  className="space-y-3 animate-fade-in"
+                  style={{ animationDelay: "0.1s" }}
                 >
-                  <div>
-                    <RadioGroupItem
-                      value="candidate"
-                      id="candidate"
-                      className="peer sr-only"
-                    />
-                    <Label
-                      htmlFor="candidate"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-slate-200 bg-white p-4 hover:bg-slate-50 hover:text-slate-900 peer-data-[state=checked]:border-sky-600 peer-data-[state=checked]:bg-sky-50 cursor-pointer"
-                    >
-                      <Users className="mb-3 h-6 w-6" />
-                      <div className="text-center">
-                        <div className="font-medium">Candidate</div>
-                        <div className="text-xs text-slate-500">
-                          Looking for jobs
+                  <Label className="text-foreground">I am a...</Label>
+                  <RadioGroup
+                    value={formData.role}
+                    onValueChange={(value) => handleInputChange("role", value)}
+                    className="grid grid-cols-2 gap-4"
+                  >
+                    <div>
+                      <RadioGroupItem
+                        value="candidate"
+                        id="candidate"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="candidate"
+                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
+                      >
+                        <Users className="mb-3 h-6 w-6" />
+                        <div className="text-center">
+                          <div className="font-medium">Candidate</div>
                         </div>
-                      </div>
-                    </Label>
-                  </div>
-                  <div>
-                    <RadioGroupItem
-                      value="interviewer"
-                      id="interviewer"
-                      className="peer sr-only"
-                    />
-                    <Label
-                      htmlFor="interviewer"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-slate-200 bg-white p-4 hover:bg-slate-50 hover:text-slate-900 peer-data-[state=checked]:border-sky-600 peer-data-[state=checked]:bg-sky-50 cursor-pointer"
-                    >
-                      <UserCheck className="mb-3 h-6 w-6" />
-                      <div className="text-center">
-                        <div className="font-medium">Interviewer</div>
-                        <div className="text-xs text-slate-500">
-                          Hiring talent
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem
+                        value="interviewer"
+                        id="interviewer"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="interviewer"
+                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
+                      >
+                        <UserCheck className="mb-3 h-6 w-6" />
+                        <div className="text-center">
+                          <div className="font-medium">Interviewer</div>
                         </div>
-                      </div>
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </div>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="username">
-                  {formData.role === "interviewer"
-                    ? "Company Name"
-                    : "Full Name"}
-                </Label>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder={
-                    formData.role === "interviewer"
-                      ? "Enter company name"
-                      : "Enter your full name"
-                  }
-                  value={formData.username}
-                  onChange={(e) =>
-                    handleInputChange("username", e.target.value)
-                  }
-                  required
-                  className="h-11"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  required
-                  className="h-11"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="Enter your phone number"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  required
-                  className="h-11"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
+                <div
+                  className="space-y-2 animate-fade-in"
+                  style={{ animationDelay: "0.2s" }}
+                >
+                  <Label htmlFor="username" className="text-foreground">
+                    {formData.role === "interviewer"
+                      ? "Company Name"
+                      : "Full Name"}
+                  </Label>
                   <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Create a password"
-                    value={formData.password}
+                    id="username"
+                    type="text"
+                    placeholder={
+                      formData.role === "interviewer"
+                        ? "Enter company name"
+                        : "Enter your full name"
+                    }
+                    value={formData.username}
                     onChange={(e) =>
-                      handleInputChange("password", e.target.value)
+                      handleInputChange("username", e.target.value)
                     }
                     required
-                    className="h-11 pr-10"
+                    className="h-11"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
-                  </button>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <div className="relative">
+                <div
+                  className="space-y-2 animate-fade-in"
+                  style={{ animationDelay: "0.3s" }}
+                >
+                  <Label htmlFor="email" className="text-foreground">
+                    Email Address
+                  </Label>
                   <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm your password"
-                    value={formData.confirmPassword}
-                    onChange={(e) =>
-                      handleInputChange("confirmPassword", e.target.value)
-                    }
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
                     required
-                    className="h-11 pr-10"
+                    className="h-11"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
-                  </button>
                 </div>
-              </div>
 
-              <Button
-                type="submit"
-                className="w-full h-11 text-base"
-                disabled={isLoading}
+                <div
+                  className="space-y-2 animate-fade-in"
+                  style={{ animationDelay: "0.4s" }}
+                >
+                  <Label htmlFor="phone" className="text-foreground">
+                    Phone Number
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="Enter your phone number"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    required
+                    className="h-11"
+                  />
+                </div>
+
+                <div
+                  className="space-y-2 animate-fade-in"
+                  style={{ animationDelay: "0.5s" }}
+                >
+                  <Label htmlFor="password" className="text-foreground">
+                    Password
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Create a password"
+                      value={formData.password}
+                      onChange={(e) =>
+                        handleInputChange("password", e.target.value)
+                      }
+                      required
+                      className="h-11 pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  className="space-y-2 animate-fade-in"
+                  style={{ animationDelay: "0.6s" }}
+                >
+                  <Label htmlFor="confirmPassword" className="text-foreground">
+                    Confirm Password
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm your password"
+                      value={formData.confirmPassword}
+                      onChange={(e) =>
+                        handleInputChange("confirmPassword", e.target.value)
+                      }
+                      required
+                      className="h-11 pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full h-11 text-base hover-lift animate-fade-in"
+                  disabled={isLoading}
+                  style={{ animationDelay: "0.7s" }}
+                >
+                  {isLoading ? "Creating Account..." : "Create Account"}
+                </Button>
+              </form>
+
+              <div
+                className="mt-6 text-center animate-fade-in"
+                style={{ animationDelay: "0.8s" }}
               >
-                {isLoading ? "Creating Account..." : "Create Account"}
-              </Button>
-            </form>
+                <p className="text-sm text-muted-foreground">
+                  Already have an account?{" "}
+                  <Link
+                    href="/login"
+                    className="text-primary hover:text-primary/90 font-medium transition-colors"
+                  >
+                    Sign in here
+                  </Link>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
 
-            <div className="mt-6 text-center">
-              <p className="text-sm text-slate-600">
-                Already have an account?{" "}
-                <Link
-                  href="/login"
-                  className="text-sky-600 hover:text-sky-700 font-medium"
-                >
-                  Sign in here
-                </Link>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="text-center mt-6">
+      {/* Right side with image and branding (flipped) */}
+      <div className="hidden lg:flex lg:w-1/2 relative">
+        <div className="absolute inset-0 bg-black/20 z-10"></div>
+        <Image
+          src={loginIllustrator}
+          alt="Interview illustration"
+          fill
+          className="object-cover scale-x-[-1]" // This flips the image horizontally
+          priority
+        />
+        <div className="absolute inset-0 z-20 flex flex-col justify-between p-12 text-white items-end">
           <Link
             href="/"
-            className="text-sm text-slate-500 hover:text-slate-700"
+            className="inline-flex justify-end items-center space-x-2 text-xl font-bold hover-lift"
           >
-            ← Back to homepage
+            <ArrowLeft className="w-5 h-5" />
+            <span>Back to home</span>
           </Link>
+
+          <div className="max-w-md">
+            <div className="flex items-center justify-end space-x-2 mb-4">
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center glass-effect">
+                <Video className="w-6 h-6" />
+              </div>
+              <h1 className="text-3xl font-bold">Shohoj Niyog</h1>
+            </div>
+            <h2 className="text-4xl font-bold mb-4">Create your account</h2>
+          </div>
         </div>
       </div>
     </div>
