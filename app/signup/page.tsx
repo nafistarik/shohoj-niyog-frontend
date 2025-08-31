@@ -104,37 +104,26 @@ export default function SignupPage() {
       {/* Left side with login form */}
       <div className="w-full lg:w-1/2 flex items-center p-4 sm:p-8 relative z-20 overflow-y-auto">
         <div className="w-full max-w-md space-y-8 mx-auto">
-          {/* Mobile logo */}
-          {/* <div className="lg:hidden text-center mb-8">
-            <Link href="/" className="inline-flex items-center space-x-2 text-2xl font-bold text-foreground">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Video className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <span>Shohoj Niyog</span>
-            </Link>
-            <p className="text-muted-foreground mt-2">
-              Create your account to get started
-            </p>
-          </div> */}
-
-          <div className="text-center lg:hidden">
-            <Link
-              href="/"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center"
-            >
-              <ArrowLeft className="w-4 h-4 mr-1" /> Back to homepage
-            </Link>
-          </div>
-
           <Card className="border-border shadow-soft overflow-hidden">
-            <div className="h-2 bg-primary w-full"></div>
-            <CardHeader className="text-center space-y-2 pb-4">
+            <div className="text-center">
+              <Link
+                href="/"
+                className="inline-flex items-center space-x-2 text-2xl font-bold text-foreground"
+              >
+                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                  <Video className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <span>Shohoj Niyog</span>
+              </Link>
+            </div>
+            <div className="h-1 bg-primary w-full"></div>
+            <CardHeader className="text-center space-y-2">
               <CardTitle className="text-2xl font-heading">Sign Up</CardTitle>
               <CardDescription className="text-muted-foreground">
                 Choose your role and create your account
               </CardDescription>
             </CardHeader>
-            <CardContent className="max-h-[60vh] overflow-y-auto">
+            <CardContent className="max-h-[50vh] overflow-y-auto">
               <form onSubmit={handleSubmit} className="space-y-4">
                 {error && (
                   <Alert
@@ -158,7 +147,6 @@ export default function SignupPage() {
                   className="space-y-3 animate-fade-in"
                   style={{ animationDelay: "0.1s" }}
                 >
-                  <Label className="text-foreground">I am a...</Label>
                   <RadioGroup
                     value={formData.role}
                     onValueChange={(value) => handleInputChange("role", value)}
@@ -172,9 +160,9 @@ export default function SignupPage() {
                       />
                       <Label
                         htmlFor="candidate"
-                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
+                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-primary hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
                       >
-                        <Users className="mb-3 h-6 w-6" />
+                        <Users className="hidden sm:flex h-6 w-6" />
                         <div className="text-center">
                           <div className="font-medium">Candidate</div>
                         </div>
@@ -188,9 +176,9 @@ export default function SignupPage() {
                       />
                       <Label
                         htmlFor="interviewer"
-                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
+                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-primary hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
                       >
-                        <UserCheck className="mb-3 h-6 w-6" />
+                        <UserCheck className="hidden sm:flex h-6 w-6" />
                         <div className="text-center">
                           <div className="font-medium">Interviewer</div>
                         </div>
@@ -360,15 +348,17 @@ export default function SignupPage() {
 
       {/* Right side with image and branding (flipped) */}
       <div className="hidden lg:flex lg:w-1/2 relative">
-        <div className="absolute inset-0 bg-black/20 z-10"></div>
-        <Image
-          src={loginIllustrator}
-          alt="Interview illustration"
-          fill
-          className="object-cover scale-x-[-1]" // This flips the image horizontally
-          priority
-        />
-        <div className="absolute inset-0 z-20 flex flex-col justify-between p-12 text-white items-end">
+        <div className="mx-auto w-full h-full flex items-center justify-start">
+          <Image
+            src={loginIllustrator}
+            alt="Interview illustration"
+            width={1000}
+            height={1000}
+            className="object-cover w-[80%] h-[80%] scale-x-[-1]"
+            priority
+          />
+        </div>
+        {/* <div className="absolute inset-0 z-20 flex flex-col justify-between p-12 text-white items-end">
           <Link
             href="/"
             className="inline-flex justify-end items-center space-x-2 text-xl font-bold hover-lift"
@@ -377,16 +367,7 @@ export default function SignupPage() {
             <span>Back to home</span>
           </Link>
 
-          <div className="max-w-md">
-            <div className="flex items-center justify-end space-x-2 mb-4">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center glass-effect">
-                <Video className="w-6 h-6" />
-              </div>
-              <h1 className="text-3xl font-bold">Shohoj Niyog</h1>
-            </div>
-            <h2 className="text-4xl font-bold mb-4">Create your account</h2>
-          </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

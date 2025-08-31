@@ -60,12 +60,11 @@ export default function LoginPage() {
             alt="Interview illustration"
             width={1000}
             height={1000}
-            // fill
             className="object-cover w-[80%] h-[80%]"
             priority
           />
         </div>
-        <div className="absolute inset-0 z-20 flex flex-col justify-between p-12 text-white">
+        {/* <div className="absolute inset-0 z-20 flex flex-col justify-between p-12 text-white">
           <Link
             href="/"
             className="inline-flex items-center space-x-2 text-xl font-bold hover-lift"
@@ -73,26 +72,12 @@ export default function LoginPage() {
             <ArrowLeft className="w-5 h-5" />
             <span>Back to home</span>
           </Link>
-
-          {/* <div className="max-w-md">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center glass-effect">
-                <Video className="w-6 h-6" />
-              </div>
-              <h1 className="text-3xl font-bold">Shohoj Niyog</h1>
-            </div>
-            <h2 className="text-4xl font-bold mb-4">
-              Welcome back to your account
-            </h2>
-          </div> */}
-        </div>
+        </div> */}
       </div>
 
       {/* Right side with login form - no overlay here */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-20">
         <div className="w-full max-w-md space-y-8">
-          {/* Mobile logo */}
-
           <Card className="border-border shadow-soft overflow-hidden">
             <div className="text-center">
               <Link
@@ -104,12 +89,9 @@ export default function LoginPage() {
                 </div>
                 <span>Shohoj Niyog</span>
               </Link>
-              {/* <p className="text-muted-foreground mt-2">
-                Welcome back to your account
-              </p> */}
             </div>
-            <div className="h-2 bg-primary w-full"></div>
-            <CardHeader className="text-center space-y-2 pb-4">
+            <div className="h-1 bg-primary w-full"></div>
+            <CardHeader className="text-center space-y-2">
               <CardTitle className="text-2xl">Sign In</CardTitle>
               <CardDescription className="text-muted-foreground">
                 Enter your credentials to access your dashboard
@@ -201,30 +183,8 @@ export default function LoginPage() {
                   </Link>
                 </p>
               </div>
-
-              {/* Demo Credentials */}
-              {/* <div className="mt-6 p-4 bg-muted rounded-lg border border-border animate-fade-in" style={{ animationDelay: "0.5s" }}>
-                <p className="text-sm font-medium text-foreground mb-2">Demo Credentials:</p>
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div>
-                    <strong>Interviewer:</strong> support@beximco.com / demo123
-                  </div>
-                  <div>
-                    <strong>Candidate:</strong> john@example.com / demo456
-                  </div>
-                </div>
-              </div> */}
             </CardContent>
           </Card>
-
-          <div className="text-center lg:hidden">
-            <Link
-              href="/"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center"
-            >
-              <ArrowLeft className="w-4 h-4 mr-1" /> Back to homepage
-            </Link>
-          </div>
         </div>
       </div>
     </div>
