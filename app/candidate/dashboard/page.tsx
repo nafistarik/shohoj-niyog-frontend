@@ -199,12 +199,12 @@ return (
               </p>
             </div>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <div className="flex items-center bg-slate-100 dark:bg-slate-800 rounded-full py-1.5 px-4">
+              {/* <div className="flex items-center bg-slate-100 dark:bg-slate-800 rounded-full py-1.5 px-4">
                 <User className="w-4 h-4 text-slate-500 mr-2" />
                 <span className="text-sm text-slate-700 dark:text-slate-300">
                   {user?.username}
                 </span>
-              </div>
+              </div> */}
               <Button variant="outline" asChild className="border-slate-300 dark:border-slate-600">
                 <Link href="/candidate/results">View Results</Link>
               </Button>
@@ -294,12 +294,12 @@ return (
                           : session.stack}
                       </CardDescription>
                     </div>
-                    <Badge variant="outline" className={getLevelColor(session.level)}>
+                    {/* <Badge variant="outline" className={getLevelColor(session.level)}>
                       <span className="flex items-center">
                         {getLevelIcon(session.level)}
                         <span className="ml-1">{session.level}</span>
                       </span>
-                    </Badge>
+                    </Badge> */}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
