@@ -11,6 +11,13 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   ArrowLeft,
   Calendar,
   CheckCircle,
@@ -64,6 +71,7 @@ const results = [
 ];
 
 export default function CandidateResultsPage() {
+  const [resultsData, setResultsData] = useState(results);
   // const [results, setResults] = useState<CandidateResultWithSession[]>([])
   // const [isLoading, setIsLoading] = useState(true)
 
@@ -180,6 +188,45 @@ export default function CandidateResultsPage() {
     }
   };
 
+  const updateDecision = async (resultId: string, newDecision: string) => {
+    console.log(`Updating decision for result ${resultId} to ${newDecision}`);
+    
+    // Update local state
+    setResultsData(prev => 
+      prev.map(result => 
+        result.id === resultId 
+          ? { ...result, decision: newDecision }
+          : result
+      )
+    );
+    
+    // In a real app, you would make an API call here
+    // try {
+    //   const response = await fetch("/api/candidate/update-decision", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       result_id: resultId,
+    //       decision: newDecision,
+    //     }),
+    //   });
+    //   
+    //   if (!response.ok) {
+    //     throw new Error("Failed to update decision");
+    //   }
+    // } catch (err) {
+    //   console.error("Failed to update decision:", err);
+    //   // Revert the change if the API call fails
+    //   setResultsData(prev => 
+    //     prev.map(result => 
+    //       result.id === resultId 
+    //         ? { ...result, decision: originalDecision }
+    //         : result
+    //     )
+    //   );
+    // }
+  };
+
   // if (isLoading) {
   //   return (
   //     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -216,7 +263,7 @@ export default function CandidateResultsPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {results.length === 0 ? (
+        {resultsData.length === 0 ? (
           <EmptyState
             title="No interview results yet"
             description="Complete some interviews to see your results and feedback here."
@@ -235,7 +282,7 @@ export default function CandidateResultsPage() {
                     </div>
                     <div>
                       <div className="text-2xl font-bold text-slate-900 dark:text-white">
-                        {results.length}
+                        {resultsData.length}
                       </div>
                       <div className="text-sm text-slate-600 dark:text-slate-400">
                         Interviews Completed
@@ -253,7 +300,7 @@ export default function CandidateResultsPage() {
                     <div>
                       <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                         {
-                          results.filter(
+                          resultsData.filter(
                             (r) =>
                               r.decision === "interested" ||
                               r.decision === "accept"
@@ -275,7 +322,7 @@ export default function CandidateResultsPage() {
                     </div>
                     <div>
                       <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
-                        {results.filter((r) => r.decision === "pending").length}
+                        {resultsData.filter((r) => r.decision === "pending").length}
                       </div>
                       <div className="text-sm text-slate-600 dark:text-slate-400">
                         Pending Review
@@ -292,14 +339,14 @@ export default function CandidateResultsPage() {
                 Interview Results
               </h2>
 
-              {results.map((result) => (
+              {resultsData.map((result) => (
                 <Card
                   key={result.id}
                   className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
                 >
                   <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-500"></div>
 
-                  <CardHeader className="pb-4">
+                  <CardHeader>
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                       <div className="flex-1">
                         <CardTitle className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -336,7 +383,7 @@ export default function CandidateResultsPage() {
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="space-y-4">
                     <div
                       className={`rounded-xl p-4 border ${getStatusBgColor(
                         result.decision
@@ -345,6 +392,28 @@ export default function CandidateResultsPage() {
                       <p className="text-sm">
                         {getStatusMessage(result.decision)}
                       </p>
+                    </div>
+                    
+                    {/* Decision Selector */}
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Update your decision:
+                      </div>
+                      <Select
+                        value={result.decision}
+                        onValueChange={(value) => updateDecision(result.id, value)}
+                      >
+                        <SelectTrigger className="w-40 border border-slate-300">
+                          <SelectValue placeholder="Select decision" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Under Review</SelectItem>
+                          <SelectItem value="interested">Interested</SelectItem>
+                          <SelectItem value="not_interested">Not Interested</SelectItem>
+                          <SelectItem value="accept">Accept</SelectItem>
+                          <SelectItem value="reject">Reject</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </CardContent>
                 </Card>
