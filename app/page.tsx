@@ -14,7 +14,7 @@ export default function HomePage() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Video className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-heading font-bold text-foreground">InterviewFlow</span>
+            <span className="text-xl font-heading font-bold text-foreground">Shohoj Niyog</span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
@@ -275,7 +275,7 @@ export default function HomePage() {
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <Video className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <span className="text-xl font-heading font-bold text-foreground">InterviewFlow</span>
+                <span className="text-xl font-heading font-bold text-foreground">Shohoj Niyog</span>
               </div>
               <p className="text-muted-foreground">Streamline your hiring process with professional video interviews.</p>
             </div>

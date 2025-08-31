@@ -280,9 +280,6 @@ export default function SessionDetailsPage() {
                             Question {index + 1}
                           </h3>
                         </div>
-                        <Badge variant="outline" className="text-xs bg-slate-100">
-                          ID: {qa.question_id}
-                        </Badge>
                       </div>
                       <p className="text-slate-700 mb-4 leading-relaxed pl-11">
                         {qa.question}
