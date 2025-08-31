@@ -365,7 +365,7 @@ export default function SessionResultsPage() {
                 Review candidate responses and make decisions
               </p>
             </div>
-            <Button variant="ghost" size="sm" asChild className="mr-4 group">
+            <Button variant="ghost" size="sm" asChild className="group">
               <Link href={`/interviewer/session/${params.id}`}>
                 <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
                 Back to Session

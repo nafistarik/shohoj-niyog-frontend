@@ -10,7 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Calendar, CheckCircle, Clock, FileText, Star, TrendingUp, XCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  CheckCircle,
+  Clock,
+  FileText,
+  Star,
+  TrendingUp,
+  XCircle,
+} from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import type { CandidateResponse, InterviewSession } from "@/lib/types";
@@ -179,19 +188,13 @@ export default function CandidateResultsPage() {
   //   );
   // }
 
-return (
+  return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pb-12">
       {/* Header */}
       <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between py-6">
             <div className="flex items-center">
-              <Button variant="ghost" size="sm" asChild className="mr-4 group">
-                <Link href="/candidate/dashboard">
-                  <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
-                  Back to Dashboard
-                </Link>
-              </Button>
               <div>
                 <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
                   My Results
@@ -201,13 +204,12 @@ return (
                 </p>
               </div>
             </div>
-            <div className="text-right mt-4 md:mt-0">
-              <div className="text-sm text-slate-600 dark:text-slate-400">Overall Performance</div>
-              <div className="flex items-center justify-end mt-1">
-                <TrendingUp className="w-5 h-5 text-green-500 mr-1" />
-                <span className="font-semibold text-slate-900 dark:text-white">Good</span>
-              </div>
-            </div>
+            <Button variant="ghost" size="sm" asChild className="group">
+              <Link href="/candidate/dashboard">
+                <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
+                Back to Dashboard
+              </Link>
+            </Button>
           </div>
         </div>
       </header>
@@ -253,7 +255,8 @@ return (
                         {
                           results.filter(
                             (r) =>
-                              r.decision === "interested" || r.decision === "accept"
+                              r.decision === "interested" ||
+                              r.decision === "accept"
                           ).length
                         }
                       </div>
@@ -285,15 +288,17 @@ return (
 
             {/* Results List */}
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Interview Results</h2>
-              
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                Interview Results
+              </h2>
+
               {results.map((result) => (
                 <Card
                   key={result.id}
                   className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
                 >
                   <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-500"></div>
-                  
+
                   <CardHeader className="pb-4">
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                       <div className="flex-1">
@@ -317,15 +322,26 @@ return (
                         </CardDescription>
                       </div>
                       <div className="mt-4 md:mt-0">
-                        <Badge variant="outline" className={`text-sm font-medium px-3 py-1 flex items-center ${getDecisionColor(result.decision)}`}>
+                        <Badge
+                          variant="outline"
+                          className={`text-sm font-medium px-3 py-1 flex items-center ${getDecisionColor(
+                            result.decision
+                          )}`}
+                        >
                           {getDecisionIcon(result.decision)}
-                          <span className="ml-1">{getDecisionText(result.decision)}</span>
+                          <span className="ml-1">
+                            {getDecisionText(result.decision)}
+                          </span>
                         </Badge>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className={`rounded-xl p-4 border ${getStatusBgColor(result.decision)} ${getStatusTextColor(result.decision)}`}>
+                    <div
+                      className={`rounded-xl p-4 border ${getStatusBgColor(
+                        result.decision
+                      )} ${getStatusTextColor(result.decision)}`}
+                    >
                       <p className="text-sm">
                         {getStatusMessage(result.decision)}
                       </p>
