@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Award, BookOpen, Calendar, Clock, Play, Target, User, Zap } from "lucide-react";
+import { Award, Calendar, Clock, Play, Target, User, Zap, CalendarDays, CheckCircle, AlertCircle, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import type { InterviewSession } from "@/lib/types";
@@ -63,7 +63,7 @@ const sessions = [
       },
     ],
     allowed_candidates: ["uuid", "can2@gmail.com"],
-    scheduled: "2025-08-27T09:15:00Z",
+    scheduled: "2025-09-27T09:15:00Z",
   },
   {
     id: "68935b9fc5f8140275f8b24c",
@@ -89,7 +89,7 @@ const sessions = [
       },
     ],
     allowed_candidates: ["uuid", "can2@gmail.com"],
-    scheduled: "2025-08-30T14:00:00Z",
+    scheduled: "2025-09-30T14:00:00Z",
   },
 ];
 
@@ -104,31 +104,6 @@ const user = {
 };
 
 export default function CandidateDashboard() {
-  // const [sessions, setSessions] = useState<InterviewSession[]>([])
-  // const [isLoading, setIsLoading] = useState(true)
-  // const { user } = useAuth()
-
-  // useEffect(() => {
-  //   fetchAvailableSessions()
-  // }, [user])
-
-  // const fetchAvailableSessions = async () => {
-  //   try {
-  //     if (user?.user_id) {
-  //       // In a real app, this would filter by candidate email
-  //       const response = await fetch(`/api/candidate/sessions?email=${encodeURIComponent(user.username)}`)
-  //       if (response.ok) {
-  //         const data = await response.json()
-  //         setSessions(data)
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to fetch sessions:", error)
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -142,30 +117,17 @@ export default function CandidateDashboard() {
   const getLevelColor = (level: string) => {
     switch (level.toLowerCase()) {
       case "beginner":
-        return "bg-green-100 text-green-700 border-green-200";
+        return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800";
       case "intermediate":
-        return "bg-yellow-100 text-yellow-700 border-yellow-200";
+        return "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800";
       case "advanced":
-        return "bg-red-100 text-red-700 border-red-200";
+        return "bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800";
       default:
-        return "bg-slate-100 text-slate-700 border-slate-200";
+        return "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
     }
   };
 
-    const getLevelIcon = (level: string) => {
-    switch (level.toLowerCase()) {
-      case "beginner":
-        return <BookOpen className="w-4 h-4" />;
-      case "intermediate":
-        return <Target className="w-4 h-4" />;
-      case "advanced":
-        return <Zap className="w-4 h-4" />;
-      default:
-        return <Award className="w-4 h-4" />;
-    }
-  };
-
-    const getTotalDuration = (qaPairs: any[]) => {
+  const getTotalDuration = (qaPairs: any[]) => {
     const estimatedMinutes = qaPairs.length * 3;
     const hours = Math.floor(estimatedMinutes / 60);
     const minutes = estimatedMinutes % 60;
@@ -176,15 +138,24 @@ export default function CandidateDashboard() {
     return `${minutes}m`;
   };
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-  //       <LoadingSpinner />
-  //     </div>
-  //   )
-  // }
+  // Calculate upcoming interviews (scheduled in the future)
+  const now = new Date();
+  const upcomingInterviews = sessions.filter(session => 
+    new Date(session.scheduled) > now
+  );
+  
+  // Find the next interview (closest upcoming)
+  const nextInterview = upcomingInterviews.length > 0 
+    ? upcomingInterviews.reduce((closest, current) => {
+        const closestTime = new Date(closest.scheduled).getTime();
+        const currentTime = new Date(current.scheduled).getTime();
+        const nowTime = now.getTime();
+        
+        return (currentTime - nowTime) < (closestTime - nowTime) ? current : closest;
+      })
+    : null;
 
-return (
+  return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pb-12">
       {/* Header */}
       <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm">
@@ -199,12 +170,6 @@ return (
               </p>
             </div>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              {/* <div className="flex items-center bg-slate-100 dark:bg-slate-800 rounded-full py-1.5 px-4">
-                <User className="w-4 h-4 text-slate-500 mr-2" />
-                <span className="text-sm text-slate-700 dark:text-slate-300">
-                  {user?.username}
-                </span>
-              </div> */}
               <Button variant="outline" asChild className="border-slate-300 dark:border-slate-600">
                 <Link href="/candidate/results">View Results</Link>
               </Button>
@@ -215,7 +180,8 @@ return (
 
       {/* Stats Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
+          {/* Total Interviews Card */}
           <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex items-center">
@@ -231,32 +197,46 @@ return (
               </div>
             </CardContent>
           </Card>
+
+          {/* Upcoming Interviews Card */}
           <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="rounded-lg bg-green-500/10 p-3 mr-4">
-                  <Clock className="w-6 h-6 text-green-500" />
+                <div className="rounded-lg bg-amber-500/10 p-3 mr-4">
+                  <Clock className="w-6 h-6 text-amber-500" />
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-slate-900 dark:text-white">
-                    {sessions.reduce((total, session) => total + session.qa_pairs.length, 0)}
+                    {upcomingInterviews.length}
                   </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">Total Questions</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400">Upcoming Interviews</div>
                 </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* Next Interview Card */}
           <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="rounded-lg bg-purple-500/10 p-3 mr-4">
-                  <Target className="w-6 h-6 text-purple-500" />
+                  <CalendarDays className="w-6 h-6 text-purple-500" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-slate-900 dark:text-white">
-                    {sessions.filter(s => s.level.toLowerCase() === 'advanced').length}
-                  </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">Advanced Levels</div>
+                  {nextInterview ? (
+                    <>
+                      <div className="text-sm font-semibold text-slate-900 dark:text-white line-clamp-1">
+                        {nextInterview.position}
+                      </div>
+                      <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                        {formatDate(nextInterview.scheduled)}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-sm text-slate-600 dark:text-slate-400">
+                      No upcoming interviews
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -295,10 +275,7 @@ return (
                       </CardDescription>
                     </div>
                     {/* <Badge variant="outline" className={getLevelColor(session.level)}>
-                      <span className="flex items-center">
-                        {getLevelIcon(session.level)}
-                        <span className="ml-1">{session.level}</span>
-                      </span>
+                      {session.level}
                     </Badge> */}
                   </div>
                 </CardHeader>
@@ -337,7 +314,7 @@ return (
                     </ul>
                   </div>
 
-                  <Button className="w-full bg-primary transition-all duration-300" asChild>
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all duration-300" asChild>
                     <Link href={`/candidate/interview/${session.id}`}>
                       <Play className="w-4 h-4 mr-2" />
                       Start Interview
