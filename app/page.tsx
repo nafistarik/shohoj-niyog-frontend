@@ -1,14 +1,28 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { CheckCircle, Users, Video, Shield, ArrowRight, Star, ChevronRight } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  CheckCircle,
+  Users,
+  Video,
+  Shield,
+  ArrowRight,
+  Star,
+  ChevronRight,
+} from "lucide-react";
+import Link from "next/link";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/components/ui/accordion";
 
 export default function HomePage() {
   return (
@@ -20,19 +34,33 @@ export default function HomePage() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Video className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-heading font-bold text-foreground">Shohoj Niyog</span>
+            <span className="text-xl font-heading font-bold text-foreground">
+              Shohoj Niyog
+            </span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
+            <a
+              href="#features"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
               Features
             </a>
-            <a href="#about" className="text-muted-foreground hover:text-primary transition-colors">
+            <a
+              href="#about"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
               About
             </a>
-            <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">
+            <a
+              href="#testimonials"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
               Testimonials
             </a>
-            <a href="#faq" className="text-muted-foreground hover:text-primary transition-colors">
+            <a
+              href="#faq"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
               FAQ
             </a>
           </nav>
@@ -40,7 +68,10 @@ export default function HomePage() {
             <Button variant="ghost" asChild>
               <Link href="/login">Sign In</Link>
             </Button>
-            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button
+              asChild
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+            >
               <Link href="/signup">Get Started</Link>
             </Button>
           </div>
@@ -51,7 +82,10 @@ export default function HomePage() {
       <section className="py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent -z-10"></div>
         <div className="container mx-auto text-center max-w-4xl">
-          <Badge variant="secondary" className="mb-6 bg-primary/10 text-primary border-primary/20">
+          <Badge
+            variant="secondary"
+            className="mb-6 bg-primary/10 text-primary border-primary/20"
+          >
             <Star className="w-3 h-3 mr-1 fill-primary" />
             Trusted by 500+ Companies
           </Badge>
@@ -60,15 +94,27 @@ export default function HomePage() {
             <span className="text-primary block">Video Interviews</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Transform your hiring process with our comprehensive video interview platform. Create sessions, evaluate
-            candidates, and make informed decisions—all in one place.
+            Transform your hiring process with our comprehensive video interview
+            platform. Create sessions, evaluate candidates, and make informed
+            decisions—all in one place.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 bg-primary text-primary-foreground hover:bg-primary/90" asChild>
+            <Button
+              size="lg"
+              className="text-lg px-8 bg-primary text-primary-foreground hover:bg-primary/90"
+              asChild
+            >
               <Link href="/signup">Start Free Trial</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 border-primary text-primary hover:bg-primary/10" asChild>
-              <Link href="#demo">Watch Demo <ArrowRight className="ml-2 w-4 h-4" /></Link>
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 border-primary text-primary hover:bg-primary/10"
+              asChild
+            >
+              <Link href="#demo">
+                Watch Demo <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
             </Button>
           </div>
           <div className="mt-12 flex items-center justify-center space-x-8 text-sm text-muted-foreground">
@@ -92,7 +138,8 @@ export default function HomePage() {
               Everything You Need for Better Hiring
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Powerful features designed to make your interview process more efficient and effective.
+              Powerful features designed to make your interview process more
+              efficient and effective.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -101,9 +148,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Video className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-heading text-foreground">Video Recording</CardTitle>
+                <CardTitle className="font-heading text-foreground">
+                  Video Recording
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
-                  Seamless video recording with automatic upload and processing for candidate responses.
+                  Seamless video recording with automatic upload and processing
+                  for candidate responses.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -112,9 +162,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Users className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-heading text-foreground">Role-Based Access</CardTitle>
+                <CardTitle className="font-heading text-foreground">
+                  Role-Based Access
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
-                  Separate dashboards for interviewers and candidates with tailored experiences.
+                  Separate dashboards for interviewers and candidates with
+                  tailored experiences.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -123,9 +176,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Shield className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-heading text-foreground">Secure & Private</CardTitle>
+                <CardTitle className="font-heading text-foreground">
+                  Secure & Private
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
-                  Enterprise-grade security with encrypted video storage and GDPR compliance.
+                  Enterprise-grade security with encrypted video storage and
+                  GDPR compliance.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -136,11 +192,14 @@ export default function HomePage() {
       {/* Stats Section */}
       <section id="about" className="py-20 px-4 bg-primary/5">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl font-heading font-bold text-foreground mb-6">Built for Modern Hiring Teams</h2>
+          <h2 className="text-4xl font-heading font-bold text-foreground mb-6">
+            Built for Modern Hiring Teams
+          </h2>
           <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-            InterviewFlow was created to solve the challenges of remote hiring. Our platform combines the personal touch
-            of face-to-face interviews with the convenience and efficiency of digital tools, helping you find the best
-            talent faster.
+            InterviewFlow was created to solve the challenges of remote hiring.
+            Our platform combines the personal touch of face-to-face interviews
+            with the convenience and efficiency of digital tools, helping you
+            find the best talent faster.
           </p>
           <div className="grid md:grid-cols-3 gap-8 mt-12">
             <div className="text-center">
@@ -163,36 +222,54 @@ export default function HomePage() {
       <section id="testimonials" className="py-20 px-4 bg-card">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-foreground mb-4">What Our Customers Say</h2>
-            <p className="text-xl text-muted-foreground">Hear from companies that transformed their hiring with InterviewFlow</p>
+            <h2 className="text-4xl font-heading font-bold text-foreground mb-4">
+              What Our Customers Say
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Hear from companies that transformed their hiring with
+              InterviewFlow
+            </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="bg-background border-border/50">
               <CardContent className="pt-6">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    <Star
+                      key={i}
+                      className="w-4 h-4 fill-primary text-primary"
+                    />
                   ))}
                 </div>
                 <p className="text-muted-foreground mb-4">
-                  "InterviewFlow has reduced our time-to-hire by 40%. The platform is intuitive and the customer support is exceptional."
+                  "InterviewFlow has reduced our time-to-hire by 40%. The
+                  platform is intuitive and the customer support is
+                  exceptional."
                 </p>
                 <div className="font-medium text-foreground">Sarah Johnson</div>
-                <div className="text-sm text-muted-foreground">HR Director, TechCorp</div>
+                <div className="text-sm text-muted-foreground">
+                  HR Director, TechCorp
+                </div>
               </CardContent>
             </Card>
             <Card className="bg-background border-border/50">
               <CardContent className="pt-6">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    <Star
+                      key={i}
+                      className="w-4 h-4 fill-primary text-primary"
+                    />
                   ))}
                 </div>
                 <p className="text-muted-foreground mb-4">
-                  "The customizable questions and easy candidate management have made our recruitment process so much more efficient."
+                  "The customizable questions and easy candidate management have
+                  made our recruitment process so much more efficient."
                 </p>
                 <div className="font-medium text-foreground">Michael Chen</div>
-                <div className="text-sm text-muted-foreground">Talent Acquisition, StartupXYZ</div>
+                <div className="text-sm text-muted-foreground">
+                  Talent Acquisition, StartupXYZ
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -200,73 +277,165 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Section */}
-      {/* FAQ Section */}
-<section id="faq" className="py-20 px-4 bg-background">
-  <div className="container mx-auto max-w-3xl">
-    <div className="text-center mb-16">
-      <h2 className="text-4xl font-heading font-bold text-foreground mb-4">Frequently Asked Questions</h2>
-      <p className="text-xl text-muted-foreground">Everything you need to know about InterviewFlow</p>
-    </div>
-    
-    <Accordion type="single" collapsible className="space-y-4">
-      <AccordionItem value="item-1" className="border-border/50 rounded-lg overflow-hidden">
-        <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
-          <span className="font-heading text-lg text-foreground text-left">
-            How does the video interview process work?
-          </span>
-        </AccordionTrigger>
-        <AccordionContent className="px-6 pb-4">
-          <p className="text-muted-foreground">
-            Interviewers create sessions with custom questions, invite candidates via email, and candidates record
-            their responses at their convenience. All videos are automatically processed and made available for
-            review.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
-      
-      <AccordionItem value="item-2" className="border-border/50 rounded-lg overflow-hidden">
-        <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
-          <span className="font-heading text-lg text-foreground text-left">
-            Is there a limit on video length or file size?
-          </span>
-        </AccordionTrigger>
-        <AccordionContent className="px-6 pb-4">
-          <p className="text-muted-foreground">
-            Each response can be up to 5 minutes long. Our platform automatically optimizes video files for
-            storage and playback without compromising quality.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
-      
-      <AccordionItem value="item-3" className="border-border/50 rounded-lg overflow-hidden">
-        <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
-          <span className="font-heading text-lg text-foreground text-left">
-            Can I customize the interview questions?
-          </span>
-        </AccordionTrigger>
-        <AccordionContent className="px-6 pb-4">
-          <p className="text-muted-foreground">
-            Yes! You can create custom questions based on position, tech stack, and experience level. Our AI can
-            also suggest relevant questions for your specific requirements.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  </div>
-</section>
+      <section id="faq" className="py-20 px-4 bg-background">
+        <div className="container mx-auto max-w-3xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-heading font-bold text-foreground mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Everything you need to know about Shohoj Niyog
+            </p>
+          </div>
+
+          <Accordion type="single" collapsible className="space-y-4">
+            <AccordionItem
+              value="item-1"
+              className="border-border/50 rounded-lg overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+                <span className="font-heading text-lg text-foreground text-left">
+                  How does Shohoj Niyog simplify the recruitment process?
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4">
+                <p className="text-muted-foreground">
+                  Shohoj Niyog streamlines hiring by allowing recruiters to
+                  create customized video interview sessions, invite candidates
+                  via unique links, and review responses at their convenience.
+                  Our platform automatically organizes all candidate videos for
+                  efficient evaluation and comparison.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem
+              value="item-2"
+              className="border-border/50 rounded-lg overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+                <span className="font-heading text-lg text-foreground text-left">
+                  What types of interviews can I conduct with Shohoj Niyog?
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4">
+                <p className="text-muted-foreground">
+                  Our platform supports various interview formats including
+                  one-way video interviews, skill-based assessments, and
+                  customizable questionnaire sessions. You can create technical
+                  evaluations, behavioral interviews, or role-specific
+                  assessments tailored to your hiring needs.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem
+              value="item-3"
+              className="border-border/50 rounded-lg overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+                <span className="font-heading text-lg text-foreground text-left">
+                  How does the candidate evaluation system work?
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4">
+                <p className="text-muted-foreground">
+                  Shohoj Niyog provides structured evaluation tools including
+                  rating scales, scorecards, and collaborative feedback systems.
+                  Hiring teams can comment, rate responses, and share insights
+                  directly on candidate videos, ensuring comprehensive and
+                  unbiased assessments.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem
+              value="item-4"
+              className="border-border/50 rounded-lg overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+                <span className="font-heading text-lg text-foreground text-left">
+                  Can I integrate Shohoj Niyog with our existing HR systems?
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4">
+                <p className="text-muted-foreground">
+                  Yes, Shohoj Niyog offers API access and integrations with
+                  popular Applicant Tracking Systems (ATS) and HR platforms.
+                  This allows seamless data transfer, candidate synchronization,
+                  and streamlined workflow management between systems.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem
+              value="item-5"
+              className="border-border/50 rounded-lg overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+                <span className="font-heading text-lg text-foreground text-left">
+                  What measures does Shohoj Niyog take to ensure candidate
+                  privacy?
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4">
+                <p className="text-muted-foreground">
+                  We prioritize data security with end-to-end encryption, secure
+                  cloud storage, and strict access controls. Candidates have
+                  rights to their data and can request deletion at any time. We
+                  comply with global data protection regulations including GDPR
+                  and local data privacy laws.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem
+              value="item-6"
+              className="border-border/50 rounded-lg overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+                <span className="font-heading text-lg text-foreground text-left">
+                  How does Shohoj Niyog support remote hiring and distributed
+                  teams?
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4">
+                <p className="text-muted-foreground">
+                  Our platform is designed for remote hiring workflows,
+                  featuring asynchronous interviews, collaborative evaluation
+                  tools, and seamless communication channels. Hiring teams can
+                  participate from anywhere, providing feedback and making
+                  decisions without geographical constraints.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </section>
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-primary/10">
         <div className="container mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl font-heading font-bold text-foreground mb-6">Ready to Get Started?</h2>
+          <h2 className="text-4xl font-heading font-bold text-foreground mb-6">
+            Ready to Get Started?
+          </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join hundreds of companies already using InterviewFlow to streamline their hiring process.
+            Join hundreds of companies already using InterviewFlow to streamline
+            their hiring process.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 bg-primary text-primary-foreground hover:bg-primary/90" asChild>
+            <Button
+              size="lg"
+              className="text-lg px-8 bg-primary text-primary-foreground hover:bg-primary/90"
+              asChild
+            >
               <Link href="/signup">Start Your Free Trial</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 border-primary text-primary hover:bg-primary/10">
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 border-primary text-primary hover:bg-primary/10"
+            >
               Contact Sales
             </Button>
           </div>
@@ -282,15 +451,25 @@ export default function HomePage() {
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <Video className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <span className="text-xl font-heading font-bold text-foreground">Shohoj Niyog</span>
+                <span className="text-xl font-heading font-bold text-foreground">
+                  Shohoj Niyog
+                </span>
               </div>
-              <p className="text-muted-foreground">Streamline your hiring process with professional video interviews.</p>
+              <p className="text-muted-foreground">
+                Streamline your hiring process with professional video
+                interviews.
+              </p>
             </div>
             <div>
-              <h3 className="font-heading font-semibold mb-4 text-foreground">Product</h3>
+              <h3 className="font-heading font-semibold mb-4 text-foreground">
+                Product
+              </h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li>
-                  <a href="#features" className="hover:text-primary transition-colors">
+                  <a
+                    href="#features"
+                    className="hover:text-primary transition-colors"
+                  >
                     Features
                   </a>
                 </li>
@@ -307,10 +486,15 @@ export default function HomePage() {
               </ul>
             </div>
             <div>
-              <h3 className="font-heading font-semibold mb-4 text-foreground">Company</h3>
+              <h3 className="font-heading font-semibold mb-4 text-foreground">
+                Company
+              </h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li>
-                  <a href="#about" className="hover:text-primary transition-colors">
+                  <a
+                    href="#about"
+                    className="hover:text-primary transition-colors"
+                  >
                     About
                   </a>
                 </li>
@@ -320,17 +504,25 @@ export default function HomePage() {
                   </a>
                 </li>
                 <li>
-                  <a href="#contact" className="hover:text-primary transition-colors">
+                  <a
+                    href="#contact"
+                    className="hover:text-primary transition-colors"
+                  >
                     Contact
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="font-heading font-semibold mb-4 text-foreground">Support</h3>
+              <h3 className="font-heading font-semibold mb-4 text-foreground">
+                Support
+              </h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li>
-                  <a href="#faq" className="hover:text-primary transition-colors">
+                  <a
+                    href="#faq"
+                    className="hover:text-primary transition-colors"
+                  >
                     FAQ
                   </a>
                 </li>
@@ -353,5 +545,5 @@ export default function HomePage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
