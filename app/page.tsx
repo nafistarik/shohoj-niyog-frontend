@@ -3,6 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, Users, Video, Shield, ArrowRight, Star, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 export default function HomePage() {
   return (
@@ -194,59 +200,60 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-20 px-4 bg-background">
-        <div className="container mx-auto max-w-3xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-foreground mb-4">Frequently Asked Questions</h2>
-            <p className="text-xl text-muted-foreground">Everything you need to know about InterviewFlow</p>
-          </div>
-          <div className="space-y-4">
-            <Card className="border-border/50">
-              <CardHeader className="cursor-pointer hover:bg-card/50 transition-colors rounded-t-lg">
-                <CardTitle className="font-heading text-lg text-foreground flex justify-between items-center">
-                  How does the video interview process work?
-                  <ChevronRight className="w-5 h-5 text-primary" />
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Interviewers create sessions with custom questions, invite candidates via email, and candidates record
-                  their responses at their convenience. All videos are automatically processed and made available for
-                  review.
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-border/50">
-              <CardHeader className="cursor-pointer hover:bg-card/50 transition-colors rounded-t-lg">
-                <CardTitle className="font-heading text-lg text-foreground flex justify-between items-center">
-                  Is there a limit on video length or file size?
-                  <ChevronRight className="w-5 h-5 text-primary" />
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Each response can be up to 5 minutes long. Our platform automatically optimizes video files for
-                  storage and playback without compromising quality.
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-border/50">
-              <CardHeader className="cursor-pointer hover:bg-card/50 transition-colors rounded-t-lg">
-                <CardTitle className="font-heading text-lg text-foreground flex justify-between items-center">
-                  Can I customize the interview questions?
-                  <ChevronRight className="w-5 h-5 text-primary" />
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Yes! You can create custom questions based on position, tech stack, and experience level. Our AI can
-                  also suggest relevant questions for your specific requirements.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+      {/* FAQ Section */}
+<section id="faq" className="py-20 px-4 bg-background">
+  <div className="container mx-auto max-w-3xl">
+    <div className="text-center mb-16">
+      <h2 className="text-4xl font-heading font-bold text-foreground mb-4">Frequently Asked Questions</h2>
+      <p className="text-xl text-muted-foreground">Everything you need to know about InterviewFlow</p>
+    </div>
+    
+    <Accordion type="single" collapsible className="space-y-4">
+      <AccordionItem value="item-1" className="border-border/50 rounded-lg overflow-hidden">
+        <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+          <span className="font-heading text-lg text-foreground text-left">
+            How does the video interview process work?
+          </span>
+        </AccordionTrigger>
+        <AccordionContent className="px-6 pb-4">
+          <p className="text-muted-foreground">
+            Interviewers create sessions with custom questions, invite candidates via email, and candidates record
+            their responses at their convenience. All videos are automatically processed and made available for
+            review.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+      
+      <AccordionItem value="item-2" className="border-border/50 rounded-lg overflow-hidden">
+        <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+          <span className="font-heading text-lg text-foreground text-left">
+            Is there a limit on video length or file size?
+          </span>
+        </AccordionTrigger>
+        <AccordionContent className="px-6 pb-4">
+          <p className="text-muted-foreground">
+            Each response can be up to 5 minutes long. Our platform automatically optimizes video files for
+            storage and playback without compromising quality.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+      
+      <AccordionItem value="item-3" className="border-border/50 rounded-lg overflow-hidden">
+        <AccordionTrigger className="px-6 py-4 hover:bg-card/50 transition-colors rounded-t-lg data-[state=open]:rounded-b-none">
+          <span className="font-heading text-lg text-foreground text-left">
+            Can I customize the interview questions?
+          </span>
+        </AccordionTrigger>
+        <AccordionContent className="px-6 pb-4">
+          <p className="text-muted-foreground">
+            Yes! You can create custom questions based on position, tech stack, and experience level. Our AI can
+            also suggest relevant questions for your specific requirements.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-primary/10">
