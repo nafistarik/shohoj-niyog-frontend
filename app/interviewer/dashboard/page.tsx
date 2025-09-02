@@ -135,7 +135,7 @@ const sessions = [
       },
     ],
     allowed_candidates: ["uuid", "can2@gmail.com"],
-    scheduled: "2025-08-25T06:30:00Z",
+    scheduled: "2025-09-25T06:30:00Z",
   },
 ];
 
