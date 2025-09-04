@@ -17,16 +17,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  ArrowLeft,
-  Calendar,
   Star,
-  Users,
-  Target,
-  Clock,
-  BarChart3,
   ChevronDown,
   ChevronUp,
-  User,
   Mail,
   MessageSquare,
 } from "lucide-react";
@@ -111,7 +104,6 @@ export default function CandidateResultCard({
             <div className="flex items-center space-x-2">
               <Button
                 variant="outline"
-                size="sm"
                 onClick={() => setIsExpanded(!isExpanded)}
               >
                 {isExpanded ? (

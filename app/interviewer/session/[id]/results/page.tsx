@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowLeft,
   Calendar,
@@ -133,7 +130,6 @@ const results = [
 
 // Candidate Result Card Component
 
-
 export default function SessionResultsPage() {
   const [resultsData, setResultsData] = useState(results);
   const params = useParams();
@@ -179,171 +175,166 @@ export default function SessionResultsPage() {
   };
 
   return (
-<div className="min-h-screen bg-background pb-12">
-  {/* Header */}
-  <header className="bg-card border-b border-border shadow-sm">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">
-            {session.position} - Results
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Review candidate responses and make decisions
-          </p>
-        </div>
-        <Button variant="ghost" size="sm" asChild className="group">
-          <Link href={`/interviewer/session/${params.id}`}>
-            <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
-            Back to Session
-          </Link>
-        </Button>
-      </div>
-    </div>
-  </header>
-
-  {/* Main Content */}
-  <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    {resultsData.length === 0 ? (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">No responses yet</p>
-      </div>
-    ) : (
-      <div className="space-y-8">
-        {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="rounded-lg bg-primary/10 p-3 mr-4">
-                  <Users className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-foreground">
-                    {resultsData.length}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Total Responses
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="rounded-lg bg-success/10 p-3 mr-4">
-                  <Target className="w-6 h-6 text-success" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-success">
-                    {
-                      resultsData.filter(
-                        (r) =>
-                          r.decision === "interested" ||
-                          r.decision === "accept"
-                      ).length
-                    }
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Positive Signals
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="rounded-lg bg-warning/10 p-3 mr-4">
-                  <Clock className="w-6 h-6 text-warning" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-warning">
-                    {
-                      resultsData.filter((r) => r.decision === "pending")
-                        .length
-                    }
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Pending Review
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="rounded-lg bg-accent/10 p-3 mr-4">
-                  <BarChart3 className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-foreground">
-                    {(
-                      resultsData.reduce(
-                        (sum, r) => sum + r.total_score,
-                        0
-                      ) / resultsData.length
-                    ).toFixed(1)}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Avg Score
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Session Info Card */}
-        <Card className="bg-card border border-border shadow-sm">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-foreground">
-                  Session Details
-                </h3>
-                <p className="mt-1 text-muted-foreground">
-                  {session.stack} • {session.level} Level
-                </p>
-                {session.scheduled && (
-                  <div className="flex items-center text-muted-foreground mt-2">
-                    <Calendar className="w-4 h-4 mr-1 text-primary/70" />
-                    Scheduled: {formatDate(session.scheduled)}
-                  </div>
-                )}
-              </div>
-              <div className="mt-4 md:mt-0 text-sm text-muted-foreground">
-                {session.qa_pairs.length} questions •{" "}
-                {session.allowed_candidates.length} candidates invited
-              </div>
+    <div className="min-h-screen bg-background pb-12">
+      {/* Header */}
+      <header className="bg-card border-b border-border shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">
+                {session.position} - Results
+              </h1>
+              <p className="text-muted-foreground mt-1">
+                Review candidate responses and make decisions
+              </p>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Results Grid */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-foreground">
-            Candidate Results
-          </h2>
-
-          <div className="grid grid-cols-1 gap-6">
-            {resultsData.map((result) => (
-              <CandidateResultCard
-                key={result.id}
-                result={result}
-                updateDecision={updateDecision}
-              />
-            ))}
+            <Button variant="ghost" size="sm" asChild className="group">
+              <Link href={`/interviewer/session/${params.id}`}>
+                <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
+                Back to Session
+              </Link>
+            </Button>
           </div>
         </div>
-      </div>
-    )}
-  </main>
-</div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {resultsData.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No responses yet</p>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            {/* Summary Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+              <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="rounded-lg bg-primary/10 p-3 mr-4">
+                      <Users className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-foreground">
+                        {resultsData.length}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Total Responses
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="rounded-lg bg-success/10 p-3 mr-4">
+                      <Target className="w-6 h-6 text-success" />
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-success">
+                        {
+                          resultsData.filter(
+                            (r) =>
+                              r.decision === "interested" ||
+                              r.decision === "accept"
+                          ).length
+                        }
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Positive Signals
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="rounded-lg bg-warning/10 p-3 mr-4">
+                      <Clock className="w-6 h-6 text-warning" />
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-warning">
+                        {
+                          resultsData.filter((r) => r.decision === "pending")
+                            .length
+                        }
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Pending Review
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="rounded-lg bg-accent/10 p-3 mr-4">
+                      <BarChart3 className="w-6 h-6 text-accent" />
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-foreground">
+                        {Math.max(...resultsData.map((r) => r.total_score))}/10
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Highest Score
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Session Info Card */}
+            <Card className="bg-card border border-border shadow-sm">
+              <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-foreground">
+                      Session Details
+                    </h3>
+                    <p className="mt-1 text-muted-foreground">
+                      {session.stack} • {session.level} Level
+                    </p>
+                    {session.scheduled && (
+                      <div className="flex items-center text-muted-foreground mt-2">
+                        <Calendar className="w-4 h-4 mr-1 text-primary/70" />
+                        Scheduled: {formatDate(session.scheduled)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-4 md:mt-0 text-sm text-muted-foreground">
+                    {session.qa_pairs.length} questions •{" "}
+                    {session.allowed_candidates.length} candidates invited
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Results Grid */}
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-foreground">
+                Candidate Results
+              </h2>
+
+              <div className="grid grid-cols-1 gap-6">
+                {resultsData.map((result) => (
+                  <CandidateResultCard
+                    key={result.id}
+                    result={result}
+                    updateDecision={updateDecision}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
