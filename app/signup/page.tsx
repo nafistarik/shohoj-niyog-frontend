@@ -100,11 +100,10 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex gradient-bg overflow-hidden">
-      {/* Left side with login form */}
-      <div className="w-full lg:w-1/2 flex items-center p-4 sm:p-8 relative z-20 overflow-y-auto">
+    <div className="min-h-screen flex gradient-bg-subtle-reverse">
+      <div className="w-full lg:w-1/2 flex items-center p-4 sm:p-8 relative z-20 overflow-y-auto animate-fade-in">
         <div className="w-full max-w-md space-y-8 mx-auto">
-          <Card className="border-border shadow-soft overflow-hidden">
+          <Card className="border-sidebar-border shadow-soft glass-effect overflow-hidden">
             <div className="text-center">
               <Link
                 href="/"
@@ -118,8 +117,10 @@ export default function SignupPage() {
             </div>
             <div className="h-1 bg-primary w-full"></div>
             <CardHeader className="text-center space-y-2">
-              <CardTitle className="text-2xl font-heading">Sign Up</CardTitle>
-              <CardDescription className="text-muted-foreground">
+              <CardTitle className="text-2xl font-heading text-foreground">
+                Sign Up
+              </CardTitle>
+              <CardDescription className="text-muted-foreground font-body">
                 Choose your role and create your account
               </CardDescription>
             </CardHeader>
@@ -128,25 +129,23 @@ export default function SignupPage() {
                 {error && (
                   <Alert
                     variant="destructive"
-                    className="bg-destructive/15 border-destructive/50 animate-fade-in"
+                    className="bg-destructive/15 border-destructive/50 animate-slide-in delay-100"
                   >
-                    <AlertDescription className="text-destructive-foreground">
+                    <AlertDescription className="text-destructive-foreground font-body">
                       {error}
                     </AlertDescription>
                   </Alert>
                 )}
 
                 {success && (
-                  <Alert className="border-green-200 bg-green-50 text-green-800 animate-fade-in">
-                    <AlertDescription>{success}</AlertDescription>
+                  <Alert className="border-chart-1/50 bg-chart-1/15 text-chart-1 animate-slide-in delay-100">
+                    <AlertDescription className="font-body">
+                      {success}
+                    </AlertDescription>
                   </Alert>
                 )}
 
-                {/* Role Selection */}
-                <div
-                  className="space-y-3 animate-fade-in"
-                  style={{ animationDelay: "0.1s" }}
-                >
+                <div className="space-y-3 animate-slide-in delay-200">
                   <RadioGroup
                     value={formData.role}
                     onValueChange={(value) => handleInputChange("role", value)}
@@ -160,10 +159,10 @@ export default function SignupPage() {
                       />
                       <Label
                         htmlFor="candidate"
-                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-primary hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
+                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-secondary/50 hover:text-primary-dark peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
                       >
-                        <Users className="hidden sm:flex h-6 w-6" />
-                        <div className="text-center">
+                        <Users className="hidden sm:flex h-6 w-6 text-primary mr-2" />
+                        <div className="text-center font-body">
                           <div className="font-medium">Candidate</div>
                         </div>
                       </Label>
@@ -176,10 +175,10 @@ export default function SignupPage() {
                       />
                       <Label
                         htmlFor="interviewer"
-                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-primary hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
+                        className="flex items-center justify-start rounded-md border-2 border-border bg-background p-4 hover:bg-secondary/50 hover:text-primary-dark peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-colors"
                       >
-                        <UserCheck className="hidden sm:flex h-6 w-6" />
-                        <div className="text-center">
+                        <UserCheck className="hidden sm:flex h-6 w-6 text-primary mr-2" />
+                        <div className="text-center font-body">
                           <div className="font-medium">Interviewer</div>
                         </div>
                       </Label>
@@ -187,11 +186,11 @@ export default function SignupPage() {
                   </RadioGroup>
                 </div>
 
-                <div
-                  className="space-y-2 animate-fade-in"
-                  style={{ animationDelay: "0.2s" }}
-                >
-                  <Label htmlFor="username" className="text-foreground">
+                <div className="space-y-2 animate-slide-in delay-300">
+                  <Label
+                    htmlFor="username"
+                    className="text-foreground font-body"
+                  >
                     {formData.role === "interviewer"
                       ? "Company Name"
                       : "Full Name"}
@@ -209,15 +208,12 @@ export default function SignupPage() {
                       handleInputChange("username", e.target.value)
                     }
                     required
-                    className="h-11"
+                    className="h-11 bg-input border-border"
                   />
                 </div>
 
-                <div
-                  className="space-y-2 animate-fade-in"
-                  style={{ animationDelay: "0.3s" }}
-                >
-                  <Label htmlFor="email" className="text-foreground">
+                <div className="space-y-2 animate-slide-in delay-400">
+                  <Label htmlFor="email" className="text-foreground font-body">
                     Email Address
                   </Label>
                   <Input
@@ -227,15 +223,12 @@ export default function SignupPage() {
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     required
-                    className="h-11"
+                    className="h-11 bg-input border-border"
                   />
                 </div>
 
-                <div
-                  className="space-y-2 animate-fade-in"
-                  style={{ animationDelay: "0.4s" }}
-                >
-                  <Label htmlFor="phone" className="text-foreground">
+                <div className="space-y-2 animate-slide-in delay-500">
+                  <Label htmlFor="phone" className="text-foreground font-body">
                     Phone Number
                   </Label>
                   <Input
@@ -245,15 +238,15 @@ export default function SignupPage() {
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
                     required
-                    className="h-11"
+                    className="h-11 bg-input border-border"
                   />
                 </div>
 
-                <div
-                  className="space-y-2 animate-fade-in"
-                  style={{ animationDelay: "0.5s" }}
-                >
-                  <Label htmlFor="password" className="text-foreground">
+                <div className="space-y-2 animate-slide-in delay-600">
+                  <Label
+                    htmlFor="password"
+                    className="text-foreground font-body"
+                  >
                     Password
                   </Label>
                   <div className="relative">
@@ -266,12 +259,12 @@ export default function SignupPage() {
                         handleInputChange("password", e.target.value)
                       }
                       required
-                      className="h-11 pr-10"
+                      className="h-11 bg-input border-border pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="w-4 h-4" />
@@ -282,11 +275,11 @@ export default function SignupPage() {
                   </div>
                 </div>
 
-                <div
-                  className="space-y-2 animate-fade-in"
-                  style={{ animationDelay: "0.6s" }}
-                >
-                  <Label htmlFor="confirmPassword" className="text-foreground">
+                <div className="space-y-2 animate-slide-in delay-700">
+                  <Label
+                    htmlFor="confirmPassword"
+                    className="text-foreground font-body"
+                  >
                     Confirm Password
                   </Label>
                   <div className="relative">
@@ -299,14 +292,14 @@ export default function SignupPage() {
                         handleInputChange("confirmPassword", e.target.value)
                       }
                       required
-                      className="h-11 pr-10"
+                      className="h-11 bg-input border-border pr-10"
                     />
                     <button
                       type="button"
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="w-4 h-4" />
@@ -319,23 +312,19 @@ export default function SignupPage() {
 
                 <Button
                   type="submit"
-                  className="w-full h-11 text-base hover-lift animate-fade-in"
+                  className="w-full h-11 text-base bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in delay-800"
                   disabled={isLoading}
-                  style={{ animationDelay: "0.7s" }}
                 >
                   {isLoading ? "Creating Account..." : "Create Account"}
                 </Button>
               </form>
 
-              <div
-                className="mt-6 text-center animate-fade-in"
-                style={{ animationDelay: "0.8s" }}
-              >
-                <p className="text-sm text-muted-foreground">
+              <div className="mt-6 text-center animate-slide-in delay-900">
+                <p className="text-sm text-muted-foreground font-body">
                   Already have an account?{" "}
                   <Link
                     href="/login"
-                    className="text-primary hover:text-primary/90 font-medium transition-colors"
+                    className="text-primary hover:text-primary-light font-medium transition-colors"
                   >
                     Sign in here
                   </Link>
@@ -346,7 +335,6 @@ export default function SignupPage() {
         </div>
       </div>
 
-      {/* Right side with image and branding (flipped) */}
       <div className="hidden lg:flex lg:w-1/2 relative">
         <div className="mx-auto w-full h-full flex items-center justify-start">
           <Image
@@ -354,20 +342,10 @@ export default function SignupPage() {
             alt="Interview illustration"
             width={1000}
             height={1000}
-            className="object-cover w-[80%] h-[80%] scale-x-[-1]"
+            className="object-cover w-[80%] h-[80%] scale-x-[-1] animate-fade-in"
             priority
           />
         </div>
-        {/* <div className="absolute inset-0 z-20 flex flex-col justify-between p-12 text-white items-end">
-          <Link
-            href="/"
-            className="inline-flex justify-end items-center space-x-2 text-xl font-bold hover-lift"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back to home</span>
-          </Link>
-
-        </div> */}
       </div>
     </div>
   );

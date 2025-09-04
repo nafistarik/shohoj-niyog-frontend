@@ -14,12 +14,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Video, Eye, EyeOff, ArrowLeft, Sparkles } from "lucide-react";
+import { Video, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import loginIllustrator from "@/assets/auth/login-illustrator.svg";
+import signupIllustrator from "@/assets/auth/login-illustrator.svg";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -50,35 +50,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex gradient-bg">
-      {/* Overlay only on the left side */}
+    <div className="min-h-screen flex gradient-bg-subtle">
       <div className="hidden lg:flex lg:w-1/2 relative">
-        {/* <div className="absolute inset-0 bg-black/20 z-10"></div> */}
         <div className="mx-auto w-full h-full flex items-center justify-end">
           <Image
-            src={loginIllustrator}
+            src={signupIllustrator}
             alt="Interview illustration"
             width={1000}
             height={1000}
-            className="object-cover w-[80%] h-[80%]"
+            className="object-cover w-[80%] h-[80%] animate-fade-in"
             priority
           />
         </div>
-        {/* <div className="absolute inset-0 z-20 flex flex-col justify-between p-12 text-white">
-          <Link
-            href="/"
-            className="inline-flex items-center space-x-2 text-xl font-bold hover-lift"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back to home</span>
-          </Link>
-        </div> */}
       </div>
 
-      {/* Right side with login form - no overlay here */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-20">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-20 animate-fade-in">
         <div className="w-full max-w-md space-y-8">
-          <Card className="border-border shadow-soft overflow-hidden">
+          <Card className="border-sidebar-border shadow-soft glass-effect overflow-hidden">
             <div className="text-center">
               <Link
                 href="/"
@@ -92,8 +80,10 @@ export default function LoginPage() {
             </div>
             <div className="h-1 bg-primary w-full"></div>
             <CardHeader className="text-center space-y-2">
-              <CardTitle className="text-2xl">Sign In</CardTitle>
-              <CardDescription className="text-muted-foreground">
+              <CardTitle className="text-2xl font-heading text-foreground">
+                Sign In
+              </CardTitle>
+              <CardDescription className="text-muted-foreground font-body">
                 Enter your credentials to access your dashboard
               </CardDescription>
             </CardHeader>
@@ -102,19 +92,16 @@ export default function LoginPage() {
                 {error && (
                   <Alert
                     variant="destructive"
-                    className="bg-destructive/15 border-destructive/50 animate-fade-in"
+                    className="bg-destructive/15 border-destructive/50 animate-slide-in delay-100"
                   >
-                    <AlertDescription className="text-destructive-foreground">
+                    <AlertDescription className="text-destructive-foreground font-body">
                       {error}
                     </AlertDescription>
                   </Alert>
                 )}
 
-                <div
-                  className="space-y-2 animate-fade-in"
-                  style={{ animationDelay: "0.1s" }}
-                >
-                  <Label htmlFor="email" className="text-foreground">
+                <div className="space-y-2 animate-slide-in delay-200">
+                  <Label htmlFor="email" className="text-foreground font-body">
                     Email Address
                   </Label>
                   <Input
@@ -124,15 +111,15 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-11"
+                    className="h-11 bg-input border-border"
                   />
                 </div>
 
-                <div
-                  className="space-y-2 animate-fade-in"
-                  style={{ animationDelay: "0.2s" }}
-                >
-                  <Label htmlFor="password" className="text-foreground">
+                <div className="space-y-2 animate-slide-in delay-300">
+                  <Label
+                    htmlFor="password"
+                    className="text-foreground font-body"
+                  >
                     Password
                   </Label>
                   <div className="relative">
@@ -143,12 +130,12 @@ export default function LoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
-                      className="h-11 pr-10"
+                      className="h-11 bg-input border-border pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="w-4 h-4" />
@@ -161,23 +148,19 @@ export default function LoginPage() {
 
                 <Button
                   type="submit"
-                  className="w-full h-11 text-base hover-lift animate-fade-in"
+                  className="w-full h-11 text-base bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in delay-400"
                   disabled={isLoading}
-                  style={{ animationDelay: "0.3s" }}
                 >
                   {isLoading ? "Signing In..." : "Sign In"}
                 </Button>
               </form>
 
-              <div
-                className="mt-6 text-center animate-fade-in"
-                style={{ animationDelay: "0.4s" }}
-              >
-                <p className="text-sm text-muted-foreground">
+              <div className="mt-6 text-center animate-slide-in delay-500">
+                <p className="text-sm text-muted-foreground font-body">
                   Don't have an account?{" "}
                   <Link
                     href="/signup"
-                    className="text-primary hover:text-primary/90 font-medium transition-colors"
+                    className="text-primary hover:text-primary-light font-medium transition-colors"
                   >
                     Sign up here
                   </Link>

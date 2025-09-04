@@ -154,13 +154,29 @@
   }
 }
 
-/* Enhanced gradient backgrounds with primary color focus */
 .gradient-bg {
-  background: linear-gradient(135deg, var(--primary) 0%, #06b6d4 50%, var(--accent) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    #06b6d4 50%,
+    var(--accent) 100%
+  );
 }
 
 .gradient-bg-subtle {
-  background: linear-gradient(135deg, var(--secondary) 0%, var(--background) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--background) 0%,
+    var(--primary) 100%
+  );
+}
+
+.gradient-bg-subtle-reverse {
+  background: linear-gradient(
+    45deg,
+    var(--primary) 0%,
+    var(--background) 100%
+  );
 }
 
 /* Enhanced glass morphism effect */
@@ -237,9 +253,21 @@
 }
 
 /* Primary color variations for quick access */
-.text-primary-light { color: #67e8f9; }
-.text-primary { color: var(--primary); }
-.text-primary-dark { color: #164e63; }
-.bg-primary-light { background-color: #67e8f9; }
-.bg-primary { background-color: var(--primary); }
-.bg-primary-dark { background-color: #164e63; }
+.text-primary-light {
+  color: #67e8f9;
+}
+.text-primary {
+  color: var(--primary);
+}
+.text-primary-dark {
+  color: #164e63;
+}
+.bg-primary-light {
+  background-color: #67e8f9;
+}
+.bg-primary {
+  background-color: var(--primary);
+}
+.bg-primary-dark {
+  background-color: #164e63;
+}
