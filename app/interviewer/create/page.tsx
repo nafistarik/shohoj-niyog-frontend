@@ -28,7 +28,11 @@ import { useRouter } from "next/navigation";
 import type { CreateSessionPayload } from "@/lib/types";
 import { format } from "date-fns";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function CreateSessionPage() {
   const [formData, setFormData] = useState<CreateSessionPayload>({
@@ -53,13 +57,16 @@ export default function CreateSessionPage() {
   const generateTimeOptions = () => {
     const options = [];
     for (let hour = 0; hour < 24; hour++) {
-      // Only add the :30 time for each hour
-      const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-      const amPm = hour >= 12 ? 'PM' : 'AM';
-      options.push({
-        value: `${hour.toString().padStart(2, '0')}:30`,
-        label: `${displayHour}:30 ${amPm}`
-      });
+      for (let minute of [0, 30]) {
+        const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+        const amPm = hour >= 12 ? "PM" : "AM";
+        options.push({
+          value: `${hour.toString().padStart(2, "0")}:${minute
+            .toString()
+            .padStart(2, "0")}`,
+          label: `${displayHour}:${minute.toString().padStart(2, "0")} ${amPm}`,
+        });
+      }
     }
     return options;
   };
@@ -111,10 +118,10 @@ export default function CreateSessionPage() {
   // Update the scheduled value when date or time changes
   useEffect(() => {
     if (date && time) {
-      const [hours, minutes] = time.split(':');
+      const [hours, minutes] = time.split(":");
       const newDate = new Date(date);
       newDate.setHours(parseInt(hours), parseInt(minutes));
-      
+
       setFormData((prev) => ({
         ...prev,
         scheduled: newDate.toISOString(),
@@ -371,7 +378,7 @@ export default function CreateSessionPage() {
               {/* Scheduled Date & Time */}
               <div className="space-y-4">
                 <Label>Scheduled Date & Time (Optional)</Label>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Date Picker */}
                   <div className="space-y-2">
@@ -423,9 +430,10 @@ export default function CreateSessionPage() {
                   <div className="p-3 bg-muted/30 rounded-md">
                     <p className="text-sm text-muted-foreground flex items-center">
                       <Clock className="w-4 h-4 mr-2" />
-                      <strong>Selected:</strong> 
+                      <strong>Selected:</strong>
                       <span className="ml-1">
-                        {format(date, "PPP")} at {timeOptions.find(opt => opt.value === time)?.label}
+                        {format(date, "PPP")} at{" "}
+                        {timeOptions.find((opt) => opt.value === time)?.label}
                       </span>
                     </p>
                   </div>
