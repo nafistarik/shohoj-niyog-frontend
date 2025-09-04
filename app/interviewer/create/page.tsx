@@ -139,6 +139,8 @@ export default function CreateSessionPage() {
     setError("");
     setSuccess("");
 
+    console.log(formData)
+
     // Validation
     if (!formData.position.trim()) {
       setError("Position title is required");
@@ -174,23 +176,27 @@ export default function CreateSessionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-card border-b">
+    <div className="min-h-screen bg-background animate-fade-in">
+      <header className="bg-card border-b border-sidebar-border shadow-soft animate-fade-in">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center py-6 justify-between">
+          <div className="flex flex-col-reverse sm:flex-row items-start gap-2 py-6 justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">
+              <h1 className="text-3xl font-heading font-bold text-foreground">
                 Create Interview Session
               </h1>
-              <p className="text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1 font-body">
                 Set up a new interview session with custom questions
               </p>
             </div>
 
-            <Button variant="outline" size="sm" asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="border-sidebar-border text-foreground hover:bg-secondary/50 hover:text-primary-dark shadow-soft animate-scale-in"
+            >
               <Link href="/interviewer/dashboard">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="w-4 h-4 mr-2 text-primary" />
                 Back to Dashboard
               </Link>
             </Button>
@@ -198,32 +204,41 @@ export default function CreateSessionPage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Card>
+        <Card className="glass-effect border-sidebar-border shadow-soft animate-slide-in">
           <CardHeader>
-            <CardTitle>Session Details</CardTitle>
-            <CardDescription>
+            <CardTitle className="font-heading text-foreground">Session Details</CardTitle>
+            <CardDescription className="font-body text-muted-foreground">
               Configure your interview session parameters
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
+                <Alert
+                  variant="destructive"
+                  className="bg-destructive/15 border-destructive/50 animate-slide-in delay-100"
+                >
+                  <AlertDescription className="text-destructive-foreground font-body">
+                    {error}
+                  </AlertDescription>
                 </Alert>
               )}
 
               {success && (
-                <Alert className="bg-green-50 text-green-800 border-green-200">
-                  <AlertDescription>{success}</AlertDescription>
+                <Alert
+                  className="bg-chart-2/15 text-chart-2 border-chart-2/50 animate-slide-in delay-100"
+                >
+                  <AlertDescription className="font-body">
+                    {success}
+                  </AlertDescription>
                 </Alert>
               )}
 
-              {/* Position */}
-              <div className="space-y-2">
-                <Label htmlFor="position">Position Title</Label>
+              <div className="space-y-2 animate-slide-in delay-200">
+                <Label htmlFor="position" className="font-body text-foreground">
+                  Position Title
+                </Label>
                 <Input
                   id="position"
                   placeholder="e.g., Frontend Developer, Data Scientist"
@@ -234,13 +249,12 @@ export default function CreateSessionPage() {
                       position: e.target.value,
                     }))
                   }
-                  className="h-11"
+                  className="h-11 bg-input border-sidebar-border"
                 />
               </div>
 
-              {/* Technology Stacks */}
-              <div className="space-y-2">
-                <Label>Technology Stacks</Label>
+              <div className="space-y-2 animate-slide-in delay-300">
+                <Label className="font-body text-foreground">Technology Stacks</Label>
                 <div className="flex gap-2">
                   <Input
                     placeholder="e.g., React, Node.js, Python"
@@ -249,12 +263,12 @@ export default function CreateSessionPage() {
                     onKeyDown={(e) =>
                       e.key === "Enter" && (e.preventDefault(), addStack())
                     }
-                    className="h-11 flex-1"
+                    className="h-11 flex-1 bg-input border-sidebar-border"
                   />
                   <Button
                     type="button"
                     onClick={addStack}
-                    className="h-11 px-3"
+                    className="h-11 px-3 bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in"
                     disabled={!newStack.trim()}
                   >
                     <Plus className="w-4 h-4" />
@@ -266,15 +280,15 @@ export default function CreateSessionPage() {
                       <Badge
                         key={stack}
                         variant="secondary"
-                        className="flex items-center gap-1 py-1 px-3"
+                        className="flex items-center gap-1 py-1 px-3 font-body bg-secondary/50 text-foreground animate-slide-in delay-400"
                       >
                         {stack}
                         <button
                           type="button"
                           onClick={() => removeStack(stack)}
-                          className="ml-1 rounded-full hover:bg-muted"
+                          className="ml-1 rounded-full hover:bg-muted/50"
                         >
-                          <X className="w-3 h-3" />
+                          <X className="w-3 h-3 text-primary" />
                         </button>
                       </Badge>
                     ))}
@@ -282,35 +296,35 @@ export default function CreateSessionPage() {
                 )}
               </div>
 
-              {/* Experience Level */}
-              <div className="space-y-2">
-                <Label>Experience Level</Label>
+              <div className="space-y-2 animate-slide-in delay-500">
+                <Label className="font-body text-foreground">Experience Level</Label>
                 <Select
                   value={formData.level}
                   onValueChange={(value) =>
                     setFormData((prev) => ({ ...prev, level: value }))
                   }
                 >
-                  <SelectTrigger className="h-11">
+                  <SelectTrigger className="!h-11 bg-input border-sidebar-border text-foreground hover:bg-secondary/50 animate-scale-in min-w-[220px]">
                     <SelectValue placeholder="Select experience level" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Beginner">
+                  <SelectContent className="bg-card border-sidebar-border">
+                    <SelectItem value="Beginner" className="font-body">
                       Beginner (0-2 years)
                     </SelectItem>
-                    <SelectItem value="Intermediate">
+                    <SelectItem value="Intermediate" className="font-body">
                       Intermediate (2-5 years)
                     </SelectItem>
-                    <SelectItem value="Advanced">
+                    <SelectItem value="Advanced" className="font-body">
                       Advanced (5+ years)
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Number of Questions */}
-              <div className="space-y-2">
-                <Label htmlFor="num_questions">Number of Questions</Label>
+              <div className="space-y-2 animate-slide-in delay-600">
+                <Label htmlFor="num_questions" className="font-body text-foreground">
+                  Number of Questions
+                </Label>
                 <Select
                   value={formData.num_questions.toString()}
                   onValueChange={(value) =>
@@ -320,21 +334,20 @@ export default function CreateSessionPage() {
                     }))
                   }
                 >
-                  <SelectTrigger className="h-11">
+                  <SelectTrigger className="!h-11 bg-input border-sidebar-border text-foreground hover:bg-secondary/50 animate-scale-in min-w-[220px]">
                     <SelectValue placeholder="Select number of questions" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2">2 Questions</SelectItem>
-                    <SelectItem value="3">3 Questions</SelectItem>
-                    <SelectItem value="4">4 Questions</SelectItem>
-                    <SelectItem value="5">5 Questions</SelectItem>
+                  <SelectContent className="bg-card border-sidebar-border">
+                    <SelectItem value="2" className="font-body">2 Questions</SelectItem>
+                    <SelectItem value="3" className="font-body">3 Questions</SelectItem>
+                    <SelectItem value="4" className="font-body">4 Questions</SelectItem>
+                    <SelectItem value="5" className="font-body">5 Questions</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Allowed Candidates */}
-              <div className="space-y-2">
-                <Label>Candidate Emails</Label>
+              <div className="space-y-2 animate-slide-in delay-700">
+                <Label className="font-body text-foreground">Candidate Emails</Label>
                 <div className="flex gap-2">
                   <Input
                     placeholder="candidate@example.com"
@@ -343,29 +356,29 @@ export default function CreateSessionPage() {
                     onKeyDown={(e) =>
                       e.key === "Enter" && (e.preventDefault(), addCandidate())
                     }
-                    className="h-11 flex-1"
+                    className="h-11 flex-1 bg-input border-sidebar-border"
                   />
                   <Button
                     type="button"
                     onClick={addCandidate}
-                    className="h-11 px-3"
+                    className="h-11 px-3 bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in"
                     disabled={!newCandidate.trim()}
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
                 </div>
                 {formData.allowed_candidates.length > 0 && (
-                  <div className="space-y-2 mt-2">
+                  <div className="space-y-2 mt-2 animate-slide-in delay-800">
                     {formData.allowed_candidates.map((email) => (
                       <div
                         key={email}
-                        className="flex items-center justify-between bg-muted/30 p-3 rounded-md"
+                        className="flex items-center justify-between bg-secondary/50 p-3 rounded-md"
                       >
-                        <span className="text-sm">{email}</span>
+                        <span className="text-sm font-body text-foreground">{email}</span>
                         <button
                           type="button"
                           onClick={() => removeCandidate(email)}
-                          className="text-muted-foreground hover:text-foreground"
+                          className="text-muted-foreground hover:text-primary"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -375,76 +388,93 @@ export default function CreateSessionPage() {
                 )}
               </div>
 
-              {/* Scheduled Date & Time */}
-              <div className="space-y-4">
-                <Label>Scheduled Date & Time (Optional)</Label>
+              <div className="space-y-4 animate-slide-in delay-900">
+                <Label className="font-body text-foreground">Scheduled Date & Time (Optional)</Label>
+                
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {/* Date Picker */}
+  <div className="space-y-2">
+    <Label htmlFor="date-picker" className="font-body text-foreground">
+      Select Date
+    </Label>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-full h-11 px-3 flex items-center justify-start gap-2 
+                     border-sidebar-border text-foreground bg-input
+                     hover:bg-secondary/50 hover:text-primary-dark 
+                     shadow-soft animate-scale-in"
+        >
+          <Calendar className="h-4 w-4 text-primary" />
+          <span>{date ? format(date, "PPP") : "Pick a date"}</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0 bg-card border-sidebar-border">
+        <CalendarComponent
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
+  </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Date Picker */}
-                  <div className="space-y-2">
-                    <Label htmlFor="date-picker">Select Date</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start text-left h-11 px-3"
-                        >
-                          <Calendar className="mr-2 h-4 w-4" />
-                          {date ? format(date, "PPP") : "Pick a date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <CalendarComponent
-                          mode="single"
-                          selected={date}
-                          onSelect={setDate}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+  {/* Time Picker */}
+  <div className="space-y-2">
+    <Label htmlFor="time-select" className="font-body text-foreground">
+      Select Time
+    </Label>
+    <Select value={time} onValueChange={setTime}>
+      <SelectTrigger
+        className="w-full !h-11 px-3 flex items-center justify-start gap-2
+                   border-sidebar-border text-foreground bg-input
+                   hover:bg-secondary/50 hover:text-primary-dark
+                   shadow-soft animate-scale-in"
+      >
+        <Clock className="h-4 w-4 text-primary" />
+        <SelectValue placeholder="Select time" />
+      </SelectTrigger>
+      <SelectContent className="bg-card border-sidebar-border">
+        {timeOptions.map((option) => (
+          <SelectItem key={option.value} value={option.value} className="font-body">
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+</div>
 
-                  {/* Time Selector */}
-                  <div className="space-y-2">
-                    <Label htmlFor="time-select">Select Time</Label>
-                    <Select value={time} onValueChange={setTime}>
-                      <SelectTrigger className="!h-11 border border-gray-200">
-                        <div className="flex items-center">
-                          <Clock className="mr-2 h-4 w-4" />
-                          <SelectValue placeholder="Select time" />
-                        </div>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {timeOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
 
-                {/* Selected DateTime Preview */}
                 {date && time && (
-                  <div className="p-3 bg-muted/30 rounded-md">
-                    <p className="text-sm text-muted-foreground flex items-center">
-                      <Clock className="w-4 h-4 mr-2" />
-                      <strong>Selected:</strong>
+                  <div className="p-3 bg-secondary/50 rounded-md animate-slide-in delay-1000">
+                    <p className="text-sm text-muted-foreground font-body flex items-center">
+                      <Clock className="w-4 h-4 mr-2 text-primary" />
+                      <strong>Selected:</strong> 
                       <span className="ml-1">
-                        {format(date, "PPP")} at{" "}
-                        {timeOptions.find((opt) => opt.value === time)?.label}
+                        {format(date, "PPP")} at {timeOptions.find(opt => opt.value === time)?.label}
                       </span>
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="flex justify-end gap-4 pt-6">
-                <Button type="button" variant="outline" asChild>
+              <div className="flex justify-end gap-4 pt-6 animate-slide-in delay-1100">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-sidebar-border text-foreground hover:bg-secondary/50 hover:text-primary-dark shadow-soft animate-scale-in"
+                  asChild
+                >
                   <Link href="/interviewer/dashboard">Cancel</Link>
                 </Button>
-                <Button type="submit" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  className="bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Creating Session..." : "Create Session"}
                 </Button>
               </div>
