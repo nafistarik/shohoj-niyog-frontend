@@ -2,27 +2,27 @@ import { Video } from "lucide-react";
 
 function Footer() {
   return (
-    <footer className="bg-card py-12 px-4 border-t border-border">
+    <footer className="bg-card py-12 px-4 border-t border-sidebar-border animate-fade-in">
       <div className="container mx-auto max-w-6xl">
         <div className="grid md:grid-cols-4 gap-8">
-          <div>
+          <div className="animate-slide-in">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-primary">
                 <Video className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-heading font-bold text-foreground">
                 Shohoj Niyog
               </span>
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground font-body">
               Streamline your hiring process with professional video interviews.
             </p>
           </div>
-          <div>
+          <div className="animate-slide-in">
             <h3 className="font-heading font-semibold mb-4 text-foreground">
               Product
             </h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <ul className="space-y-2 text-muted-foreground font-body">
               <li>
                 <a
                   href="#features"
@@ -43,11 +43,11 @@ function Footer() {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="animate-slide-in">
             <h3 className="font-heading font-semibold mb-4 text-foreground">
               Company
             </h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <ul className="space-y-2 text-muted-foreground font-body">
               <li>
                 <a
                   href="#about"
@@ -71,11 +71,11 @@ function Footer() {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="animate-slide-in">
             <h3 className="font-heading font-semibold mb-4 text-foreground">
               Support
             </h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <ul className="space-y-2 text-muted-foreground font-body">
               <li>
                 <a href="#faq" className="hover:text-primary transition-colors">
                   FAQ
@@ -94,7 +94,7 @@ function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
+        <div className="border-t border-sidebar-border mt-8 pt-8 text-center text-muted-foreground font-body animate-fade-in">
           <p>&copy; 2025 InterviewFlow. All rights reserved.</p>
         </div>
       </div>
