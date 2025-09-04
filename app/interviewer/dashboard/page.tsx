@@ -245,7 +245,7 @@ export default function InterviewerDashboard() {
       </header>
 
       {/* Stats Overview */}
-      <section className="bg-primary/5 py-6 border-b border-border">
+      <section className="py-6 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-card rounded-lg p-4 border border-border">
