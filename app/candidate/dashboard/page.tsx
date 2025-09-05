@@ -156,21 +156,21 @@ export default function CandidateDashboard() {
     : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pb-12">
+<div className="min-h-screen bg-background pb-12">
       {/* Header */}
-      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm">
+      <header className="glass-effect border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between py-6">
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+              <h1 className="text-3xl font-bold text-foreground">
                 My Interviews
               </h1>
-              <p className="text-slate-600 dark:text-slate-400 mt-1">
+              <p className="text-muted-foreground mt-1">
                 Participate in video interviews and track your progress
               </p>
             </div>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <Button variant="outline" asChild className="border-slate-300 dark:border-slate-600">
+              <Button variant="outline" asChild className="border-border hover:bg-secondary/30">
                 <Link href="/candidate/results">View Results</Link>
               </Button>
             </div>
@@ -180,43 +180,43 @@ export default function CandidateDashboard() {
 
       {/* Stats Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Total Interviews Card */}
-          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
+          <Card className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="rounded-lg bg-blue-500/10 p-3 mr-4">
-                  <Award className="w-6 h-6 text-blue-500" />
+                <div className="rounded-lg bg-primary/10 p-3 mr-4">
+                  <Award className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                  <div className="text-2xl font-bold text-foreground">
                     {sessions.length}
                   </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">Total Interviews</div>
+                  <div className="text-sm text-muted-foreground">Total Interviews</div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Upcoming Interviews Card */}
-          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
+          <Card className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="rounded-lg bg-amber-500/10 p-3 mr-4">
                   <Clock className="w-6 h-6 text-amber-500" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                  <div className="text-2xl font-bold text-foreground">
                     {upcomingInterviews.length}
                   </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">Upcoming Interviews</div>
+                  <div className="text-sm text-muted-foreground">Upcoming Interviews</div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Next Interview Card */}
-          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
+          <Card className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="rounded-lg bg-purple-500/10 p-3 mr-4">
@@ -225,15 +225,15 @@ export default function CandidateDashboard() {
                 <div>
                   {nextInterview ? (
                     <>
-                      <div className="text-sm font-semibold text-slate-900 dark:text-white line-clamp-1">
+                      <div className="text-sm font-semibold text-foreground line-clamp-1">
                         {nextInterview.position}
                       </div>
-                      <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                      <div className="text-xs text-muted-foreground mt-1">
                         {formatDate(nextInterview.scheduled)}
                       </div>
                     </>
                   ) : (
-                    <div className="text-sm text-slate-600 dark:text-slate-400">
+                    <div className="text-sm text-muted-foreground">
                       No upcoming interviews
                     </div>
                   )}
@@ -258,63 +258,60 @@ export default function CandidateDashboard() {
             {sessions.map((session) => (
               <Card
                 key={session.id}
-                className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300 overflow-hidden group animate-fade-in"
               >
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-500"></div>
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-accent"></div>
                 
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 pr-2">
-                      <CardTitle className="text-lg font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <CardTitle className="text-lg font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
                         {session.position}
                       </CardTitle>
-                      <CardDescription className="mt-1 line-clamp-1">
+                      <CardDescription className="mt-1 line-clamp-1 text-muted-foreground">
                         {Array.isArray(session.stack)
                           ? session.stack.join(", ")
                           : session.stack}
                       </CardDescription>
                     </div>
-                    {/* <Badge variant="outline" className={getLevelColor(session.level)}>
-                      {session.level}
-                    </Badge> */}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     {session.scheduled && (
-                      <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+                      <div className="flex items-center text-sm text-muted-foreground">
                         <Calendar className="w-4 h-4 mr-2" />
                         {formatDate(session.scheduled)}
                       </div>
                     )}
-                    <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+                    <div className="flex items-center text-sm text-muted-foreground">
                       <Clock className="w-4 h-4 mr-2" />
                       {session.qa_pairs.length} questions • ~{getTotalDuration(session.qa_pairs)}
                     </div>
                   </div>
 
-                  <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
-                    <h4 className="font-medium text-sm text-slate-900 dark:text-white mb-2 flex items-center">
+                  <div className="bg-secondary/30 p-3 rounded-lg border border-border">
+                    <h4 className="font-medium text-sm text-foreground mb-2 flex items-center">
                       <Zap className="w-4 h-4 mr-1 text-yellow-500" />
                       What to expect:
                     </h4>
-                    <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
+                    <ul className="text-xs text-muted-foreground space-y-1">
                       <li className="flex">
-                        <span className="text-blue-500 mr-1">•</span>
+                        <span className="text-primary mr-1">•</span>
                         Record video responses to {session.qa_pairs.length} questions
                       </li>
                       <li className="flex">
-                        <span className="text-blue-500 mr-1">•</span>
+                        <span className="text-primary mr-1">•</span>
                         Take your time - no time limit per question
                       </li>
                       <li className="flex">
-                        <span className="text-blue-500 mr-1">•</span>
+                        <span className="text-primary mr-1">•</span>
                         Review and re-record if needed
                       </li>
                     </ul>
                   </div>
 
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all duration-300" asChild>
+                  <Button className="w-full gradient-bg hover:shadow-glow transition-all duration-300 text-primary-foreground" asChild>
                     <Link href={`/candidate/interview/${session.id}`}>
                       <Play className="w-4 h-4 mr-2" />
                       Start Interview

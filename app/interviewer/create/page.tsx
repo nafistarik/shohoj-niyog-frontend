@@ -179,7 +179,7 @@ export default function CreateSessionPage() {
     <div className="min-h-screen bg-background animate-fade-in">
       <header className="bg-card border-b border-sidebar-border shadow-soft animate-fade-in">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col-reverse sm:flex-row items-start gap-2 py-6 justify-between">
+          <div className="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 py-6 justify-between">
             <div>
               <h1 className="text-3xl font-heading font-bold text-foreground">
                 Create Interview Session
