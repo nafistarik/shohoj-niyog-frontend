@@ -10,12 +10,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Award, Calendar, Clock, Play, Target, User, Zap, CalendarDays, CheckCircle, AlertCircle, TrendingUp } from "lucide-react";
+import {
+  Award,
+  Calendar,
+  Clock,
+  Play,
+  Target,
+  User,
+  Zap,
+  CalendarDays,
+  CheckCircle,
+  AlertCircle,
+  TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import type { InterviewSession } from "@/lib/types";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
+import StatCard from "@/components/shared/stat-card";
 
 const sessions = [
   {
@@ -131,7 +144,7 @@ export default function CandidateDashboard() {
     const estimatedMinutes = qaPairs.length * 3;
     const hours = Math.floor(estimatedMinutes / 60);
     const minutes = estimatedMinutes % 60;
-    
+
     if (hours > 0) {
       return `${hours}h ${minutes}m`;
     }
@@ -140,23 +153,26 @@ export default function CandidateDashboard() {
 
   // Calculate upcoming interviews (scheduled in the future)
   const now = new Date();
-  const upcomingInterviews = sessions.filter(session => 
-    new Date(session.scheduled) > now
+  const upcomingInterviews = sessions.filter(
+    (session) => new Date(session.scheduled) > now
   );
-  
+
   // Find the next interview (closest upcoming)
-  const nextInterview = upcomingInterviews.length > 0 
-    ? upcomingInterviews.reduce((closest, current) => {
-        const closestTime = new Date(closest.scheduled).getTime();
-        const currentTime = new Date(current.scheduled).getTime();
-        const nowTime = now.getTime();
-        
-        return (currentTime - nowTime) < (closestTime - nowTime) ? current : closest;
-      })
-    : null;
+  const nextInterview =
+    upcomingInterviews.length > 0
+      ? upcomingInterviews.reduce((closest, current) => {
+          const closestTime = new Date(closest.scheduled).getTime();
+          const currentTime = new Date(current.scheduled).getTime();
+          const nowTime = now.getTime();
+
+          return currentTime - nowTime < closestTime - nowTime
+            ? current
+            : closest;
+        })
+      : null;
 
   return (
-<div className="min-h-screen bg-background pb-12">
+    <div className="min-h-screen bg-background pb-12">
       {/* Header */}
       <header className="glass-effect border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -170,7 +186,11 @@ export default function CandidateDashboard() {
               </p>
             </div>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <Button variant="outline" asChild className="border-border hover:bg-secondary/30">
+              <Button
+                variant="outline"
+                asChild
+                className="border-border hover:bg-secondary/30"
+              >
                 <Link href="/candidate/results">View Results</Link>
               </Button>
             </div>
@@ -181,66 +201,25 @@ export default function CandidateDashboard() {
       {/* Stats Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Total Interviews Card */}
-          <Card className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="rounded-lg bg-primary/10 p-3 mr-4">
-                  <Award className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-foreground">
-                    {sessions.length}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Total Interviews</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Upcoming Interviews Card */}
-          <Card className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="rounded-lg bg-amber-500/10 p-3 mr-4">
-                  <Clock className="w-6 h-6 text-amber-500" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-foreground">
-                    {upcomingInterviews.length}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Upcoming Interviews</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Next Interview Card */}
-          <Card className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="rounded-lg bg-purple-500/10 p-3 mr-4">
-                  <CalendarDays className="w-6 h-6 text-purple-500" />
-                </div>
-                <div>
-                  {nextInterview ? (
-                    <>
-                      <div className="text-sm font-semibold text-foreground line-clamp-1">
-                        {nextInterview.position}
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {formatDate(nextInterview.scheduled)}
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-sm text-muted-foreground">
-                      No upcoming interviews
-                    </div>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <StatCard
+            icon={<Award className="w-6 h-6 text-primary" />}
+            title={`${sessions.length}`}
+            description="Total Interviews"
+          />
+          <StatCard
+            icon={<Clock className="w-6 h-6 text-primary" />}
+            title={`${upcomingInterviews.length}`}
+            description="Upcoming Interviews"
+          />
+          <StatCard
+            icon={<CalendarDays className="w-6 h-6 text-primary" />}
+            title={`${nextInterview ? nextInterview.created_by : "🚫"}`}
+            description={`${
+              nextInterview
+                ? formatDate(nextInterview.scheduled)
+                : "No upcoming interviews"
+            }`}
+          />
         </div>
       </section>
 
@@ -261,7 +240,7 @@ export default function CandidateDashboard() {
                 className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300 overflow-hidden group animate-fade-in"
               >
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-accent"></div>
-                
+
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 pr-2">
@@ -286,7 +265,8 @@ export default function CandidateDashboard() {
                     )}
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Clock className="w-4 h-4 mr-2" />
-                      {session.qa_pairs.length} questions • ~{getTotalDuration(session.qa_pairs)}
+                      {session.qa_pairs.length} questions • ~
+                      {getTotalDuration(session.qa_pairs)}
                     </div>
                   </div>
 
@@ -298,7 +278,8 @@ export default function CandidateDashboard() {
                     <ul className="text-xs text-muted-foreground space-y-1">
                       <li className="flex">
                         <span className="text-primary mr-1">•</span>
-                        Record video responses to {session.qa_pairs.length} questions
+                        Record video responses to {session.qa_pairs.length}{" "}
+                        questions
                       </li>
                       <li className="flex">
                         <span className="text-primary mr-1">•</span>
@@ -311,7 +292,10 @@ export default function CandidateDashboard() {
                     </ul>
                   </div>
 
-                  <Button className="w-full gradient-bg hover:shadow-glow transition-all duration-300 text-primary-foreground" asChild>
+                  <Button
+                    className="w-full gradient-bg hover:shadow-glow transition-all duration-300 text-primary-foreground"
+                    asChild
+                  >
                     <Link href={`/candidate/interview/${session.id}`}>
                       <Play className="w-4 h-4 mr-2" />
                       Start Interview

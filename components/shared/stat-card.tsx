@@ -11,7 +11,7 @@ export default function StatCard({
   description?: string;
 }) {
   return (
-    <Card className="group">
+    <Card className="group animate-fade-in">
       <CardContent>
         <div className="flex items-center ">
           <div className="rounded-lg bg-primary/10 border p-3 mr-4 group-hover:border-primary/30 transition-all duration-300">

@@ -3,17 +3,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import InterviewerSessionCard from "@/components/shared/interviewer-session-card";
-import {
-  Plus,
-  Users,
-  Clock,
-  FileText,
-} from "lucide-react";
+import { Plus, Users, Clock, FileText } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import type { InterviewSession } from "@/lib/types";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
+import StatCard from "@/components/shared/stat-card";
 
 const sessions = [
   {
@@ -207,53 +203,27 @@ export default function InterviewerDashboard() {
       <section className="py-6 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-card rounded-lg p-4 border border-border">
-              <div className="flex items-center">
-                <div className="p-2 bg-primary/10 rounded-lg mr-4">
-                  <FileText className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Total Sessions
-                  </p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {sessions.length}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-card rounded-lg p-4 border border-border">
-              <div className="flex items-center">
-                <div className="p-2 bg-primary/10 rounded-lg mr-4">
-                  <Users className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Candidates</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {sessions.reduce(
-                      (acc, session) => acc + session.allowed_candidates.length,
-                      0
-                    )}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-card rounded-lg p-4 border border-border">
-              <div className="flex items-center">
-                <div className="p-2 bg-primary/10 rounded-lg mr-4">
-                  <Clock className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Upcoming</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {
-                      sessions.filter((s) => new Date(s.scheduled) > new Date())
-                        .length
-                    }
-                  </p>
-                </div>
-              </div>
-            </div>
+            <StatCard
+              icon={<FileText className="w-6 h-6 text-primary" />}
+              title={`${sessions.length}`}
+              description="Total Sessions"
+            />
+            <StatCard
+              icon={<Users className="w-6 h-6 text-primary" />}
+              title={`${sessions.reduce(
+                (acc, session) => acc + session.allowed_candidates.length,
+                0
+              )}`}
+              description="Candidates"
+            />
+            <StatCard
+              icon={<Clock className="w-6 h-6 text-primary" />}
+              title={`${
+                sessions.filter((s) => new Date(s.scheduled) > new Date())
+                  .length
+              }`}
+              description="Upcoming"
+            />
           </div>
         </div>
       </section>

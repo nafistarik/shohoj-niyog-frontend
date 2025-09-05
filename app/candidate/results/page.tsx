@@ -32,6 +32,7 @@ import { useAuth } from "@/hooks/use-auth";
 import type { CandidateResponse, InterviewSession } from "@/lib/types";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
+import StatCard from "@/components/shared/stat-card";
 
 interface CandidateResultWithSession extends CandidateResponse {
   session?: InterviewSession;
@@ -190,16 +191,14 @@ export default function CandidateResultsPage() {
 
   const updateDecision = async (resultId: string, newDecision: string) => {
     console.log(`Updating decision for result ${resultId} to ${newDecision}`);
-    
+
     // Update local state
-    setResultsData(prev => 
-      prev.map(result => 
-        result.id === resultId 
-          ? { ...result, decision: newDecision }
-          : result
+    setResultsData((prev) =>
+      prev.map((result) =>
+        result.id === resultId ? { ...result, decision: newDecision } : result
       )
     );
-    
+
     // In a real app, you would make an API call here
     // try {
     //   const response = await fetch("/api/candidate/update-decision", {
@@ -210,16 +209,16 @@ export default function CandidateResultsPage() {
     //       decision: newDecision,
     //     }),
     //   });
-    //   
+    //
     //   if (!response.ok) {
     //     throw new Error("Failed to update decision");
     //   }
     // } catch (err) {
     //   console.error("Failed to update decision:", err);
     //   // Revert the change if the API call fails
-    //   setResultsData(prev => 
-    //     prev.map(result => 
-    //       result.id === resultId 
+    //   setResultsData(prev =>
+    //     prev.map(result =>
+    //       result.id === resultId
     //         ? { ...result, decision: originalDecision }
     //         : result
     //     )
@@ -274,63 +273,28 @@ export default function CandidateResultsPage() {
           <div className="space-y-8">
             {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center">
-                    <div className="rounded-lg bg-blue-500/10 p-3 mr-4">
-                      <FileText className="w-6 h-6 text-blue-500" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-slate-900 dark:text-white">
-                        {resultsData.length}
-                      </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400">
-                        Interviews Completed
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center">
-                    <div className="rounded-lg bg-green-500/10 p-3 mr-4">
-                      <CheckCircle className="w-6 h-6 text-green-500" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                        {
-                          resultsData.filter(
-                            (r) =>
-                              r.decision === "interested" ||
-                              r.decision === "accept"
-                          ).length
-                        }
-                      </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400">
-                        Positive Responses
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center">
-                    <div className="rounded-lg bg-yellow-500/10 p-3 mr-4">
-                      <Clock className="w-6 h-6 text-yellow-500" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
-                        {resultsData.filter((r) => r.decision === "pending").length}
-                      </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400">
-                        Pending Review
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <StatCard
+                icon={<FileText className="w-6 h-6 text-primary" />}
+                title={`${resultsData.length}`}
+                description="Interviews Completed"
+              />
+              <StatCard
+                icon={<CheckCircle className="w-6 h-6 text-primary" />}
+                title={`${
+                  resultsData.filter(
+                    (r) =>
+                      r.decision === "interested" || r.decision === "accept"
+                  ).length
+                }`}
+                description="Positive Responses"
+              />
+              <StatCard
+                icon={<Clock className="w-6 h-6 text-primary" />}
+                title={`${
+                  resultsData.filter((r) => r.decision === "pending").length
+                }`}
+                description="Pending Review"
+              />
             </div>
 
             {/* Results List */}
@@ -344,8 +308,6 @@ export default function CandidateResultsPage() {
                   key={result.id}
                   className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
                 >
-                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-500"></div>
-
                   <CardHeader>
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                       <div className="flex-1">
@@ -393,7 +355,7 @@ export default function CandidateResultsPage() {
                         {getStatusMessage(result.decision)}
                       </p>
                     </div>
-                    
+
                     {/* Decision Selector */}
                     <div className="flex items-center justify-between pt-2">
                       <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -401,7 +363,9 @@ export default function CandidateResultsPage() {
                       </div>
                       <Select
                         value={result.decision}
-                        onValueChange={(value) => updateDecision(result.id, value)}
+                        onValueChange={(value) =>
+                          updateDecision(result.id, value)
+                        }
                       >
                         <SelectTrigger className="w-40 border border-slate-300">
                           <SelectValue placeholder="Select decision" />
@@ -409,7 +373,9 @@ export default function CandidateResultsPage() {
                         <SelectContent>
                           <SelectItem value="pending">Under Review</SelectItem>
                           <SelectItem value="interested">Interested</SelectItem>
-                          <SelectItem value="not_interested">Not Interested</SelectItem>
+                          <SelectItem value="not_interested">
+                            Not Interested
+                          </SelectItem>
                           <SelectItem value="accept">Accept</SelectItem>
                           <SelectItem value="reject">Reject</SelectItem>
                         </SelectContent>

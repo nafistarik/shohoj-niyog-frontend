@@ -56,7 +56,7 @@ const getLevelVariant = (level: string) => {
 
 export default function InterviewerSessionCard({ session }: { session: any }) {
   return (
-    <Card key={session.id}>
+    <Card key={session.id} className="animate-fade-in">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
