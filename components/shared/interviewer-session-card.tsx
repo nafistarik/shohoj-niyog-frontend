@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, Users, Eye, MoreVertical } from "lucide-react";
+import { Calendar, Users, Eye, MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,10 +56,7 @@ const getLevelVariant = (level: string) => {
 
 export default function InterviewerSessionCard({ session }: { session: any }) {
   return (
-    <Card
-      key={session.id}
-      className="hover:shadow-soft transition-all duration-300 border-border/50 hover:border-primary/30"
-    >
+    <Card key={session.id}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">

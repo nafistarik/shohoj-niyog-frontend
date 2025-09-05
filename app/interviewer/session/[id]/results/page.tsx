@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import type { CandidateResponse, InterviewSession } from "@/lib/types";
 import CandidateResultCard from "./_components/candidate-result-card";
+import StatCard from "@/components/shared/stat-card";
 
 // Dummy data
 const session = {
@@ -208,6 +209,10 @@ export default function SessionResultsPage() {
           <div className="space-y-8">
             {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+              <StatCard/>
+              <StatCard/>
+              <StatCard/>
+              <StatCard/>
               <Card className="bg-card border border-border shadow-soft hover:shadow-md transition-all duration-300">
                 <CardContent className="p-6">
                   <div className="flex items-center">

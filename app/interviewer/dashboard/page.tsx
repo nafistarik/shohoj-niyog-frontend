@@ -4,28 +4,11 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import InterviewerSessionCard from "@/components/shared/interviewer-session-card";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
   Plus,
-  Calendar,
   Users,
-  Eye,
-  MoreVertical,
   Clock,
   FileText,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import type { InterviewSession } from "@/lib/types";
