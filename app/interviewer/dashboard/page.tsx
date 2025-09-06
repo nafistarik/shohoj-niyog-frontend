@@ -161,7 +161,7 @@ export default function InterviewerDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-[#E1F1FF] flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );
@@ -200,7 +200,7 @@ export default function InterviewerDashboard() {
       </header>
 
       {/* Stats Overview */}
-      <section className="py-6 border-b border-border">
+      <section className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <StatCard
@@ -229,7 +229,7 @@ export default function InterviewerDashboard() {
       </section>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         {sessions.length === 0 ? (
           <EmptyState
             title="No interview sessions yet"

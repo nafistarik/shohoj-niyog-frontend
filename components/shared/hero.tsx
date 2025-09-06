@@ -30,7 +30,7 @@ function Hero() {
             className="text-lg px-8 shadow-primary hover:shadow-glow transition-all duration-300"
             asChild
           >
-            <Link href="/signup">Start Free Trial</Link>
+            <Link href="/interviewer/dashboard">Start Free Trial</Link>
           </Button>
           <Button
             size="lg"
@@ -38,7 +38,7 @@ function Hero() {
             className="text-lg px-8 border-primary text-primary hover:bg-primary/10 transition-colors"
             asChild
           >
-            <Link href="#demo">
+            <Link href="/candidate/dashboard">
               Watch Demo <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
           </Button>

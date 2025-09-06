@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,9 +26,11 @@ import {
 export default function CandidateResultCard({
   result,
   updateDecision,
+  highestScore,
 }: {
   result: any;
   updateDecision: (candidateId: string, decision: string) => void;
+  highestScore: number;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -70,7 +71,11 @@ export default function CandidateResultCard({
   };
 
   return (
-    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col">
+    <Card
+      className={`${
+        highestScore == result.total_score ? "bg-green-100" : "bg-white"
+      } dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col`}
+    >
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>

@@ -175,6 +175,8 @@ export default function SessionResultsPage() {
     // }
   };
 
+  const highestScore = Math.max(...resultsData.map((r) => r.total_score));
+
   return (
     <div className="min-h-screen bg-white pb-12">
       {/* Header */}
@@ -217,12 +219,16 @@ export default function SessionResultsPage() {
               <StatCard
                 icon={<Target className="w-6 h-6 text-primary" />}
                 title={`${
-                  resultsData.filter(
-                    (r) =>
-                      r.decision === "interested" || r.decision === "accept"
-                  ).length
+                  resultsData.filter((r) => r.decision === "accept").length
                 }`}
-                description="Positive Signals"
+                description="Accepted"
+              />
+              <StatCard
+                icon={<Target className="w-6 h-6 text-primary" />}
+                title={`${
+                  resultsData.filter((r) => r.decision === "interested").length
+                }`}
+                description="Interested"
               />
               <StatCard
                 icon={<Clock className="w-6 h-6 text-primary" />}
@@ -230,13 +236,6 @@ export default function SessionResultsPage() {
                   resultsData.filter((r) => r.decision === "pending").length
                 }`}
                 description="Pending Review"
-              />
-              <StatCard
-                icon={<BarChart3 className="w-6 h-6 text-primary" />}
-                title={`${Math.max(
-                  ...resultsData.map((r) => r.total_score)
-                )}/10`}
-                description="Highest Score"
               />
             </div>
 
@@ -278,6 +277,7 @@ export default function SessionResultsPage() {
                     key={result.id}
                     result={result}
                     updateDecision={updateDecision}
+                    highestScore={highestScore}
                   />
                 ))}
               </div>
