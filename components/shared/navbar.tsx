@@ -2,6 +2,13 @@ import { Video } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
+const navItems = [
+  { label: "Features", href: "#features" },
+  { label: "About", href: "#about" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "FAQ", href: "#faq" },
+];
+
 function Navbar() {
   return (
     <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-sidebar-border glass-effect">
@@ -14,31 +21,12 @@ function Navbar() {
             Shohoj Niyog
           </span>
         </div>
-        <nav className="hidden md:flex items-center space-x-6 font-body">
-          <a
-            href="#features"
-            className="text-muted-foreground hover:text-primary transition-colors animate-slide-in"
-          >
-            Features
-          </a>
-          <a
-            href="#about"
-            className="text-muted-foreground hover:text-primary transition-colors animate-slide-in"
-          >
-            About
-          </a>
-          <a
-            href="#testimonials"
-            className="text-muted-foreground hover:text-primary transition-colors animate-slide-in"
-          >
-            Testimonials
-          </a>
-          <a
-            href="#faq"
-            className="text-muted-foreground hover:text-primary transition-colors animate-slide-in"
-          >
-            FAQ
-          </a>
+        <nav className="hidden md:flex items-center space-x-4 font-body">
+          {navItems.map((item) => (
+            <Button key={item.href} variant="ghost" size="lg" asChild>
+              <a href={item.href}>{item.label}</a>
+            </Button>
+          ))}
         </nav>
         <div className="flex items-center space-x-3">
           <Button
