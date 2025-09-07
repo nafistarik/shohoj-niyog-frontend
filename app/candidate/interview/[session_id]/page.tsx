@@ -3,7 +3,15 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Play, Square, SkipForward, Clock, Video, Mic, Send } from "lucide-react";
+import {
+  Play,
+  Square,
+  SkipForward,
+  Clock,
+  Video,
+  Mic,
+  Send,
+} from "lucide-react";
 
 type Question = {
   question: string;
@@ -12,10 +20,10 @@ type Question = {
 const questions: Question[] = [
   { question: "Tell me about yourself and your background." },
   { question: "Why are you interested in this position and our company?" },
-  { question: "Describe a challenging project you worked on and how you overcame obstacles." },
-  { question: "Tell me about yourself and your background." },
-  { question: "Why are you interested in this position and our company?" },
-  { question: "Describe a challenging project you worked on and how you overcame obstacles." },
+  // { question: "Describe a challenging project you worked on and how you overcame obstacles." },
+  // { question: "Tell me about yourself and your background." },
+  // { question: "Why are you interested in this position and our company?" },
+  // { question: "Describe a challenging project you worked on and how you overcame obstacles." },
 ];
 
 const MAX_TIME = 120; // 2 minutes in seconds
@@ -60,7 +68,7 @@ const VideoInterview: React.FC = () => {
   // Start recording for a question
   const startRecording = () => {
     if (!streamRef.current) return;
-    
+
     chunksRef.current = [];
     const mediaRecorder = new MediaRecorder(streamRef.current);
     mediaRecorderRef.current = mediaRecorder;
@@ -150,8 +158,10 @@ const VideoInterview: React.FC = () => {
       if (videoRef.current) {
         videoRef.current.srcObject = null;
       }
-
       router.push("/candidate/dashboard");
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (err) {
       console.error("❌ Upload failed:", err);
     }
@@ -160,7 +170,7 @@ const VideoInterview: React.FC = () => {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
   const progress = ((MAX_TIME - timeLeft) / MAX_TIME) * 100;
@@ -171,17 +181,23 @@ const VideoInterview: React.FC = () => {
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
           <h1 className="text-2xl font-bold">Video Interview</h1>
-          <p className="text-blue-100 mt-1">Answer each question to the best of your ability</p>
+          <p className="text-blue-100 mt-1">
+            Answer each question to the best of your ability
+          </p>
         </div>
-        
+
         <div className="p-6 md:p-8">
           {/* Progress indicator */}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center">
               <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-2">
-                <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{currentQIndex + 1}</span>
+                <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                  {currentQIndex + 1}
+                </span>
               </div>
-              <span className="text-slate-600 dark:text-slate-400">of {questions.length}</span>
+              <span className="text-slate-600 dark:text-slate-400">
+                of {questions.length}
+              </span>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
@@ -217,15 +233,21 @@ const VideoInterview: React.FC = () => {
                     <Clock className="w-5 h-5 mr-2" />
                     <span className="font-medium">Time remaining</span>
                   </div>
-                  <div className={`text-lg font-bold ${timeLeft <= 10 ? 'text-red-600' : 'text-slate-900 dark:text-white'}`}>
+                  <div
+                    className={`text-lg font-bold ${
+                      timeLeft <= 10
+                        ? "text-red-600"
+                        : "text-slate-900 dark:text-white"
+                    }`}
+                  >
                     {formatTime(timeLeft)}
                   </div>
                 </div>
-                
+
                 {/* Progress bar */}
                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
-                  <div 
-                    className="h-2.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000 ease-linear" 
+                  <div
+                    className="h-2.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000 ease-linear"
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
@@ -259,12 +281,14 @@ const VideoInterview: React.FC = () => {
                   muted
                   className="w-full h-full object-cover"
                 />
-                
+
                 {/* Recording indicator */}
                 {isRecording && (
                   <div className="absolute top-4 right-4 flex items-center">
                     <div className="w-3 h-3 rounded-full bg-red-500 mr-2 animate-pulse"></div>
-                    <span className="text-white text-sm font-medium">Recording</span>
+                    <span className="text-white text-sm font-medium">
+                      Recording
+                    </span>
                   </div>
                 )}
               </div>
@@ -272,9 +296,17 @@ const VideoInterview: React.FC = () => {
               {/* Recording status */}
               <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-700 dark:text-slate-300">Question status:</span>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${recordings[currentQIndex] ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'}`}>
-                    {recordings[currentQIndex] ? 'Recorded' : 'Recording...'}
+                  <span className="text-slate-700 dark:text-slate-300">
+                    Question status:
+                  </span>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      recordings[currentQIndex]
+                        ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                        : "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                    }`}
+                  >
+                    {recordings[currentQIndex] ? "Recorded" : "Recording..."}
                   </span>
                 </div>
               </div>
@@ -293,7 +325,13 @@ const VideoInterview: React.FC = () => {
                       setCurrentQIndex(index);
                     }
                   }}
-                  className={`w-3 h-3 rounded-full ${index === currentQIndex ? 'bg-blue-600' : recordings[index] ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`}
+                  className={`w-3 h-3 rounded-full ${
+                    index === currentQIndex
+                      ? "bg-blue-600"
+                      : recordings[index]
+                      ? "bg-green-500"
+                      : "bg-slate-300 dark:bg-slate-600"
+                  }`}
                   aria-label={`Go to question ${index + 1}`}
                 />
               ))}
