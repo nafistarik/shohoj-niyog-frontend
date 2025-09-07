@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, Eye, MoreVertical } from "lucide-react";
+import { Calendar, Users, Eye, MoreVertical, ChartArea } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,8 +71,8 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <MoreVertical className="h-4 w-4" />
+              <Button variant="secondary">
+                <MoreVertical />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -120,25 +120,15 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
           </div>
         </div>
 
-        <div className="flex space-x-2 pt-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 border-border text-foreground hover:bg-accent"
-            asChild
-          >
+        <div className="flex gap-2">
+          <Button variant="outline" asChild className="flex-1">
             <Link href={`/interviewer/session/${session.id}`}>
-              <Eye className="w-4 h-4 mr-2" />
-              View
+              <Eye /> View
             </Link>
           </Button>
-          <Button
-            size="sm"
-            className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
-            asChild
-          >
+          <Button asChild className="flex-1">
             <Link href={`/interviewer/session/${session.id}/results`}>
-              Results
+              Results <ChartArea />
             </Link>
           </Button>
         </div>

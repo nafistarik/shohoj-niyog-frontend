@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import InterviewerSessionCard from "@/components/shared/interviewer-session-card";
+import InterviewerSessionCard from "@/app/interviewer/dashboard/_components/interviewer-session-card";
 import { Plus, Users, Clock, FileText } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
@@ -181,16 +181,13 @@ export default function InterviewerDashboard() {
                 Manage your interview sessions and review candidates
               </p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-8">
               <span className="text-sm text-muted-foreground">
                 Welcome, {user?.username}
               </span>
-              <Button
-                asChild
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
-              >
+              <Button asChild>
                 <Link href="/interviewer/create">
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus />
                   Create Session
                 </Link>
               </Button>

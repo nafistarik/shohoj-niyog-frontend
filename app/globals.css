@@ -161,12 +161,23 @@
     #06b6d4 50%,
     var(--accent) 100%
   );
+  transition: all 300ms ease;
+}
+
+.gradient-bg:hover {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    #06b6d4 35%,
+    #06b6d4 65%,
+    var(--accent) 100%
+  );
 }
 
 .gradient-bg-subtle {
   background: linear-gradient(
     135deg,
-    var(--background) 0%,
+    var(--secondary) 0%,
     var(--primary) 100%
   );
 }
@@ -181,7 +192,6 @@
 
 /* Enhanced glass morphism effect */
 .glass-effect {
-  background: rgba(248, 250, 252, 0.8);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(8, 145, 178, 0.1);
   box-shadow: 0 8px 32px rgba(8, 145, 178, 0.1);
@@ -265,9 +275,3 @@
 .bg-primary-light {
   background-color: #67e8f9;
 }
-/* .bg-primary {
-  background-color: var(--primary);
-}
-.bg-primary-dark {
-  background-color: #164e63;
-} */

@@ -23,7 +23,7 @@ import {
   Code,
   Clock,
   Star,
-  Link as LinkIcon
+  Link as LinkIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -38,11 +38,33 @@ const session = {
   level: "Intermediate",
   created_by: "recruiter_id",
   qa_pairs: [
-    { question_id: "1", question: "Explain the concept of middleware in Express.js and provide an example of how you would implement custom middleware for authentication.", answer: "Middleware in Express.js are functions that have access to the request and response objects, and the next middleware function in the application's request-response cycle. They can execute any code, make changes to request/response objects, end the request-response cycle, or call the next middleware. For authentication, I would create middleware that verifies JWT tokens from the Authorization header." },
-    { question_id: "2", question: "Describe how you would optimize MongoDB queries for better performance in a high-traffic application.", answer: "I would use indexing on frequently queried fields, implement pagination with skip() and limit(), use projection to return only necessary fields, leverage aggregation pipeline for complex operations, and implement caching with Redis for frequently accessed data." },
-    { question_id: "3", question: "How would you handle database migrations and schema changes in a production Django application without causing downtime?", answer: "I would use Django's migration system with careful planning: create migrations in development, test thoroughly in staging, deploy during low-traffic periods, use backward-compatible changes initially, and consider using tools like Django-migrations-graph for complex deployment scenarios." }
+    {
+      question_id: "1",
+      question:
+        "Explain the concept of middleware in Express.js and provide an example of how you would implement custom middleware for authentication.",
+      answer:
+        "Middleware in Express.js are functions that have access to the request and response objects, and the next middleware function in the application's request-response cycle. They can execute any code, make changes to request/response objects, end the request-response cycle, or call the next middleware. For authentication, I would create middleware that verifies JWT tokens from the Authorization header.",
+    },
+    {
+      question_id: "2",
+      question:
+        "Describe how you would optimize MongoDB queries for better performance in a high-traffic application.",
+      answer:
+        "I would use indexing on frequently queried fields, implement pagination with skip() and limit(), use projection to return only necessary fields, leverage aggregation pipeline for complex operations, and implement caching with Redis for frequently accessed data.",
+    },
+    {
+      question_id: "3",
+      question:
+        "How would you handle database migrations and schema changes in a production Django application without causing downtime?",
+      answer:
+        "I would use Django's migration system with careful planning: create migrations in development, test thoroughly in staging, deploy during low-traffic periods, use backward-compatible changes initially, and consider using tools like Django-migrations-graph for complex deployment scenarios.",
+    },
   ],
-  allowed_candidates: ["john.doe@example.com", "sarah.smith@techcorp.com", "mike.johnson@devteam.io"],
+  allowed_candidates: [
+    "john.doe@example.com",
+    "sarah.smith@techcorp.com",
+    "mike.johnson@devteam.io",
+  ],
   scheduled: "2025-08-25T06:30:00Z",
 };
 
@@ -89,10 +111,10 @@ export default function SessionDetailsPage() {
   const copyToClipboard = async (text: string, identifier: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      if (identifier.includes('@')) {
+      if (identifier.includes("@")) {
         setCopiedEmails([...copiedEmails, identifier]);
         setTimeout(() => {
-          setCopiedEmails(copiedEmails.filter(e => e !== identifier));
+          setCopiedEmails(copiedEmails.filter((e) => e !== identifier));
         }, 2000);
       } else {
         setCopiedLink(identifier);
@@ -120,19 +142,21 @@ export default function SessionDetailsPage() {
                 <h1 className="text-2xl font-bold text-slate-900">
                   {session.position}
                 </h1>
-                <p className="text-slate-600 text-sm">Interview Session Details</p>
+                <p className="text-slate-600 text-sm">
+                  Interview Session Details
+                </p>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
-              <Button variant="outline" asChild className="border-primary/20 hover:border-primary/40">
+            <div className="flex items-center gap-3">
+              <Button variant="outline" asChild>
                 <Link href={`/interviewer/session/${session.id}/results`}>
-                  <Eye className="w-4 h-4 mr-2" />
+                  <Eye />
                   View Results
                 </Link>
               </Button>
-              <Button variant="ghost" size="sm" asChild className="rounded-lg">
+              <Button variant="secondary" asChild>
                 <Link href="/interviewer/dashboard">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  <ArrowLeft />
                   Back to Dashboard
                 </Link>
               </Button>
@@ -168,10 +192,10 @@ export default function SessionDetailsPage() {
                     Technology Stack
                   </Label>
                   <div className="flex flex-wrap gap-2">
-                    {session.stack.split(', ').map((tech) => (
-                      <Badge 
-                        key={tech} 
-                        variant="secondary" 
+                    {session.stack.split(", ").map((tech) => (
+                      <Badge
+                        key={tech}
+                        variant="secondary"
                         className="bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-200 px-3 py-1"
                       >
                         <Code className="w-3 h-3 mr-1" />
@@ -185,7 +209,11 @@ export default function SessionDetailsPage() {
                   <Label className="text-sm font-medium text-slate-600 mb-2 block">
                     Experience Level
                   </Label>
-                  <Badge className={`${getLevelColor(session.level)} px-3 py-1 font-medium`}>
+                  <Badge
+                    className={`${getLevelColor(
+                      session.level
+                    )} px-3 py-1 font-medium`}
+                  >
                     {getLevelIcon(session.level)}
                     <span className="ml-1">{session.level}</span>
                   </Badge>
@@ -197,7 +225,9 @@ export default function SessionDetailsPage() {
                   </Label>
                   <div className="flex items-center text-slate-900">
                     <FileText className="w-4 h-4 mr-2 text-primary" />
-                    <span className="font-semibold">{session.qa_pairs.length} questions</span>
+                    <span className="font-semibold">
+                      {session.qa_pairs.length} questions
+                    </span>
                   </div>
                 </div>
 
@@ -208,7 +238,9 @@ export default function SessionDetailsPage() {
                     </Label>
                     <div className="flex items-center text-slate-900">
                       <Calendar className="w-4 h-4 mr-2 text-primary" />
-                      <span className="font-medium">{formatDate(session.scheduled)}</span>
+                      <span className="font-medium">
+                        {formatDate(session.scheduled)}
+                      </span>
                     </div>
                   </div>
                 )}
@@ -234,10 +266,11 @@ export default function SessionDetailsPage() {
                         {email}
                       </span>
                       <Button
-                        size="sm"
                         variant="outline"
-                        onClick={() => copyToClipboard(generateInviteLink(email), email)}
-                        className="h-8 px-3 text-xs border-slate-300 hover:bg-slate-100"
+                        size="sm"
+                        onClick={() =>
+                          copyToClipboard(generateInviteLink(email), email)
+                        }
                       >
                         {copiedEmails.includes(email) ? (
                           <CheckCircle className="w-3 h-3 mr-1 text-green-600" />
@@ -261,7 +294,8 @@ export default function SessionDetailsPage() {
                   Interview Questions
                 </CardTitle>
                 <CardDescription className="text-slate-600">
-                  AI-generated questions tailored for {session.position} position
+                  AI-generated questions tailored for {session.position}{" "}
+                  position
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -274,7 +308,9 @@ export default function SessionDetailsPage() {
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center">
                           <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
-                            <span className="text-sm font-semibold text-primary">{index + 1}</span>
+                            <span className="text-sm font-semibold text-primary">
+                              {index + 1}
+                            </span>
                           </div>
                           <h3 className="font-semibold text-slate-900">
                             Question {index + 1}
@@ -316,7 +352,10 @@ function Label({
   children: React.ReactNode;
 }) {
   return (
-    <label className={`text-sm font-medium text-slate-600 ${className}`} {...props}>
+    <label
+      className={`text-sm font-medium text-slate-600 ${className}`}
+      {...props}
+    >
       {children}
     </label>
   );

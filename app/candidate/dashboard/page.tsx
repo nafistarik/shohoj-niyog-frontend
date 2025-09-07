@@ -291,11 +291,7 @@ export default function CandidateDashboard() {
                       </li>
                     </ul>
                   </div>
-
-                  <Button
-                    className="w-full gradient-bg hover:shadow-glow transition-all duration-300 text-primary-foreground"
-                    asChild
-                  >
+                  <Button asChild className="w-full gradient-bg">
                     <Link href={`/candidate/interview/${session.id}`}>
                       <Play className="w-4 h-4 mr-2" />
                       Start Interview
