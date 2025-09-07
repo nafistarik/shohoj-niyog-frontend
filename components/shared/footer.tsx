@@ -1,4 +1,23 @@
 import { Video } from "lucide-react";
+import { Button } from "../ui/button";
+
+const productItems = [
+  { label: "Features", href: "#features" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "Security", href: "#security" },
+];
+
+const companyItems = [
+  { label: "About", href: "#about" },
+  { label: "Careers", href: "#careers" },
+  { label: "Contact", href: "#contact" },
+];
+
+const supportItems = [
+  { label: "FAQ", href: "#faq" },
+  { label: "Help Center", href: "#help-center" },
+  { label: "Documentation", href: "#documentation" },
+];
 
 function Footer() {
   return (
@@ -22,76 +41,37 @@ function Footer() {
             <h3 className="font-heading font-semibold mb-4 text-foreground">
               Product
             </h3>
-            <ul className="space-y-2 text-muted-foreground font-body">
-              <li>
-                <a
-                  href="#features"
-                  className="hover:text-primary transition-colors"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Security
-                </a>
-              </li>
-            </ul>
+            <div className="flex flex-col">
+              {productItems.map((item) => (
+                <Button asChild className="p-0 justify-start" variant="link">
+                  <a href={item.href}>{item.label}</a>
+                </Button>
+              ))}
+            </div>
           </div>
           <div className="animate-slide-in">
             <h3 className="font-heading font-semibold mb-4 text-foreground">
               Company
             </h3>
-            <ul className="space-y-2 text-muted-foreground font-body">
-              <li>
-                <a
-                  href="#about"
-                  className="hover:text-primary transition-colors"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className="hover:text-primary transition-colors"
-                >
-                  Contact
-                </a>
-              </li>
-            </ul>
+            <div className="flex flex-col">
+              {companyItems.map((item) => (
+                <Button asChild className="p-0 justify-start" variant="link">
+                  <a href={item.href}>{item.label}</a>
+                </Button>
+              ))}
+            </div>
           </div>
           <div className="animate-slide-in">
             <h3 className="font-heading font-semibold mb-4 text-foreground">
               Support
             </h3>
-            <ul className="space-y-2 text-muted-foreground font-body">
-              <li>
-                <a href="#faq" className="hover:text-primary transition-colors">
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Documentation
-                </a>
-              </li>
-            </ul>
+            <div className="flex flex-col">
+              {supportItems.map((item) => (
+                <Button asChild className="p-0 justify-start" variant="link">
+                  <a href={item.href}>{item.label}</a>
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
         <div className="border-t border-sidebar-border mt-8 pt-8 text-center text-muted-foreground font-body animate-fade-in">

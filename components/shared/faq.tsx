@@ -7,7 +7,7 @@ import {
 
 function FAQ() {
   return (
-    <section id="faq" className="py-20 px-4 bg-card animate-fade-in">
+    <section id="faq" className="py-20 px-4 animate-fade-in">
       <div className="container mx-auto max-w-3xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-heading font-bold text-foreground mb-4">

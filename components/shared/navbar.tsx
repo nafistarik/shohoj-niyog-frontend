@@ -21,7 +21,7 @@ function Navbar() {
             Shohoj Niyog
           </span>
         </div>
-        <nav className="hidden md:flex items-center space-x-4 font-body">
+        <nav className="hidden md:flex items-center space-x-2 font-body">
           {navItems.map((item) => (
             <Button key={item.href} variant="ghost" size="lg" asChild>
               <a href={item.href}>{item.label}</a>
@@ -29,17 +29,10 @@ function Navbar() {
           ))}
         </nav>
         <div className="flex items-center space-x-3">
-          <Button
-            variant="ghost"
-            asChild
-            className="text-muted-foreground hover:bg-secondary/50 hover:text-primary-dark animate-scale-in"
-          >
+          <Button variant="outline" asChild>
             <Link href="/login">Sign In</Link>
           </Button>
-          <Button
-            asChild
-            className="bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in"
-          >
+          <Button asChild>
             <Link href="/signup">Get Started</Link>
           </Button>
         </div>
