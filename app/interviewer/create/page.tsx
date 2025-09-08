@@ -33,6 +33,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default function CreateSessionPage() {
   const [formData, setFormData] = useState<CreateSessionPayload>({
@@ -139,7 +140,7 @@ export default function CreateSessionPage() {
     setError("");
     setSuccess("");
 
-    console.log(formData)
+    console.log(formData);
 
     // Validation
     if (!formData.position.trim()) {
@@ -177,37 +178,19 @@ export default function CreateSessionPage() {
 
   return (
     <div className="min-h-screen bg-background animate-fade-in">
-      <header className="bg-card border-b border-sidebar-border shadow-soft animate-fade-in">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 py-6 justify-between">
-            <div>
-              <h1 className="text-3xl font-heading font-bold text-foreground">
-                Create Interview Session
-              </h1>
-              <p className="text-muted-foreground mt-1 font-body">
-                Set up a new interview session with custom questions
-              </p>
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              className="border-sidebar-border text-foreground hover:bg-secondary/50 hover:text-primary-dark shadow-soft animate-scale-in"
-            >
-              <Link href="/interviewer/dashboard">
-                <ArrowLeft className="w-4 h-4 mr-2 text-primary" />
-                Back to Dashboard
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        title="Create Interview Session"
+        description="Set up a new interview session with custom questions"
+        backLabel="Back to Dashboard"
+        backHref="/interviewer/dashboard"
+      />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card className="glass-effect border-sidebar-border shadow-soft animate-slide-in">
           <CardHeader>
-            <CardTitle className="font-heading text-foreground">Session Details</CardTitle>
+            <CardTitle className="font-heading text-foreground">
+              Session Details
+            </CardTitle>
             <CardDescription className="font-body text-muted-foreground">
               Configure your interview session parameters
             </CardDescription>
@@ -226,9 +209,7 @@ export default function CreateSessionPage() {
               )}
 
               {success && (
-                <Alert
-                  className="bg-chart-2/15 text-chart-2 border-chart-2/50 animate-slide-in delay-100"
-                >
+                <Alert className="bg-chart-2/15 text-chart-2 border-chart-2/50 animate-slide-in delay-100">
                   <AlertDescription className="font-body">
                     {success}
                   </AlertDescription>
@@ -254,7 +235,9 @@ export default function CreateSessionPage() {
               </div>
 
               <div className="space-y-2 animate-slide-in delay-300">
-                <Label className="font-body text-foreground">Technology Stacks</Label>
+                <Label className="font-body text-foreground">
+                  Technology Stacks
+                </Label>
                 <div className="flex gap-2">
                   <Input
                     placeholder="e.g., React, Node.js, Python"
@@ -297,7 +280,9 @@ export default function CreateSessionPage() {
               </div>
 
               <div className="space-y-2 animate-slide-in delay-500">
-                <Label className="font-body text-foreground">Experience Level</Label>
+                <Label className="font-body text-foreground">
+                  Experience Level
+                </Label>
                 <Select
                   value={formData.level}
                   onValueChange={(value) =>
@@ -322,7 +307,10 @@ export default function CreateSessionPage() {
               </div>
 
               <div className="space-y-2 animate-slide-in delay-600">
-                <Label htmlFor="num_questions" className="font-body text-foreground">
+                <Label
+                  htmlFor="num_questions"
+                  className="font-body text-foreground"
+                >
                   Number of Questions
                 </Label>
                 <Select
@@ -338,16 +326,26 @@ export default function CreateSessionPage() {
                     <SelectValue placeholder="Select number of questions" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-sidebar-border">
-                    <SelectItem value="2" className="font-body">2 Questions</SelectItem>
-                    <SelectItem value="3" className="font-body">3 Questions</SelectItem>
-                    <SelectItem value="4" className="font-body">4 Questions</SelectItem>
-                    <SelectItem value="5" className="font-body">5 Questions</SelectItem>
+                    <SelectItem value="2" className="font-body">
+                      2 Questions
+                    </SelectItem>
+                    <SelectItem value="3" className="font-body">
+                      3 Questions
+                    </SelectItem>
+                    <SelectItem value="4" className="font-body">
+                      4 Questions
+                    </SelectItem>
+                    <SelectItem value="5" className="font-body">
+                      5 Questions
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2 animate-slide-in delay-700">
-                <Label className="font-body text-foreground">Candidate Emails</Label>
+                <Label className="font-body text-foreground">
+                  Candidate Emails
+                </Label>
                 <div className="flex gap-2">
                   <Input
                     placeholder="candidate@example.com"
@@ -374,7 +372,9 @@ export default function CreateSessionPage() {
                         key={email}
                         className="flex items-center justify-between bg-secondary/50 p-3 rounded-md"
                       >
-                        <span className="text-sm font-body text-foreground">{email}</span>
+                        <span className="text-sm font-body text-foreground">
+                          {email}
+                        </span>
                         <button
                           type="button"
                           onClick={() => removeCandidate(email)}
@@ -389,72 +389,86 @@ export default function CreateSessionPage() {
               </div>
 
               <div className="space-y-4 animate-slide-in delay-900">
-                <Label className="font-body text-foreground">Scheduled Date & Time (Optional)</Label>
-                
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  {/* Date Picker */}
-  <div className="space-y-2">
-    <Label htmlFor="date-picker" className="font-body text-foreground">
-      Select Date
-    </Label>
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-full h-11 px-3 flex items-center justify-start gap-2 
+                <Label className="font-body text-foreground">
+                  Scheduled Date & Time (Optional)
+                </Label>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Date Picker */}
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="date-picker"
+                      className="font-body text-foreground"
+                    >
+                      Select Date
+                    </Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full h-11 px-3 flex items-center justify-start gap-2 
                      border-sidebar-border text-foreground bg-input
                      hover:bg-secondary/50 hover:text-primary-dark 
                      shadow-soft animate-scale-in"
-        >
-          <Calendar className="h-4 w-4 text-primary" />
-          <span>{date ? format(date, "PPP") : "Pick a date"}</span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0 bg-card border-sidebar-border">
-        <CalendarComponent
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
-  </div>
+                        >
+                          <Calendar className="h-4 w-4 text-primary" />
+                          <span>
+                            {date ? format(date, "PPP") : "Pick a date"}
+                          </span>
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 bg-card border-sidebar-border">
+                        <CalendarComponent
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
 
-  {/* Time Picker */}
-  <div className="space-y-2">
-    <Label htmlFor="time-select" className="font-body text-foreground">
-      Select Time
-    </Label>
-    <Select value={time} onValueChange={setTime}>
-      <SelectTrigger
-        className="w-full !h-11 px-3 flex items-center justify-start gap-2
+                  {/* Time Picker */}
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="time-select"
+                      className="font-body text-foreground"
+                    >
+                      Select Time
+                    </Label>
+                    <Select value={time} onValueChange={setTime}>
+                      <SelectTrigger
+                        className="w-full !h-11 px-3 flex items-center justify-start gap-2
                    border-sidebar-border text-foreground bg-input
                    hover:bg-secondary/50 hover:text-primary-dark
                    shadow-soft animate-scale-in"
-      >
-        <Clock className="h-4 w-4 text-primary" />
-        <SelectValue placeholder="Select time" />
-      </SelectTrigger>
-      <SelectContent className="bg-card border-sidebar-border">
-        {timeOptions.map((option) => (
-          <SelectItem key={option.value} value={option.value} className="font-body">
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  </div>
-</div>
-
+                      >
+                        <Clock className="h-4 w-4 text-primary" />
+                        <SelectValue placeholder="Select time" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-card border-sidebar-border">
+                        {timeOptions.map((option) => (
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                            className="font-body"
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
                 {date && time && (
                   <div className="p-3 bg-secondary/50 rounded-md animate-slide-in delay-1000">
                     <p className="text-sm text-muted-foreground font-body flex items-center">
                       <Clock className="w-4 h-4 mr-2 text-primary" />
-                      <strong>Selected:</strong> 
+                      <strong>Selected:</strong>
                       <span className="ml-1">
-                        {format(date, "PPP")} at {timeOptions.find(opt => opt.value === time)?.label}
+                        {format(date, "PPP")} at{" "}
+                        {timeOptions.find((opt) => opt.value === time)?.label}
                       </span>
                     </p>
                   </div>

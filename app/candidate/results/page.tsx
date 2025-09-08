@@ -33,6 +33,7 @@ import type { CandidateResponse, InterviewSession } from "@/lib/types";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 interface CandidateResultWithSession extends CandidateResponse {
   session?: InterviewSession;
@@ -235,30 +236,13 @@ export default function CandidateResultsPage() {
   // }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pb-12">
-      {/* Header */}
-      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between py-6">
-            <div className="flex items-center">
-              <div>
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-                  My Results
-                </h1>
-                <p className="text-slate-600 dark:text-slate-400 mt-1">
-                  Track your interview performance and feedback
-                </p>
-              </div>
-            </div>
-            <Button variant="ghost" size="sm" asChild className="group">
-              <Link href="/candidate/dashboard">
-                <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
-                Back to Dashboard
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen pb-12">
+      <PageHeader
+        title="My Results"
+        description="Track your interview performance and feedback"
+        backHref="/candidate/dashboard"
+        backLabel="Back to Dashboard"
+      />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

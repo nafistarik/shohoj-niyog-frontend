@@ -22,6 +22,7 @@ import {
   CheckCircle,
   AlertCircle,
   TrendingUp,
+  Eye,
 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
@@ -29,6 +30,7 @@ import type { InterviewSession } from "@/lib/types";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 const sessions = [
   {
@@ -173,30 +175,17 @@ export default function CandidateDashboard() {
 
   return (
     <div className="min-h-screen bg-background pb-12">
-      {/* Header */}
-      <header className="glass-effect border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">
-                My Interviews
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                Participate in video interviews and track your progress
-              </p>
-            </div>
-            <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <Button
-                variant="outline"
-                asChild
-                className="border-border hover:bg-secondary/30"
-              >
-                <Link href="/candidate/results">View Results</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        title="My Interviews"
+        description="Participate in video interviews and track your progress"
+      >
+        <Button variant="outline" asChild>
+          <Link href="/candidate/results">
+            <Eye />
+            View Results
+          </Link>
+        </Button>
+      </PageHeader>
 
       {/* Stats Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
