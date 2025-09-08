@@ -1,7 +1,7 @@
 import { CheckCircle, Flame, Star, TvMinimalPlay } from "lucide-react";
-import { Button } from "../ui/button";
 import Link from "next/link";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../components/ui/badge";
+import { Button } from "../../components/ui/button";
 
 function Hero() {
   return (
@@ -25,7 +25,10 @@ function Hero() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" asChild>
-            <Link href="/interviewer/dashboard"><Flame />Start Free Trial</Link>
+            <Link href="/interviewer/dashboard">
+              <Flame />
+              Start Free Trial
+            </Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
             <Link href="/candidate/dashboard">

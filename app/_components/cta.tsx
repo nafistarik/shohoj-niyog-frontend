@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { Flame, UserRoundPlus } from "lucide-react";
-import { Button } from "../ui/button";
 import Link from "next/link";
 
 function CTA() {
