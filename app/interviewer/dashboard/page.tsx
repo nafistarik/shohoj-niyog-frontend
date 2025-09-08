@@ -10,6 +10,7 @@ import type { InterviewSession } from "@/lib/types";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 const sessions = [
   {
@@ -169,34 +170,14 @@ export default function InterviewerDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-card border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-heading font-bold text-foreground">
-                Interview Sessions
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                Manage your interview sessions and review candidates
-              </p>
-            </div>
-            <div className="flex items-center space-x-8">
-              <span className="text-sm text-muted-foreground">
-                Welcome, {user?.username}
-              </span>
-              <Button asChild>
-                <Link href="/interviewer/create">
-                  <Plus />
-                  Create Session
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        title="Interview Sessions"
+        description="Manage your interview sessions and review candidates"
+        welcomeText={`Welcome, ${user?.username}`}
+        actionLabel="Create Session"
+        actionHref="/interviewer/create"
+      />
 
-      {/* Stats Overview */}
       <section className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -225,7 +206,6 @@ export default function InterviewerDashboard() {
         </div>
       </section>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         {sessions.length === 0 ? (
           <EmptyState

@@ -16,6 +16,7 @@ import { useParams } from "next/navigation";
 import type { CandidateResponse, InterviewSession } from "@/lib/types";
 import CandidateResultCard from "./_components/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 // Dummy data
 const session = {
@@ -179,27 +180,12 @@ export default function SessionResultsPage() {
 
   return (
     <div className="min-h-screen bg-white pb-12">
-      {/* Header */}
-      <header className="bg-background border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">
-                {session.position} - Results
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                Review candidate responses and make decisions
-              </p>
-            </div>
-            <Button variant="ghost" size="sm" asChild className="group">
-              <Link href={`/interviewer/session/${params.id}`}>
-                <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
-                Back to Session
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        title={`${session.position} - Results`}
+        description="Review candidate responses and make decisions"
+        backLabel="Back to Session"
+        backHref={`/interviewer/session/${params.id}`}
+      />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

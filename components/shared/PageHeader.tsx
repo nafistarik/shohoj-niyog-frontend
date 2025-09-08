@@ -17,7 +17,7 @@ interface PageHeaderProps {
   backLabel?: string;
   backHref?: string;
   backIcon?: ReactNode;
-  
+
   children?: ReactNode;
 }
 
@@ -67,20 +67,20 @@ export function PageHeader({
               </Button>
             )}
 
+            {/* Fallback for custom stuff */}
+            {children}
+
             {/* Back Button */}
             {backLabel && backHref && (
-              <Button variant="ghost" size="sm" asChild className="group">
+              <Button variant="secondary" size="sm" asChild className="group">
                 <Link href={backHref}>
                   {backIcon ?? (
-                    <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
+                    <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
                   )}
                   {backLabel}
                 </Link>
               </Button>
             )}
-
-            {/* Fallback for custom stuff */}
-            {children}
           </div>
         </div>
       </div>
