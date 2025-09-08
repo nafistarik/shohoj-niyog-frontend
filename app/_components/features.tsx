@@ -4,7 +4,59 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Shield, Users, Video } from "lucide-react";
+
+import { Video, Users, Shield } from "lucide-react";
+
+const features = [
+  {
+    icon: Video,
+    title: "Video Recording",
+    description:
+      "Seamless video recording with automatic upload and processing for candidate responses.",
+  },
+  {
+    icon: Users,
+    title: "Role-Based Access",
+    description:
+      "Separate dashboards for interviewers and candidates with tailored experiences.",
+  },
+  {
+    icon: Shield,
+    title: "Secure & Private",
+    description:
+      "Enterprise-grade security with encrypted video storage and GDPR compliance.",
+  },
+];
+
+type FeatureCardProps = {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  className?: string;
+};
+
+export function FeatureCard({
+  icon: Icon,
+  title,
+  description,
+  className,
+}: FeatureCardProps) {
+  return (
+    <Card
+      className={`animate-slide-in bg-white glass-effect ${className || ""}`}
+    >
+      <CardHeader>
+        <div className="w-12 h-12 bg-secondary/50 rounded-lg flex items-center justify-center mb-4 shadow-soft">
+          <Icon className="w-6 h-6 text-primary" />
+        </div>
+        <CardTitle className="font-heading text-foreground">{title}</CardTitle>
+        <CardDescription className="text-muted-foreground font-body">
+          {description}
+        </CardDescription>
+      </CardHeader>
+    </Card>
+  );
+}
 
 function Features() {
   return (
@@ -20,48 +72,14 @@ function Features() {
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
-          <Card className="border-sidebar-border hover:shadow-primary transition-all duration-300 hover:border-primary glass-effect animate-slide-in">
-            <CardHeader>
-              <div className="w-12 h-12 bg-secondary/50 rounded-lg flex items-center justify-center mb-4 shadow-soft">
-                <Video className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle className="font-heading text-foreground">
-                Video Recording
-              </CardTitle>
-              <CardDescription className="text-muted-foreground font-body">
-                Seamless video recording with automatic upload and processing
-                for candidate responses.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="border-sidebar-border hover:shadow-primary transition-all duration-300 hover:border-primary glass-effect animate-slide-in">
-            <CardHeader>
-              <div className="w-12 h-12 bg-secondary/50 rounded-lg flex items-center justify-center mb-4 shadow-soft">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle className="font-heading text-foreground">
-                Role-Based Access
-              </CardTitle>
-              <CardDescription className="text-muted-foreground font-body">
-                Separate dashboards for interviewers and candidates with
-                tailored experiences.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="border-sidebar-border hover:shadow-primary transition-all duration-300 hover:border-primary glass-effect animate-slide-in">
-            <CardHeader>
-              <div className="w-12 h-12 bg-secondary/50 rounded-lg flex items-center justify-center mb-4 shadow-soft">
-                <Shield className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle className="font-heading text-foreground">
-                Secure & Private
-              </CardTitle>
-              <CardDescription className="text-muted-foreground font-body">
-                Enterprise-grade security with encrypted video storage and GDPR
-                compliance.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+            />
+          ))}
         </div>
       </div>
     </section>
