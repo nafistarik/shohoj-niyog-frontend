@@ -5,7 +5,7 @@ import Link from "next/link";
 function CTA() {
   return (
     <section className="py-20 animate-fade-in">
-      <div className="container mx-auto max-w-3xl text-center glass-effect p-8 rounded-lg shadow-soft">
+      <div className="container mx-auto max-w-3xl text-center  p-8 rounded-lg">
         <h2 className="text-4xl font-heading font-bold text-foreground mb-6">
           Ready to Get Started?
         </h2>
