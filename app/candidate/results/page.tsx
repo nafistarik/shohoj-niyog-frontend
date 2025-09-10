@@ -289,84 +289,84 @@ export default function CandidateResultsPage() {
 
               {resultsData.map((result) => (
                 <Card
-                  key={result.id}
-                  className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
-                >
-                  <CardHeader>
-                    <div className="flex flex-col md:flex-row md:items-center justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {result.session?.position || "Interview Session"}
-                        </CardTitle>
-                        <CardDescription className="flex flex-wrap items-center gap-2 mt-2">
-                          <span className="bg-slate-100 dark:bg-slate-800 rounded-md px-2 py-1 text-xs">
-                            {result.session?.stack
-                              ? Array.isArray(result.session.stack)
-                                ? result.session.stack.join(", ")
-                                : result.session.stack
-                              : "Technology Stack"}
-                          </span>
-                          {result.session?.scheduled && (
-                            <div className="flex items-center text-slate-600 dark:text-slate-400">
-                              <Calendar className="w-3 h-3 mr-1" />
-                              {formatDate(result.session.scheduled)}
-                            </div>
-                          )}
-                        </CardDescription>
-                      </div>
-                      <div className="mt-4 md:mt-0">
-                        <Badge
-                          variant="outline"
-                          className={`text-sm font-medium px-3 py-1 flex items-center ${getDecisionColor(
-                            result.decision
-                          )}`}
-                        >
-                          {getDecisionIcon(result.decision)}
-                          <span className="ml-1">
-                            {getDecisionText(result.decision)}
-                          </span>
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div
-                      className={`rounded-xl p-4 border ${getStatusBgColor(
-                        result.decision
-                      )} ${getStatusTextColor(result.decision)}`}
-                    >
-                      <p className="text-sm">
-                        {getStatusMessage(result.decision)}
-                      </p>
-                    </div>
+  key={result.id}
+  className="bg-card border-border shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
+>
+  <CardHeader>
+    <div className="flex flex-col md:flex-row md:items-center justify-between">
+      <div className="flex-1">
+        <CardTitle className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+          {result.session?.position || "Interview Session"}
+        </CardTitle>
+        <CardDescription className="flex flex-wrap items-center gap-2 mt-2">
+          <span className="bg-muted rounded-md px-2 py-1 text-xs">
+            {result.session?.stack
+              ? Array.isArray(result.session.stack)
+                ? result.session.stack.join(", ")
+                : result.session.stack
+              : "Technology Stack"}
+          </span>
+          {result.session?.scheduled && (
+            <div className="flex items-center text-muted-foreground">
+              <Calendar className="w-3 h-3 mr-1" />
+              {formatDate(result.session.scheduled)}
+            </div>
+          )}
+        </CardDescription>
+      </div>
+      <div className="mt-4 md:mt-0">
+        <Badge
+          variant="outline"
+          className={`text-sm font-medium px-3 py-1 flex items-center ${getDecisionColor(
+            result.decision
+          )}`}
+        >
+          {getDecisionIcon(result.decision)}
+          <span className="ml-1">
+            {getDecisionText(result.decision)}
+          </span>
+        </Badge>
+      </div>
+    </div>
+  </CardHeader>
+  <CardContent className="space-y-4">
+    <div
+      className={`rounded-xl p-4 border ${getStatusBgColor(
+        result.decision
+      )} ${getStatusTextColor(result.decision)}`}
+    >
+      <p className="text-sm">
+        {getStatusMessage(result.decision)}
+      </p>
+    </div>
 
-                    {/* Decision Selector */}
-                    <div className="flex items-center justify-between pt-2">
-                      <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                        Update your decision:
-                      </div>
-                      <Select
-                        value={result.decision}
-                        onValueChange={(value) =>
-                          updateDecision(result.id, value)
-                        }
-                      >
-                        <SelectTrigger className="w-40 border border-slate-300">
-                          <SelectValue placeholder="Select decision" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="pending">Under Review</SelectItem>
-                          <SelectItem value="interested">Interested</SelectItem>
-                          <SelectItem value="not_interested">
-                            Not Interested
-                          </SelectItem>
-                          <SelectItem value="accept">Accept</SelectItem>
-                          <SelectItem value="reject">Reject</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </CardContent>
-                </Card>
+    {/* Decision Selector */}
+    <div className="flex items-center justify-between pt-2">
+      <div className="text-sm font-medium text-muted-foreground">
+        Update your decision:
+      </div>
+      <Select
+        value={result.decision}
+        onValueChange={(value) =>
+          updateDecision(result.id, value)
+        }
+      >
+        <SelectTrigger className="w-40 border-border">
+          <SelectValue placeholder="Select decision" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="pending">Under Review</SelectItem>
+          <SelectItem value="interested">Interested</SelectItem>
+          <SelectItem value="not_interested">
+            Not Interested
+          </SelectItem>
+          <SelectItem value="accept">Accept</SelectItem>
+          <SelectItem value="reject">Reject</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  </CardContent>
+</Card>
               ))}
             </div>
           </div>

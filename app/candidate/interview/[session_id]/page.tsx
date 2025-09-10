@@ -183,161 +183,161 @@ const VideoInterview: React.FC = () => {
         description="Answer each question to the best of your ability"
       />
       <div className="flex items-center justify-center p-4">
-        <div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-          <div className="p-6 md:p-8">
-            {/* Progress indicator */}
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-2">
-                  <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                    {currentQIndex + 1}
-                  </span>
-                </div>
-                <span className="text-slate-600 dark:text-slate-400">
-                  of {questions.length}
+  <div className="w-full max-w-4xl bg-card rounded-xl shadow-xl overflow-hidden border border-border">
+    <div className="p-6 md:p-8">
+      {/* Progress indicator */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center">
+          <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center mr-2">
+            <span className="text-sm font-bold text-primary">
+              {currentQIndex + 1}
+            </span>
+          </div>
+          <span className="text-muted-foreground">
+            of {questions.length}
+          </span>
+        </div>
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Video className="w-4 h-4 mr-1" />
+            <span>Camera On</span>
+          </div>
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Mic className="w-4 h-4 mr-1" />
+            <span>Mic On</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Question section */}
+        <div className="space-y-6">
+          <div className="bg-secondary rounded-xl p-5 border border-border">
+            <h2 className="text-lg font-semibold text-foreground mb-2 flex items-center">
+              <span className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm mr-2">
+                {currentQIndex + 1}
+              </span>
+              Question {currentQIndex + 1}
+            </h2>
+            <p className="text-foreground text-lg">
+              {questions[currentQIndex].question}
+            </p>
+          </div>
+
+          {/* Timer */}
+          <div className="bg-muted rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center text-foreground">
+                <Clock className="w-5 h-5 mr-2" />
+                <span className="font-medium">Time remaining</span>
+              </div>
+              <div
+                className={`text-lg font-bold ${
+                  timeLeft <= 10
+                    ? "text-destructive"
+                    : "text-foreground"
+                }`}
+              >
+                {formatTime(timeLeft)}
+              </div>
+            </div>
+
+            {/* Progress bar */}
+            <div className="w-full bg-border rounded-full h-2.5">
+              <div
+                className="h-2.5 rounded-full bg-primary transition-all duration-1000 ease-linear"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <button
+            onClick={handleNext}
+            className="w-full py-3 px-4 rounded-xl bg-primary text-primary-foreground font-semibold flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg hover:bg-primary/90"
+          >
+            {currentQIndex === questions.length - 1 ? (
+              <>
+                <Send className="w-5 h-5 mr-2" />
+                Submit All Responses
+              </>
+            ) : (
+              <>
+                <SkipForward className="w-5 h-5 mr-2" />
+                Next Question
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Video section */}
+        <div className="space-y-4">
+          <div className="relative rounded-xl overflow-hidden border border-border bg-black aspect-video">
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              className="w-full h-full object-cover"
+            />
+
+            {/* Recording indicator */}
+            {isRecording && (
+              <div className="absolute top-4 right-4 flex items-center">
+                <div className="w-3 h-3 rounded-full bg-destructive mr-2 animate-pulse"></div>
+                <span className="text-white text-sm font-medium">
+                  Recording
                 </span>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-                  <Video className="w-4 h-4 mr-1" />
-                  <span>Camera On</span>
-                </div>
-                <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-                  <Mic className="w-4 h-4 mr-1" />
-                  <span>Mic On</span>
-                </div>
-              </div>
-            </div>
+            )}
+          </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Question section */}
-              <div className="space-y-6">
-                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-5 border border-blue-100 dark:border-blue-800/30">
-                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2 flex items-center">
-                    <span className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm mr-2">
-                      {currentQIndex + 1}
-                    </span>
-                    Question {currentQIndex + 1}
-                  </h2>
-                  <p className="text-slate-700 dark:text-slate-300 text-lg">
-                    {questions[currentQIndex].question}
-                  </p>
-                </div>
-
-                {/* Timer */}
-                <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center text-slate-700 dark:text-slate-300">
-                      <Clock className="w-5 h-5 mr-2" />
-                      <span className="font-medium">Time remaining</span>
-                    </div>
-                    <div
-                      className={`text-lg font-bold ${
-                        timeLeft <= 10
-                          ? "text-red-600"
-                          : "text-slate-900 dark:text-white"
-                      }`}
-                    >
-                      {formatTime(timeLeft)}
-                    </div>
-                  </div>
-
-                  {/* Progress bar */}
-                  <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
-                    <div
-                      className="h-2.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000 ease-linear"
-                      style={{ width: `${progress}%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Controls */}
-                <button
-                  onClick={handleNext}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg"
-                >
-                  {currentQIndex === questions.length - 1 ? (
-                    <>
-                      <Send className="w-5 h-5 mr-2" />
-                      Submit All Responses
-                    </>
-                  ) : (
-                    <>
-                      <SkipForward className="w-5 h-5 mr-2" />
-                      Next Question
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Video section */}
-              <div className="space-y-4">
-                <div className="relative rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-black aspect-video">
-                  <video
-                    ref={videoRef}
-                    autoPlay
-                    muted
-                    className="w-full h-full object-cover"
-                  />
-
-                  {/* Recording indicator */}
-                  {isRecording && (
-                    <div className="absolute top-4 right-4 flex items-center">
-                      <div className="w-3 h-3 rounded-full bg-red-500 mr-2 animate-pulse"></div>
-                      <span className="text-white text-sm font-medium">
-                        Recording
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Recording status */}
-                <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700 dark:text-slate-300">
-                      Question status:
-                    </span>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        recordings[currentQIndex]
-                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                          : "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
-                      }`}
-                    >
-                      {recordings[currentQIndex] ? "Recorded" : "Recording..."}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Question navigation */}
-            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
-              <div className="flex justify-center space-x-2">
-                {questions.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      if (index !== currentQIndex) {
-                        stopRecording();
-                        setCurrentQIndex(index);
-                      }
-                    }}
-                    className={`w-3 h-3 rounded-full ${
-                      index === currentQIndex
-                        ? "bg-blue-600"
-                        : recordings[index]
-                        ? "bg-green-500"
-                        : "bg-slate-300 dark:bg-slate-600"
-                    }`}
-                    aria-label={`Go to question ${index + 1}`}
-                  />
-                ))}
-              </div>
+          {/* Recording status */}
+          <div className="bg-muted rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-foreground">
+                Question status:
+              </span>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  recordings[currentQIndex]
+                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                    : "bg-secondary text-secondary-foreground"
+                }`}
+              >
+                {recordings[currentQIndex] ? "Recorded" : "Recording..."}
+              </span>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Question navigation */}
+      <div className="mt-8 pt-6 border-t border-border">
+        <div className="flex justify-center space-x-2">
+          {questions.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                if (index !== currentQIndex) {
+                  stopRecording();
+                  setCurrentQIndex(index);
+                }
+              }}
+              className={`w-3 h-3 rounded-full ${
+                index === currentQIndex
+                  ? "bg-primary"
+                  : recordings[index]
+                  ? "bg-green-500"
+                  : "bg-muted-foreground/30"
+              }`}
+              aria-label={`Go to question ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
   );
 };
