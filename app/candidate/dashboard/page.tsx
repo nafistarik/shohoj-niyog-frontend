@@ -122,14 +122,14 @@ export default function CandidateDashboard() {
   const nextInterview =
     upcomingInterviews.length > 0
       ? upcomingInterviews.reduce((closest, current) => {
-          const closestTime = new Date(closest.scheduled).getTime();
-          const currentTime = new Date(current.scheduled).getTime();
-          const nowTime = now.getTime();
+        const closestTime = new Date(closest.scheduled).getTime();
+        const currentTime = new Date(current.scheduled).getTime();
+        const nowTime = now.getTime();
 
-          return currentTime - nowTime < closestTime - nowTime
-            ? current
-            : closest;
-        })
+        return currentTime - nowTime < closestTime - nowTime
+          ? current
+          : closest;
+      })
       : null;
 
   return (
@@ -162,11 +162,10 @@ export default function CandidateDashboard() {
           <StatCard
             icon={<CalendarDays className="w-6 h-6 text-primary" />}
             title={`${nextInterview ? nextInterview.created_by : "🚫"}`}
-            description={`${
-              nextInterview
+            description={`${nextInterview
                 ? formatDate(nextInterview.scheduled)
                 : "No upcoming interviews"
-            }`}
+              }`}
           />
         </div>
       </section>
