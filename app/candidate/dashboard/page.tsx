@@ -31,6 +31,7 @@ import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/PageHeader";
+import CandidateDashboardCard from "./_components/candidate-dashboard-card";
 
 const sessions = [
   {
@@ -224,70 +225,7 @@ export default function CandidateDashboard() {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {sessions.map((session) => (
-              <Card
-                key={session.id}
-                className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300 overflow-hidden group animate-fade-in"
-              >
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-accent"></div>
-
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 pr-2">
-                      <CardTitle className="text-lg font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
-                        {session.position}
-                      </CardTitle>
-                      <CardDescription className="mt-1 line-clamp-1 text-muted-foreground">
-                        {Array.isArray(session.stack)
-                          ? session.stack.join(", ")
-                          : session.stack}
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    {session.scheduled && (
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        {formatDate(session.scheduled)}
-                      </div>
-                    )}
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <Clock className="w-4 h-4 mr-2" />
-                      {session.qa_pairs.length} questions • ~
-                      {getTotalDuration(session.qa_pairs)}
-                    </div>
-                  </div>
-
-                  <div className="bg-secondary/30 p-3 rounded-lg border border-border">
-                    <h4 className="font-medium text-sm text-foreground mb-2 flex items-center">
-                      <Zap className="w-4 h-4 mr-1 text-yellow-500" />
-                      What to expect:
-                    </h4>
-                    <ul className="text-xs text-muted-foreground space-y-1">
-                      <li className="flex">
-                        <span className="text-primary mr-1">•</span>
-                        Record video responses to {session.qa_pairs.length}{" "}
-                        questions
-                      </li>
-                      <li className="flex">
-                        <span className="text-primary mr-1">•</span>
-                        Take your time - no time limit per question
-                      </li>
-                      <li className="flex">
-                        <span className="text-primary mr-1">•</span>
-                        Review and re-record if needed
-                      </li>
-                    </ul>
-                  </div>
-                  <Button asChild className="w-full gradient-bg">
-                    <Link href={`/candidate/interview/${session.id}`}>
-                      <Play className="w-4 h-4 mr-2" />
-                      Start Interview
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+              <CandidateDashboardCard session={session} key={session.id} />
             ))}
           </div>
         )}
