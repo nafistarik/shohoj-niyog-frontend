@@ -2,21 +2,21 @@ import { Video } from "lucide-react";
 import { Button } from "../ui/button";
 
 const productItems = [
-  { label: "Features", href: "#features" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Security", href: "#security" },
+  { label: "Features", href: "#features", id: 1 },
+  { label: "Pricing", href: "#pricing", id: 2 },
+  { label: "Security", href: "#security", id: 3 },
 ];
 
 const companyItems = [
-  { label: "About", href: "#about" },
-  { label: "Careers", href: "#careers" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "#about", id: 1 },
+  { label: "Careers", href: "#careers", id: 2 },
+  { label: "Contact", href: "#contact", id: 3 },
 ];
 
 const supportItems = [
-  { label: "FAQ", href: "#faq" },
-  { label: "Help Center", href: "#help-center" },
-  { label: "Documentation", href: "#documentation" },
+  { label: "FAQ", href: "#faq", id: 1 },
+  { label: "Help Center", href: "#help-center", id: 2 },
+  { label: "Documentation", href: "#documentation", id: 3 },
 ];
 
 function Footer() {
@@ -43,7 +43,7 @@ function Footer() {
             </h3>
             <div className="flex flex-col">
               {productItems.map((item) => (
-                <Button asChild className="p-0 justify-start" variant="link">
+                <Button asChild className="p-0 justify-start" variant="link" key={item.id}>
                   <a href={item.href}>{item.label}</a>
                 </Button>
               ))}
@@ -55,7 +55,7 @@ function Footer() {
             </h3>
             <div className="flex flex-col">
               {companyItems.map((item) => (
-                <Button asChild className="p-0 justify-start" variant="link">
+                <Button asChild className="p-0 justify-start" variant="link" key={item.id}>
                   <a href={item.href}>{item.label}</a>
                 </Button>
               ))}
@@ -67,7 +67,7 @@ function Footer() {
             </h3>
             <div className="flex flex-col">
               {supportItems.map((item) => (
-                <Button asChild className="p-0 justify-start" variant="link">
+                <Button asChild className="p-0 justify-start" variant="link" key={item.id}>
                   <a href={item.href}>{item.label}</a>
                 </Button>
               ))}

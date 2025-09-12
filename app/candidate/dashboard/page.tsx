@@ -1,27 +1,9 @@
 "use client";
-
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
   Award,
-  Calendar,
   Clock,
-  Play,
-  Target,
-  User,
-  Zap,
   CalendarDays,
-  CheckCircle,
-  AlertCircle,
-  TrendingUp,
   Eye,
 } from "lucide-react";
 import Link from "next/link";
@@ -130,30 +112,6 @@ export default function CandidateDashboard() {
     });
   };
 
-  const getLevelColor = (level: string) => {
-    switch (level.toLowerCase()) {
-      case "beginner":
-        return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800";
-      case "intermediate":
-        return "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800";
-      case "advanced":
-        return "bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800";
-      default:
-        return "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
-    }
-  };
-
-  const getTotalDuration = (qaPairs: any[]) => {
-    const estimatedMinutes = qaPairs.length * 3;
-    const hours = Math.floor(estimatedMinutes / 60);
-    const minutes = estimatedMinutes % 60;
-
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
-    }
-    return `${minutes}m`;
-  };
-
   // Calculate upcoming interviews (scheduled in the future)
   const now = new Date();
   const upcomingInterviews = sessions.filter(
@@ -190,7 +148,7 @@ export default function CandidateDashboard() {
 
       {/* Stats Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard
             icon={<Award className="w-6 h-6 text-primary" />}
             title={`${sessions.length}`}
@@ -223,7 +181,7 @@ export default function CandidateDashboard() {
             actionHref="/candidate/dashboard"
           />
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {sessions.map((session) => (
               <CandidateDashboardCard session={session} key={session.id} />
             ))}
