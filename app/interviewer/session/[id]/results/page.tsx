@@ -16,7 +16,7 @@ import { useParams } from "next/navigation";
 import type { CandidateResponse, InterviewSession } from "@/lib/types";
 import CandidateResultCard from "./_components/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
-import { PageHeader } from "@/components/shared/PageHeader";
+import { PageHeader } from "@/components/shared/page-header";
 
 // Dummy data
 const session = {

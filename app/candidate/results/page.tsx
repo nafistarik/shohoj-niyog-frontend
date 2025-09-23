@@ -17,7 +17,7 @@ import type { CandidateResponse, InterviewSession } from "@/lib/types";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
-import { PageHeader } from "@/components/shared/PageHeader";
+import { PageHeader } from "@/components/shared/page-header";
 import CandidateResultCard from "./_components/candidate-result-card";
 
 interface CandidateResultWithSession extends CandidateResponse {

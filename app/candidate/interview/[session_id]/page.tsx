@@ -12,7 +12,7 @@ import {
   Mic,
   Send,
 } from "lucide-react";
-import { PageHeader } from "@/components/shared/PageHeader";
+import { PageHeader } from "@/components/shared/page-header";
 
 type Question = {
   question: string;

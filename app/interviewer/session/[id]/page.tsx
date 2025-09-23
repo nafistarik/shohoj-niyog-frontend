@@ -30,7 +30,7 @@ import { useParams } from "next/navigation";
 import type { InterviewSession } from "@/lib/types";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
-import { PageHeader } from "@/components/shared/PageHeader";
+import { PageHeader } from "@/components/shared/page-header";
 import AllowedCandidatesItem from "./_components/allowed-candidate-item";
 import { Session } from "inspector/promises";
 import SessionQAPair from "./_components/session-qa-pair";
