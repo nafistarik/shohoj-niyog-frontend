@@ -35,8 +35,41 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-    console.log({ email, password });
-    console.log({ email, password });
+
+    try {
+      const response = await fetch("http://13.60.253.43/accounts/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("✅ Login successful:", data);
+
+        // Example: store token if backend returns it
+        localStorage.setItem("token", data.access);
+        localStorage.setItem("refresh", data.refresh);
+
+        // Example: redirect after success
+        router.push(`${data.role}/dashboard`);
+      } else {
+        console.error("❌ Login failed:", data);
+        setError(data?.error || "Invalid email or password");
+      }
+    } catch (error) {
+      console.error("🚨 Error during login:", error);
+      setError("Something went wrong. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+
     // try {
     //   const success = await login(email, password)
     //   if (!success) {
