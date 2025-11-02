@@ -36,7 +36,7 @@ export default function LoginPage() {
     setError("");
     setIsLoading(true);
     console.log({ email, password });
-
+    console.log({ email, password });
     // try {
     //   const success = await login(email, password)
     //   if (!success) {
