@@ -25,6 +25,7 @@ export default function SignupPage() {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
+    company: "",
     phone: "",
     password: "",
     confirmPassword: "",
@@ -48,7 +49,6 @@ export default function SignupPage() {
     setSuccess("");
     setIsLoading(true);
 
-    // Validation
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       setIsLoading(false);
@@ -61,43 +61,76 @@ export default function SignupPage() {
       return;
     }
 
-    console.log({
-      username: formData.username,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-      role: formData.role,
-    });
+    try {
+      console.log({
+        role: formData.role,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        company: formData.company,
+      });
+      const response = await fetch("http://13.60.253.43/accounts/signup/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: formData.role,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          phone: formData.phone,
+          company: formData.company,
+        }),
+      });
 
-    // try {
-    //   const response = await fetch("/api/auth/signup", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       username: formData.username,
-    //       email: formData.email,
-    //       phone: formData.phone,
-    //       password: formData.password,
-    //       role: formData.role,
-    //     }),
-    //   })
+      const data = await response.json();
 
-    //   const data = await response.json()
-
-    //   if (response.ok) {
-    //     setSuccess("Account created successfully! Redirecting to login...")
-    //     setTimeout(() => {
-    //       router.push("/login")
-    //     }, 2000)
-    //   } else {
-    //     setError(data.error || "Failed to create account")
-    //   }
-    // } catch (err) {
-    //   setError("An error occurred. Please try again.")
-    // } finally {
-    //   setIsLoading(false)
-    // }
+      if (response.ok) {
+        console.log("✅ Signup successful:", data);
+        setSuccess("Signup successful!");
+        router.push("/login");
+      } else {
+        console.error("❌ Signup failed:", data);
+        setError(data?.error || "Signup failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("🚨 Error during signup:", error);
+      setError("Something went wrong. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // try {
+  //   const response = await fetch("/api/auth/signup", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       username: formData.username,
+  //       email: formData.email,
+  //       phone: formData.phone,
+  //       password: formData.password,
+  //       role: formData.role,
+  //     }),
+  //   })
+
+  //   const data = await response.json()
+
+  //   if (response.ok) {
+  //     setSuccess("Account created successfully! Redirecting to login...")
+  //     setTimeout(() => {
+  //       router.push("/login")
+  //     }, 2000)
+  //   } else {
+  //     setError(data.error || "Failed to create account")
+  //   }
+  // } catch (err) {
+  //   setError("An error occurred. Please try again.")
+  // } finally {
+  //   setIsLoading(false)
+  // }
 
   return (
     <div className="min-h-screen flex gradient-bg-subtle-reverse">
@@ -191,18 +224,12 @@ export default function SignupPage() {
                     htmlFor="username"
                     className="text-foreground font-body"
                   >
-                    {formData.role === "interviewer"
-                      ? "Company Name"
-                      : "Full Name"}
+                    Full Name
                   </Label>
                   <Input
                     id="username"
                     type="text"
-                    placeholder={
-                      formData.role === "interviewer"
-                        ? "Enter company name"
-                        : "Enter your full name"
-                    }
+                    placeholder="Enter your full name"
                     value={formData.username}
                     onChange={(e) =>
                       handleInputChange("username", e.target.value)
@@ -211,6 +238,28 @@ export default function SignupPage() {
                     className="h-11 bg-input border-border"
                   />
                 </div>
+
+                {formData.role === "interviewer" && (
+                  <div className="space-y-2 animate-slide-in delay-300">
+                    <Label
+                      htmlFor="company"
+                      className="text-foreground font-body"
+                    >
+                      Company Name
+                    </Label>
+                    <Input
+                      id="company"
+                      type="text"
+                      placeholder="Enter your full name"
+                      value={formData.company}
+                      onChange={(e) =>
+                        handleInputChange("company", e.target.value)
+                      }
+                      required
+                      className="h-11 bg-input border-border"
+                    />
+                  </div>
+                )}
 
                 <div className="space-y-2 animate-slide-in delay-400">
                   <Label htmlFor="email" className="text-foreground font-body">
