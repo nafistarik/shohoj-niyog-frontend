@@ -101,8 +101,8 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
             {session.level}
           </Badge>
           <span className="text-sm text-muted-foreground">
-            {session.qa_pairs.length} question
-            {session.qa_pairs.length !== 1 ? "s" : ""}
+            {session.qa_pairs?.length} question
+            {session.qa_pairs?.length !== 1 ? "s" : ""}
           </span>
         </div>
 
