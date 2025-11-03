@@ -179,6 +179,9 @@ useEffect(() => {
   fetchSessions();
 }, []);
 
+if (isLoading) return <p>Loading sessions...</p>;
+if (error) return <p style={{ color: "red" }}>{error}</p>;
+
   // const { user } = useAuth()
 
   // useEffect(() => {
