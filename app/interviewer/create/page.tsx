@@ -135,46 +135,70 @@ export default function CreateSessionPage() {
     }
   }, [date, time]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
+  setSuccess("");
 
-    console.log(formData);
+  console.log(formData);
 
-    // Validation
-    if (!formData.position.trim()) {
-      setError("Position title is required");
-      return;
-    }
-    if (formData.stacks.length === 0) {
-      setError("At least one technology stack is required");
-      return;
-    }
-    if (!formData.level) {
-      setError("Experience level is required");
-      return;
-    }
-    if (formData.allowed_candidates.length === 0) {
-      setError("At least one candidate email is required");
-      return;
-    }
+  // Validation
+  if (!formData.position.trim()) {
+    setError("Position title is required");
+    return;
+  }
+  if (formData.stacks.length === 0) {
+    setError("At least one technology stack is required");
+    return;
+  }
+  if (!formData.level) {
+    setError("Experience level is required");
+    return;
+  }
+  if (formData.allowed_candidates.length === 0) {
+    setError("At least one candidate email is required");
+    return;
+  }
 
-    setIsLoading(true);
+  setIsLoading(true);
 
-    try {
-      // Simulate API call
-      setTimeout(() => {
-        setSuccess("Interview session created successfully!");
-        setIsLoading(false);
-        // In a real app, you would redirect to the session page
-        // router.push(`/interviewer/session/${data.Session_ID}`);
-      }, 1500);
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-      setIsLoading(false);
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch("http://13.60.253.43/api/gen/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify({
+        position: formData.position,
+        stacks: formData.stacks,
+        level: formData.level,
+        allowed_candidates: formData.allowed_candidates,
+        num_questions: formData.num_questions,
+        scheduled: formData.scheduled,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("✅ Session created successfully:", data);
+      setSuccess("Interview session created successfully!");
+      router.push(`/interviewer/session/${data.Session_ID}`);
+    } else {
+      console.error("❌ Failed to create session:", data);
+      setError(data?.error || "Failed to create session");
     }
-  };
+  } catch (err) {
+    console.error("🚨 Error creating session:", err);
+    setError("An error occurred. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-background animate-fade-in">

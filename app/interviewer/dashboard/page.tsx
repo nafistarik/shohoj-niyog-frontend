@@ -140,47 +140,46 @@ const user = {
 
 export default function InterviewerDashboard() {
   const [sessions, setSessions] = useState<any[]>([]);
-const [error, setError] = useState("");
-const [isLoading, setIsLoading] = useState(false);
-
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchSessions = async () => {
-  setError("");
-  setIsLoading(true);
+    setError("");
+    setIsLoading(true);
 
-  try {
-    const token = localStorage.getItem("token");
+    try {
+      const token = localStorage.getItem("token");
 
-    const response = await fetch("http://13.60.253.43/api/findall/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    });
+      const response = await fetch("http://13.60.253.43/api/findall/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      console.log("✅ Sessions fetched successfully:", data);
-      setSessions(data);
-    } else {
-      console.error("❌ Failed to fetch sessions:", data);
-      setError(data?.error || "Failed to load interview sessions");
+      if (response.ok) {
+        console.log("✅ Sessions fetched successfully:", data);
+        setSessions(data);
+      } else {
+        console.error("❌ Failed to fetch sessions:", data);
+        setError(data?.error || "Failed to load interview sessions");
+      }
+    } catch (error) {
+      console.error("🚨 Error fetching sessions:", error);
+      setError("Something went wrong while fetching sessions.");
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error("🚨 Error fetching sessions:", error);
-    setError("Something went wrong while fetching sessions.");
-  } finally {
-    setIsLoading(false);
-  }
-};
-useEffect(() => {
-  fetchSessions();
-}, []);
+  };
+  useEffect(() => {
+    fetchSessions();
+  }, []);
 
-if (isLoading) return <p>Loading sessions...</p>;
-if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (isLoading) return <p>Loading sessions...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   // const { user } = useAuth()
 

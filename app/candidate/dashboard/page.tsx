@@ -14,82 +14,83 @@ import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "./_components/candidate-dashboard-card";
+import { useEffect, useState } from "react";
 
-const sessions = [
-  {
-    id: "68935b9fc5f8140275f8b24a",
-    position: "Backend Developer",
-    stack: "Node.js, Express, MongoDB",
-    level: "Intermediate",
-    created_by: "recruiter_id",
-    qa_pairs: [
-      {
-        question_id: "q5b6fe898",
-        question: "What is the difference between a hash table and a hash map?",
-        answer: "...",
-      },
-      {
-        question_id: "q5b6fe899",
-        question: "Explain the concept of middleware in Express.js",
-        answer: "...",
-      },
-      {
-        question_id: "q5b6fe900",
-        question: "How would you optimize database queries in MongoDB?",
-        answer: "...",
-      },
-    ],
-    allowed_candidates: ["uuid", "can2@gmail.com"],
-    scheduled: "2025-08-25T06:30:00Z",
-  },
-  {
-    id: "68935b9fc5f8140275f8b24b",
-    position: "Frontend Developer",
-    stack: "React, TypeScript, Next.js",
-    level: "Advanced",
-    created_by: "recruiter_id",
-    qa_pairs: [
-      {
-        question_id: "q5b6fe901",
-        question: "Explain the Virtual DOM concept in React",
-        answer: "...",
-      },
-      {
-        question_id: "q5b6fe902",
-        question: "What are React hooks and when would you use them?",
-        answer: "...",
-      },
-    ],
-    allowed_candidates: ["uuid", "can2@gmail.com"],
-    scheduled: "2025-09-27T09:15:00Z",
-  },
-  {
-    id: "68935b9fc5f8140275f8b24c",
-    position: "Full Stack Engineer",
-    stack: "React, Node.js, PostgreSQL",
-    level: "Beginner",
-    created_by: "recruiter_id",
-    qa_pairs: [
-      {
-        question_id: "q5b6fe903",
-        question: "What is the difference between SQL and NoSQL databases?",
-        answer: "...",
-      },
-      {
-        question_id: "q5b6fe904",
-        question: "Explain REST API principles",
-        answer: "...",
-      },
-      {
-        question_id: "q5b6fe905",
-        question: "What is JWT and how does it work?",
-        answer: "...",
-      },
-    ],
-    allowed_candidates: ["uuid", "can2@gmail.com"],
-    scheduled: "2025-09-30T14:00:00Z",
-  },
-];
+// const sessions = [
+//   {
+//     id: "68935b9fc5f8140275f8b24a",
+//     position: "Backend Developer",
+//     stack: "Node.js, Express, MongoDB",
+//     level: "Intermediate",
+//     created_by: "recruiter_id",
+//     qa_pairs: [
+//       {
+//         question_id: "q5b6fe898",
+//         question: "What is the difference between a hash table and a hash map?",
+//         answer: "...",
+//       },
+//       {
+//         question_id: "q5b6fe899",
+//         question: "Explain the concept of middleware in Express.js",
+//         answer: "...",
+//       },
+//       {
+//         question_id: "q5b6fe900",
+//         question: "How would you optimize database queries in MongoDB?",
+//         answer: "...",
+//       },
+//     ],
+//     allowed_candidates: ["uuid", "can2@gmail.com"],
+//     scheduled: "2025-08-25T06:30:00Z",
+//   },
+//   {
+//     id: "68935b9fc5f8140275f8b24b",
+//     position: "Frontend Developer",
+//     stack: "React, TypeScript, Next.js",
+//     level: "Advanced",
+//     created_by: "recruiter_id",
+//     qa_pairs: [
+//       {
+//         question_id: "q5b6fe901",
+//         question: "Explain the Virtual DOM concept in React",
+//         answer: "...",
+//       },
+//       {
+//         question_id: "q5b6fe902",
+//         question: "What are React hooks and when would you use them?",
+//         answer: "...",
+//       },
+//     ],
+//     allowed_candidates: ["uuid", "can2@gmail.com"],
+//     scheduled: "2025-09-27T09:15:00Z",
+//   },
+//   {
+//     id: "68935b9fc5f8140275f8b24c",
+//     position: "Full Stack Engineer",
+//     stack: "React, Node.js, PostgreSQL",
+//     level: "Beginner",
+//     created_by: "recruiter_id",
+//     qa_pairs: [
+//       {
+//         question_id: "q5b6fe903",
+//         question: "What is the difference between SQL and NoSQL databases?",
+//         answer: "...",
+//       },
+//       {
+//         question_id: "q5b6fe904",
+//         question: "Explain REST API principles",
+//         answer: "...",
+//       },
+//       {
+//         question_id: "q5b6fe905",
+//         question: "What is JWT and how does it work?",
+//         answer: "...",
+//       },
+//     ],
+//     allowed_candidates: ["uuid", "can2@gmail.com"],
+//     scheduled: "2025-09-30T14:00:00Z",
+//   },
+// ];
 
 const user = {
   _id: "ObjectId",
@@ -102,6 +103,48 @@ const user = {
 };
 
 export default function CandidateDashboard() {
+    const [sessions, setSessions] = useState<any[]>([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
+    const fetchSessions = async () => {
+    setError("");
+    setIsLoading(true);
+  
+    try {
+      const token = localStorage.getItem("token");
+  
+      const response = await fetch("http://13.60.253.43/api/findall/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log("✅ Sessions fetched successfully:", data);
+        setSessions(data);
+      } else {
+        console.error("❌ Failed to fetch sessions:", data);
+        setError(data?.error || "Failed to load interview sessions");
+      }
+    } catch (error) {
+      console.error("🚨 Error fetching sessions:", error);
+      setError("Something went wrong while fetching sessions.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchSessions();
+  }, []);
+  
+  if (isLoading) return <p>Loading sessions...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -114,7 +157,7 @@ export default function CandidateDashboard() {
 
   // Calculate upcoming interviews (scheduled in the future)
   const now = new Date();
-  const upcomingInterviews = sessions.filter(
+  const upcomingInterviews = sessions?.filter(
     (session) => new Date(session.scheduled) > now
   );
 
@@ -151,7 +194,7 @@ export default function CandidateDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard
             icon={<Award className="w-6 h-6 text-primary" />}
-            title={`${sessions.length}`}
+            title={`${sessions?.length}`}
             description="Total Interviews"
           />
           <StatCard
@@ -181,7 +224,7 @@ export default function CandidateDashboard() {
           />
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {sessions.map((session) => (
+            {sessions?.map((session,index) => (
               <CandidateDashboardCard session={session} key={session.id} />
             ))}
           </div>

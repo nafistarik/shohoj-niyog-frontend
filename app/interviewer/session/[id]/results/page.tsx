@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -12,7 +12,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import type { CandidateResponse, InterviewSession } from "@/lib/types";
 import CandidateResultCard from "./_components/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
@@ -133,8 +133,58 @@ const results = [
 // Candidate Result Card Component
 
 export default function SessionResultsPage() {
-  const [resultsData, setResultsData] = useState(results);
-  const params = useParams();
+  
+  // const [resultsData, setResultsData] = useState(results);
+  // const params = useParams();
+
+  const [resultsData, setResultsData] = useState<any[]>([]);
+const [isLoading, setIsLoading] = useState(false);
+const [error, setError] = useState("");
+const pathname = usePathname();
+const pathParts = pathname.split("/"); // ['', 'interviewer', 'session', '123', 'results']
+const sessionId = pathParts[3];
+
+useEffect(() => {
+  if (!sessionId) return;
+
+  const fetchResults = async () => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `http://13.60.253.43/api/results/${sessionId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("✅ Results fetched successfully:", data);
+        setResultsData(data);
+      } else {
+        console.error("❌ Failed to fetch results:", data);
+        setError(data?.error || "Failed to load results");
+      }
+    } catch (error) {
+      console.error("🚨 Error fetching results:", error);
+      setError("Something went wrong while fetching results.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchResults();
+}, [sessionId]);
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -178,13 +228,16 @@ export default function SessionResultsPage() {
 
   const highestScore = Math.max(...resultsData.map((r) => r.total_score));
 
+  if (isLoading) return <p>Loading results...</p>;
+if (error) return <p style={{ color: "red" }}>{error}</p>;
+
   return (
     <div className="min-h-screen bg-white pb-12">
       <PageHeader
         title={`${session.position} - Results`}
         description="Review candidate responses and make decisions"
         backLabel="Back to Session"
-        backHref={`/interviewer/session/${params.id}`}
+        backHref={`/interviewer/session/${sessionId}`}
       />
 
       {/* Main Content */}
