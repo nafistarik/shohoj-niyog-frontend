@@ -125,7 +125,6 @@ export default function CandidateDashboard() {
       const data = await response.json();
   
       if (response.ok) {
-        console.log("✅ Sessions fetched successfully:", data);
         setSessions(data);
       } else {
         console.error("❌ Failed to fetch sessions:", data);

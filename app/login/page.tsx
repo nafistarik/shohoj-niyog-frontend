@@ -51,7 +51,6 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("✅ Login successful:", data);
 
         // Example: store token if backend returns it
         localStorage.setItem("token", data.access);

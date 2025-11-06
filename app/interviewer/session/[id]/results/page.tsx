@@ -168,7 +168,6 @@ useEffect(() => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("✅ Results fetched successfully:", data);
         setResultsData(data);
       } else {
         console.error("❌ Failed to fetch results:", data);

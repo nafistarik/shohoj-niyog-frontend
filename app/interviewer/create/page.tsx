@@ -140,8 +140,6 @@ const handleSubmit = async (e: React.FormEvent) => {
   setError("");
   setSuccess("");
 
-  console.log(formData);
-
   // Validation
   if (!formData.position.trim()) {
     setError("Position title is required");
@@ -184,7 +182,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("✅ Session created successfully:", data);
       setSuccess("Interview session created successfully!");
       router.push(`/interviewer/session/${data.Session_ID}`);
     } else {

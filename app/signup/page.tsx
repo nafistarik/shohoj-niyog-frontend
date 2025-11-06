@@ -62,14 +62,6 @@ export default function SignupPage() {
     }
 
     try {
-      console.log({
-        role: formData.role,
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        phone: formData.phone,
-        company: formData.company,
-      });
       const response = await fetch("http://13.60.253.43/accounts/signup/", {
         method: "POST",
         headers: {
@@ -88,7 +80,6 @@ export default function SignupPage() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("✅ Signup successful:", data);
         setSuccess("Signup successful!");
         router.push("/login");
       } else {

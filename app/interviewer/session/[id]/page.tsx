@@ -100,9 +100,6 @@ export default function SessionDetailsPage() {
   const pathname = usePathname();
   const sessionId = pathname.split("/")[3];
 
-
-    console.log(sessionId),"hello"
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -166,8 +163,6 @@ export default function SessionDetailsPage() {
     setError("");
     setIsLoading(true);
 
-    console.log(sessionId)
-
     try {
       const token = localStorage.getItem("token");
 
@@ -185,7 +180,6 @@ export default function SessionDetailsPage() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("✅ Sessions fetched successfully:", data);
         setSession(data);
       } else {
         console.error("❌ Failed to fetch sessions:", data);
@@ -250,7 +244,7 @@ export default function SessionDetailsPage() {
                     Technology Stack
                   </Label>
                   <div className="flex flex-wrap gap-2">
-                    {session?.stack.split(", ").map((tech) => (
+                    {session?.stack.split(", ").map((tech: string) => (
                       <Badge
                         key={tech}
                         variant="secondary"
@@ -268,9 +262,9 @@ export default function SessionDetailsPage() {
                     Experience Level
                   </Label>
                   <Badge
-                    // className={`${getLevelColor(
-                    //   session?.level
-                    // )} px-3 py-1 font-medium`}
+                  // className={`${getLevelColor(
+                  //   session?.level
+                  // )} px-3 py-1 font-medium`}
                   >
                     {/* {getLevelIcon(session?.level)} */}
                     <span className="ml-1">{session?.level}</span>
@@ -315,7 +309,7 @@ export default function SessionDetailsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {session?.allowed_candidates.map((email) => (
+                  {session?.allowed_candidates.map((email: string) => (
                     <AllowedCandidatesItem
                       email={email}
                       key={email}
@@ -343,7 +337,7 @@ export default function SessionDetailsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {session?.qa_pairs.map((qa, index) => (
+                  {session?.qa_pairs.map((qa, index: number) => (
                     <SessionQAPair qa={qa} index={index} key={qa.question_id} />
                   ))}
                 </div>
