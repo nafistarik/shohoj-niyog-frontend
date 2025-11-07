@@ -168,7 +168,6 @@ export default function SessionResultsPage() {
 
       if (response.ok) {
         setSession(data);
-        console.log(data, "this is response");
       } else {
         console.error("❌ Failed to fetch sessions:", data);
         setError(data?.error || "Failed to load interview sessions");
@@ -233,37 +232,44 @@ export default function SessionResultsPage() {
     });
   };
 
-  const updateDecision = async (candidateId: string, decision: string) => {
-    console.log({ candidateId, decision, sessionId: session.id });
+const updateDecision = async (candidateId: string, decision: string) => {
+  console.log({ candidateId, decision, sessionId });
 
-    // Update local state
-    setResultsData((prev) =>
-      prev.map((result) =>
-        result.candidate_id === candidateId
-          ? { ...result, decision: decision as any }
-          : result
-      )
-    );
+  // Update UI immediately (optimistic update)
+  setResultsData((prev) =>
+    prev.map((result) =>
+      result.candidate_id === candidateId
+        ? { ...result, decision: decision as any }
+        : result
+    )
+  );
 
-    // In a real app, you would make an API call here
-    // try {
-    //   const response = await fetch("/api/decide", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       session_id: params.id,
-    //       candidate_id: candidateId,
-    //       decision,
-    //     }),
-    //   });
-    //
-    //   if (!response.ok) {
-    //     throw new Error("Failed to update decision");
-    //   }
-    // } catch (err) {
-    //   console.error("Failed to update decision:", err);
-    // }
-  };
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch("http://13.60.253.43/api/decide/", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify({
+        session_id: sessionId,
+        candidate_id: candidateId,
+        decision,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.error || "Failed to update decision");
+    }
+  } catch (err) {
+    console.error("Failed to update decision:", err);
+  }
+};
+
 
   const highestScore = Math.max(...resultsData.map((r) => r.total_score));
 
