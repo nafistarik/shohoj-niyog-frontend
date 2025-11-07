@@ -19,143 +19,142 @@ import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 
 // Dummy data
-const session = {
-  id: "68935b9fc5f8140275f8b24a",
-  position: "Backend Developer",
-  stack: "Node, Django, MongoDB",
-  level: "Intermediate",
-  created_by: "recruiter_id",
-  qa_pairs: [
-    {
-      question_id: "q1",
-      question: "What is your experience with Node.js?",
-      answer: "...",
-    },
-    {
-      question_id: "q2",
-      question: "How do you handle database optimization?",
-      answer: "...",
-    },
-    {
-      question_id: "q3",
-      question: "Describe your approach to debugging?",
-      answer: "...",
-    },
-  ],
-  allowed_candidates: ["uuid", "can2@gmail.com"],
-  scheduled: "2025-08-25T06:30:00Z",
-};
+// const session = {
+//   id: "68935b9fc5f8140275f8b24a",
+//   position: "Backend Developer",
+//   stack: "Node, Django, MongoDB",
+//   level: "Intermediate",
+//   created_by: "recruiter_id",
+//   qa_pairs: [
+//     {
+//       question_id: "q1",
+//       question: "What is your experience with Node.js?",
+//       answer: "...",
+//     },
+//     {
+//       question_id: "q2",
+//       question: "How do you handle database optimization?",
+//       answer: "...",
+//     },
+//     {
+//       question_id: "q3",
+//       question: "Describe your approach to debugging?",
+//       answer: "...",
+//     },
+//   ],
+//   allowed_candidates: ["uuid", "can2@gmail.com"],
+//   scheduled: "2025-08-25T06:30:00Z",
+// };
 
-const results = [
-  {
-    id: "68a3ca3a48ab2dff2b722a11",
-    session_id: "689b58bc6606fbf9088d8105",
-    candidate_id: "uuid1",
-    candidate_name: "Sarah Johnson",
-    candidate_mail: "sarah.johnson@example.com",
-    responses: [
-      {
-        question_id: "q1",
-        given_answer: "I have 5 years of experience with Node.js...",
-        score: 8.5,
-      },
-      {
-        question_id: "q2",
-        given_answer: "I would implement caching and database optimization...",
-        score: 7.8,
-      },
-      {
-        question_id: "q3",
-        given_answer:
-          "My approach would be to first understand the root cause...",
-        score: 9.2,
-      },
-    ],
-    total_score: 8.5,
-    decision: "pending",
-  },
-  {
-    id: "68a3ca3a48ab2dff2b722a12",
-    session_id: "689b58bc6606fbf9088d8105",
-    candidate_id: "uuid2",
-    candidate_name: "Michael Chen",
-    candidate_mail: "michael.chen@example.com",
-    responses: [
-      {
-        question_id: "q1",
-        given_answer: "I've worked with both SQL and NoSQL databases...",
-        score: 9.1,
-      },
-      {
-        question_id: "q2",
-        given_answer: "I prefer using Docker for containerization...",
-        score: 8.7,
-      },
-      {
-        question_id: "q3",
-        given_answer: "I would implement a microservices architecture...",
-        score: 9.5,
-      },
-    ],
-    total_score: 9.1,
-    decision: "interested",
-  },
-  {
-    id: "68a3ca3a48ab2dff2b722a13",
-    session_id: "689b58bc6606fbf9088d8105",
-    candidate_id: "uuid3",
-    candidate_name: "Emma Rodriguez",
-    candidate_mail: "emma.rodriguez@example.com",
-    responses: [
-      {
-        question_id: "q1",
-        given_answer:
-          "I'm familiar with REST APIs but still learning GraphQL...",
-        score: 6.2,
-      },
-      {
-        question_id: "q2",
-        given_answer: "I would try to optimize the algorithm first...",
-        score: 5.8,
-      },
-      {
-        question_id: "q3",
-        given_answer:
-          "I think the best approach would be to add more logging...",
-        score: 7.1,
-      },
-    ],
-    total_score: 6.4,
-    decision: "reject",
-  },
-];
+// const results = [
+//   {
+//     id: "68a3ca3a48ab2dff2b722a11",
+//     session_id: "689b58bc6606fbf9088d8105",
+//     candidate_id: "uuid1",
+//     candidate_name: "Sarah Johnson",
+//     candidate_mail: "sarah.johnson@example.com",
+//     responses: [
+//       {
+//         question_id: "q1",
+//         given_answer: "I have 5 years of experience with Node.js...",
+//         score: 8.5,
+//       },
+//       {
+//         question_id: "q2",
+//         given_answer: "I would implement caching and database optimization...",
+//         score: 7.8,
+//       },
+//       {
+//         question_id: "q3",
+//         given_answer:
+//           "My approach would be to first understand the root cause...",
+//         score: 9.2,
+//       },
+//     ],
+//     total_score: 8.5,
+//     decision: "pending",
+//   },
+//   {
+//     id: "68a3ca3a48ab2dff2b722a12",
+//     session_id: "689b58bc6606fbf9088d8105",
+//     candidate_id: "uuid2",
+//     candidate_name: "Michael Chen",
+//     candidate_mail: "michael.chen@example.com",
+//     responses: [
+//       {
+//         question_id: "q1",
+//         given_answer: "I've worked with both SQL and NoSQL databases...",
+//         score: 9.1,
+//       },
+//       {
+//         question_id: "q2",
+//         given_answer: "I prefer using Docker for containerization...",
+//         score: 8.7,
+//       },
+//       {
+//         question_id: "q3",
+//         given_answer: "I would implement a microservices architecture...",
+//         score: 9.5,
+//       },
+//     ],
+//     total_score: 9.1,
+//     decision: "interested",
+//   },
+//   {
+//     id: "68a3ca3a48ab2dff2b722a13",
+//     session_id: "689b58bc6606fbf9088d8105",
+//     candidate_id: "uuid3",
+//     candidate_name: "Emma Rodriguez",
+//     candidate_mail: "emma.rodriguez@example.com",
+//     responses: [
+//       {
+//         question_id: "q1",
+//         given_answer:
+//           "I'm familiar with REST APIs but still learning GraphQL...",
+//         score: 6.2,
+//       },
+//       {
+//         question_id: "q2",
+//         given_answer: "I would try to optimize the algorithm first...",
+//         score: 5.8,
+//       },
+//       {
+//         question_id: "q3",
+//         given_answer:
+//           "I think the best approach would be to add more logging...",
+//         score: 7.1,
+//       },
+//     ],
+//     total_score: 6.4,
+//     decision: "reject",
+//   },
+// ];
 
 // Candidate Result Card Component
 
 export default function SessionResultsPage() {
-  
   // const [resultsData, setResultsData] = useState(results);
   // const params = useParams();
 
   const [resultsData, setResultsData] = useState<any[]>([]);
-const [isLoading, setIsLoading] = useState(false);
-const [error, setError] = useState("");
-const pathname = usePathname();
-const pathParts = pathname.split("/"); // ['', 'interviewer', 'session', '123', 'results']
-const sessionId = pathParts[3];
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [resultLoading, setIsResultLoading] = useState(false);
+  const [resultError, setResultError] = useState("");
+  const [session, setSession] = useState<any>(null);
+  const pathname = usePathname();
+  const pathParts = pathname.split("/"); // ['', 'interviewer', 'session', '123', 'results']
+  const sessionId = pathParts[3];
 
-useEffect(() => {
-  if (!sessionId) return;
-
-  const fetchResults = async () => {
-    setIsLoading(true);
+  const fetchSessions = async () => {
     setError("");
+    setIsLoading(true);
 
     try {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://13.60.253.43/api/results/${sessionId}`,
+        `http://13.60.253.43/api/find/${sessionId}`,
         {
           method: "GET",
           headers: {
@@ -168,22 +167,63 @@ useEffect(() => {
       const data = await response.json();
 
       if (response.ok) {
-        setResultsData(data);
+        setSession(data);
+        console.log(data, "this is response");
       } else {
-        console.error("❌ Failed to fetch results:", data);
-        setError(data?.error || "Failed to load results");
+        console.error("❌ Failed to fetch sessions:", data);
+        setError(data?.error || "Failed to load interview sessions");
       }
     } catch (error) {
-      console.error("🚨 Error fetching results:", error);
-      setError("Something went wrong while fetching results.");
+      console.error("🚨 Error fetching sessions:", error);
+      setError("Something went wrong while fetching sessions.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  fetchResults();
-}, [sessionId]);
+  useEffect(() => {
+    fetchSessions();
+  }, []);
 
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const fetchResults = async () => {
+      setIsResultLoading(true);
+      setResultError("");
+
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+          `http://13.60.253.43/api/results/${sessionId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setResultsData(data);
+        } else {
+          console.error("❌ Failed to fetch results:", data);
+          setResultError(data?.error || "Failed to load results");
+        }
+      } catch (error) {
+        console.error("🚨 Error fetching results:", error);
+        setResultError("Something went wrong while fetching results.");
+      } finally {
+        setIsResultLoading(false);
+      }
+    };
+
+    fetchResults();
+  }, [sessionId]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -227,17 +267,21 @@ useEffect(() => {
 
   const highestScore = Math.max(...resultsData.map((r) => r.total_score));
 
-  if (isLoading) return <p>Loading results...</p>;
-if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (isLoading) return <p>Loading session...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (resultLoading) return <p>Loading results...</p>;
+  if (resultError) return <p style={{ color: "red" }}>{resultError}</p>;
 
   return (
     <div className="min-h-screen bg-white pb-12">
-      <PageHeader
-        title={`${session.position} - Results`}
-        description="Review candidate responses and make decisions"
-        backLabel="Back to Session"
-        backHref={`/interviewer/session/${sessionId}`}
-      />
+      {session && (
+        <PageHeader
+          title={`${session.position} - Results`}
+          description="Review candidate responses and make decisions"
+          backLabel="Back to Session"
+          backHref={`/interviewer/session/${sessionId}`}
+        />
+      )}
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
