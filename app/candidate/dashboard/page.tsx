@@ -1,11 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Award,
-  Clock,
-  CalendarDays,
-  Eye,
-} from "lucide-react";
+import { Award, Clock, CalendarDays, Eye } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import type { InterviewSession } from "@/lib/types";
@@ -103,17 +98,17 @@ const user = {
 };
 
 export default function CandidateDashboard() {
-    const [sessions, setSessions] = useState<any[]>([]);
+  const [sessions, setSessions] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
-    const fetchSessions = async () => {
+
+  const fetchSessions = async () => {
     setError("");
     setIsLoading(true);
-  
+
     try {
       const token = localStorage.getItem("token");
-  
+
       const response = await fetch("http://13.60.253.43/api/findall/", {
         method: "GET",
         headers: {
@@ -121,9 +116,9 @@ export default function CandidateDashboard() {
           Authorization: token ? `Bearer ${token}` : "",
         },
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         setSessions(data);
       } else {
@@ -140,7 +135,7 @@ export default function CandidateDashboard() {
   useEffect(() => {
     fetchSessions();
   }, []);
-  
+
   if (isLoading) return <p>Loading sessions...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -164,14 +159,14 @@ export default function CandidateDashboard() {
   const nextInterview =
     upcomingInterviews.length > 0
       ? upcomingInterviews.reduce((closest, current) => {
-        const closestTime = new Date(closest.scheduled).getTime();
-        const currentTime = new Date(current.scheduled).getTime();
-        const nowTime = now.getTime();
+          const closestTime = new Date(closest.scheduled).getTime();
+          const currentTime = new Date(current.scheduled).getTime();
+          const nowTime = now.getTime();
 
-        return currentTime - nowTime < closestTime - nowTime
-          ? current
-          : closest;
-      })
+          return currentTime - nowTime < closestTime - nowTime
+            ? current
+            : closest;
+        })
       : null;
 
   return (
@@ -204,10 +199,11 @@ export default function CandidateDashboard() {
           <StatCard
             icon={<CalendarDays className="w-6 h-6 text-primary" />}
             title={`${nextInterview ? nextInterview.created_by : "🚫"}`}
-            description={`${nextInterview
+            description={`${
+              nextInterview
                 ? formatDate(nextInterview.scheduled)
                 : "No upcoming interviews"
-              }`}
+            }`}
           />
         </div>
       </section>
@@ -223,8 +219,11 @@ export default function CandidateDashboard() {
           />
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {sessions?.map((session,index) => (
-              <CandidateDashboardCard session={session} key={session.id} />
+            {sessions?.map((session, index) => (
+              <CandidateDashboardCard
+                session={session}
+                key={session.session_id}
+              />
             ))}
           </div>
         )}

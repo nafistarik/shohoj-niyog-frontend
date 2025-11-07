@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import {
@@ -18,18 +18,21 @@ type Question = {
   question: string;
 };
 
-const questions: Question[] = [
-  { question: "Tell me about yourself and your background." },
-  { question: "Why are you interested in this position and our company?" },
-  // { question: "Describe a challenging project you worked on and how you overcame obstacles." },
-  // { question: "Tell me about yourself and your background." },
-  // { question: "Why are you interested in this position and our company?" },
-  // { question: "Describe a challenging project you worked on and how you overcame obstacles." },
-];
+// const questions: Question[] = [
+//   { question: "Tell me about yourself and your background." },
+//   { question: "Why are you interested in this position and our company?" },
+//   { question: "Describe a challenging project you worked on and how you overcame obstacles." },
+//   { question: "Tell me about yourself and your background." },
+//   { question: "Why are you interested in this position and our company?" },
+//   { question: "Describe a challenging project you worked on and how you overcame obstacles." },
+// ];
 
 const MAX_TIME = 120; // 2 minutes in seconds
 
 const VideoInterview: React.FC = () => {
+  const [questions, setQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(MAX_TIME);
   const [recordings, setRecordings] = useState<Record<number, Blob>>({});
@@ -40,6 +43,49 @@ const VideoInterview: React.FC = () => {
   const chunksRef = useRef<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const isSubmittingRef = useRef(false);
+
+  const pathname = usePathname();
+  const pathParts = pathname.split("/"); // ['', 'interviewer', 'session', '123', 'results']
+  const sessionId = pathParts[3];
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+          `http://13.60.253.43/api/find/${sessionId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setQuestions(data);
+          console.log(data, "cand res");
+        } else {
+          console.error("❌ Failed to fetch results:", data);
+          setError(data?.error || "Failed to load results");
+        }
+      } catch (error) {
+        console.error("🚨 Error fetching results:", error);
+        setError("Something went wrong while fetching results.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResults();
+  }, []);
 
   // Setup camera + mic
   useEffect(() => {
@@ -176,6 +222,11 @@ const VideoInterview: React.FC = () => {
 
   const progress = ((MAX_TIME - timeLeft) / MAX_TIME) * 100;
 
+  if (isLoading) return <p>Loading session...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+
+  console.log(questions);
+
   return (
     <div className="min-h-screen">
       <PageHeader
@@ -220,7 +271,11 @@ const VideoInterview: React.FC = () => {
                     Question {currentQIndex + 1}
                   </h2>
                   <p className="text-foreground text-lg">
-                    {questions[currentQIndex].question}
+                    <p className="text-foreground text-lg">
+                      {questions.length > 0
+                        ? questions[currentQIndex].question
+                        : "Loading question..."}
+                    </p>
                   </p>
                 </div>
 
@@ -232,10 +287,9 @@ const VideoInterview: React.FC = () => {
                       <span className="font-medium">Time remaining</span>
                     </div>
                     <div
-                      className={`text-lg font-bold ${timeLeft <= 10
-                          ? "text-destructive"
-                          : "text-foreground"
-                        }`}
+                      className={`text-lg font-bold ${
+                        timeLeft <= 10 ? "text-destructive" : "text-foreground"
+                      }`}
                     >
                       {formatTime(timeLeft)}
                     </div>
@@ -293,14 +347,13 @@ const VideoInterview: React.FC = () => {
                 {/* Recording status */}
                 <div className="bg-muted rounded-xl p-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground">
-                      Question status:
-                    </span>
+                    <span className="text-foreground">Question status:</span>
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${recordings[currentQIndex]
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        recordings[currentQIndex]
                           ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
                           : "bg-secondary text-secondary-foreground"
-                        }`}
+                      }`}
                     >
                       {recordings[currentQIndex] ? "Recorded" : "Recording..."}
                     </span>
@@ -321,12 +374,13 @@ const VideoInterview: React.FC = () => {
                         setCurrentQIndex(index);
                       }
                     }}
-                    className={`w-3 h-3 rounded-full ${index === currentQIndex
+                    className={`w-3 h-3 rounded-full ${
+                      index === currentQIndex
                         ? "bg-primary"
                         : recordings[index]
-                          ? "bg-green-500"
-                          : "bg-muted-foreground/30"
-                      }`}
+                        ? "bg-green-500"
+                        : "bg-muted-foreground/30"
+                    }`}
                     aria-label={`Go to question ${index + 1}`}
                   />
                 ))}
