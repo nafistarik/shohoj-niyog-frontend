@@ -24,43 +24,46 @@ interface CandidateResultWithSession extends CandidateResponse {
   session?: InterviewSession;
 }
 
-const results = [
-  {
-    id: "res_1",
-    decision: "interested",
-    session: {
-      id: "sess_1",
-      position: "Frontend Developer",
-      stack: ["React", "TypeScript", "Tailwind"],
-      scheduled: "2025-08-01T10:00:00.000Z",
-    },
-  },
-  {
-    id: "res_2",
-    decision: "pending",
-    session: {
-      id: "sess_2",
-      position: "Backend Developer",
-      stack: ["Node.js", "Express", "MongoDB"],
-      scheduled: "2025-08-10T14:00:00.000Z",
-    },
-  },
-  {
-    id: "res_3",
-    decision: "reject",
-    session: {
-      id: "sess_3",
-      position: "Full Stack Engineer",
-      stack: ["Next.js", "GraphQL", "PostgreSQL"],
-      scheduled: "2025-07-20T09:30:00.000Z",
-    },
-  },
-];
-
 export default function CandidateResultsPage() {
-  const [resultsData, setResultsData] = useState(results);
-  // const [results, setResults] = useState<CandidateResultWithSession[]>([])
-  // const [isLoading, setIsLoading] = useState(true)
+  const [resultsData, setResultsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(`http://13.60.253.43/api/results/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setResultsData(data);
+          console.log(data, "cand res");
+        } else {
+          console.error("❌ Failed to fetch results:", data);
+          setError(data?.error || "Failed to load results");
+        }
+      } catch (error) {
+        console.error("🚨 Error fetching results:", error);
+        setError("Something went wrong while fetching results.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResults();
+  }, []);
 
   // const fetchResults = async () => {
   //   try {
@@ -89,6 +92,38 @@ export default function CandidateResultsPage() {
       )
     );
 
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("http://13.60.253.43/api/decide/", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify({
+          session_id: resultId,
+          // candidate_id: candidateId,
+          decision: newDecision,
+        }),
+      });
+
+      console.log({
+        session_id: resultId,
+        // candidate_id: candidateId,
+        decision: newDecision,
+      });
+      const data = await response.json();
+
+      console.log(data, "this is update response data");
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Failed to update decision");
+      }
+    } catch (err) {
+      console.error("Failed to update decision:", err);
+    }
+
     // In a real app, you would make an API call here
     // try {
     //   const response = await fetch("/api/candidate/update-decision", {
@@ -115,14 +150,44 @@ export default function CandidateResultsPage() {
     //   );
     // }
   };
+  // const updateDecision = async (candidateId: string, decision: string) => {
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-  //       <LoadingSpinner />
-  //     </div>
+  //   setResultsData((prev) =>
+  //     prev.map((result) =>
+  //       result.candidate_id === candidateId
+  //         ? { ...result, decision: decision as any }
+  //         : result
+  //     )
   //   );
-  // }
+
+  //   try {
+  //     const token = localStorage.getItem("token");
+
+  //     const response = await fetch("http://13.60.253.43/api/decide/", {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: token ? `Bearer ${token}` : "",
+  //       },
+  //       body: JSON.stringify({
+  //         session_id: sessionId,
+  //         candidate_id: candidateId,
+  //         decision,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(data?.error || "Failed to update decision");
+  //     }
+  //   } catch (err) {
+  //     console.error("Failed to update decision:", err);
+  //   }
+  // };
+
+  if (isLoading) return <p>Loading session...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <div className="min-h-screen pb-12">
@@ -153,17 +218,19 @@ export default function CandidateResultsPage() {
               />
               <StatCard
                 icon={<CheckCircle className="w-6 h-6 text-primary" />}
-                title={`${resultsData.filter(
-                  (r) =>
-                    r.decision === "interested" || r.decision === "accept"
-                ).length
-                  }`}
+                title={`${
+                  resultsData.filter(
+                    (r) =>
+                      r.decision === "interested" || r.decision === "accept"
+                  ).length
+                }`}
                 description="Positive Responses"
               />
               <StatCard
                 icon={<Clock className="w-6 h-6 text-primary" />}
-                title={`${resultsData.filter((r) => r.decision === "pending").length
-                  }`}
+                title={`${
+                  resultsData.filter((r) => r.decision === "pending").length
+                }`}
                 description="Pending Review"
               />
             </div>
@@ -175,7 +242,11 @@ export default function CandidateResultsPage() {
               </h2>
 
               {resultsData.map((result) => (
-                <CandidateResultCard result={result} updateDecision={updateDecision} key={result.id} />
+                <CandidateResultCard
+                  result={result}
+                  updateDecision={updateDecision}
+                  key={result.session_id}
+                />
               ))}
             </div>
           </div>

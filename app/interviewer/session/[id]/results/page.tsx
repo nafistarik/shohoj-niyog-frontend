@@ -18,118 +18,6 @@ import CandidateResultCard from "./_components/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 
-// Dummy data
-// const session = {
-//   id: "68935b9fc5f8140275f8b24a",
-//   position: "Backend Developer",
-//   stack: "Node, Django, MongoDB",
-//   level: "Intermediate",
-//   created_by: "recruiter_id",
-//   qa_pairs: [
-//     {
-//       question_id: "q1",
-//       question: "What is your experience with Node.js?",
-//       answer: "...",
-//     },
-//     {
-//       question_id: "q2",
-//       question: "How do you handle database optimization?",
-//       answer: "...",
-//     },
-//     {
-//       question_id: "q3",
-//       question: "Describe your approach to debugging?",
-//       answer: "...",
-//     },
-//   ],
-//   allowed_candidates: ["uuid", "can2@gmail.com"],
-//   scheduled: "2025-08-25T06:30:00Z",
-// };
-
-// const results = [
-//   {
-//     id: "68a3ca3a48ab2dff2b722a11",
-//     session_id: "689b58bc6606fbf9088d8105",
-//     candidate_id: "uuid1",
-//     candidate_name: "Sarah Johnson",
-//     candidate_mail: "sarah.johnson@example.com",
-//     responses: [
-//       {
-//         question_id: "q1",
-//         given_answer: "I have 5 years of experience with Node.js...",
-//         score: 8.5,
-//       },
-//       {
-//         question_id: "q2",
-//         given_answer: "I would implement caching and database optimization...",
-//         score: 7.8,
-//       },
-//       {
-//         question_id: "q3",
-//         given_answer:
-//           "My approach would be to first understand the root cause...",
-//         score: 9.2,
-//       },
-//     ],
-//     total_score: 8.5,
-//     decision: "pending",
-//   },
-//   {
-//     id: "68a3ca3a48ab2dff2b722a12",
-//     session_id: "689b58bc6606fbf9088d8105",
-//     candidate_id: "uuid2",
-//     candidate_name: "Michael Chen",
-//     candidate_mail: "michael.chen@example.com",
-//     responses: [
-//       {
-//         question_id: "q1",
-//         given_answer: "I've worked with both SQL and NoSQL databases...",
-//         score: 9.1,
-//       },
-//       {
-//         question_id: "q2",
-//         given_answer: "I prefer using Docker for containerization...",
-//         score: 8.7,
-//       },
-//       {
-//         question_id: "q3",
-//         given_answer: "I would implement a microservices architecture...",
-//         score: 9.5,
-//       },
-//     ],
-//     total_score: 9.1,
-//     decision: "interested",
-//   },
-//   {
-//     id: "68a3ca3a48ab2dff2b722a13",
-//     session_id: "689b58bc6606fbf9088d8105",
-//     candidate_id: "uuid3",
-//     candidate_name: "Emma Rodriguez",
-//     candidate_mail: "emma.rodriguez@example.com",
-//     responses: [
-//       {
-//         question_id: "q1",
-//         given_answer:
-//           "I'm familiar with REST APIs but still learning GraphQL...",
-//         score: 6.2,
-//       },
-//       {
-//         question_id: "q2",
-//         given_answer: "I would try to optimize the algorithm first...",
-//         score: 5.8,
-//       },
-//       {
-//         question_id: "q3",
-//         given_answer:
-//           "I think the best approach would be to add more logging...",
-//         score: 7.1,
-//       },
-//     ],
-//     total_score: 6.4,
-//     decision: "reject",
-//   },
-// ];
-
 // Candidate Result Card Component
 
 export default function SessionResultsPage() {
@@ -233,7 +121,6 @@ export default function SessionResultsPage() {
   };
 
 const updateDecision = async (candidateId: string, decision: string) => {
-  console.log({ candidateId, decision, sessionId });
 
   // Update UI immediately (optimistic update)
   setResultsData((prev) =>

@@ -337,7 +337,7 @@ export default function SessionDetailsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {session?.qa_pairs.map((qa, index: number) => (
+                  {session?.qa_pairs.map((qa: { question_id: string, question: string, answer: string }, index: number) => (
                     <SessionQAPair qa={qa} index={index} key={qa.question_id} />
                   ))}
                 </div>
