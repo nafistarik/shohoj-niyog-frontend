@@ -18,16 +18,7 @@ type Question = {
   question: string;
 };
 
-// const questions: Question[] = [
-//   { question: "Tell me about yourself and your background." },
-//   { question: "Why are you interested in this position and our company?" },
-//   { question: "Describe a challenging project you worked on and how you overcame obstacles." },
-//   { question: "Tell me about yourself and your background." },
-//   { question: "Why are you interested in this position and our company?" },
-//   { question: "Describe a challenging project you worked on and how you overcame obstacles." },
-// ];
-
-const MAX_TIME = 120; // 2 minutes in seconds
+const MAX_TIME = 120;
 
 const VideoInterview: React.FC = () => {
   const [questions, setQuestions] = useState([]);
@@ -88,29 +79,28 @@ const VideoInterview: React.FC = () => {
   }, []);
 
   // Setup camera + mic
-  useEffect(() => {
-    const initMedia = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-        startRecording();
-      } catch (error) {
-        console.error("Error accessing media devices:", error);
+useEffect(() => {
+  const initMedia = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
       }
-    };
-    initMedia();
+    } catch (error) {
+      console.error("Error accessing media devices:", error);
+    }
+  };
+  initMedia();
 
-    return () => {
-      stopRecording();
-      streamRef.current?.getTracks().forEach((t) => t.stop());
-    };
-  }, []);
+  return () => {
+    stopRecording();
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+  };
+}, []);
 
   // Start recording for a question
   const startRecording = () => {
@@ -133,9 +123,9 @@ const VideoInterview: React.FC = () => {
       setRecordings((prev) => {
         const updated = { ...prev, [currentQIndex]: blob };
         // If we were submitting, now actually submit after saving blob
-        if (isSubmittingRef.current) {
-          handleSubmit(updated);
-        }
+        if (isSubmittingRef.current && Object.keys(updated).length === questions.length) {
+  handleSubmit(updated);
+}
         return updated;
       });
       chunksRef.current = [];
@@ -163,56 +153,53 @@ const VideoInterview: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      handleNext();
-      return;
-    }
-    const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
-    return () => clearTimeout(timer);
-  }, [timeLeft]);
+useEffect(() => {
+  if (timeLeft <= 0) {
+    handleNext();
+    return;
+  }
+  const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
+  return () => clearTimeout(timer);
+}, [timeLeft]);
 
   useEffect(() => {
-    if (streamRef.current) {
-      startRecording();
-    }
+    if (!streamRef.current) return;
+    if (isRecording) return;
+
+    startRecording();
   }, [currentQIndex]);
 
-  const handleSubmit = async (finalRecordings: Record<number, Blob>) => {
-    try {
-      const formData = new FormData();
-      formData.append("session_id", "12345"); // hardcoded session id
+const handleSubmit = async (finalRecordings: Record<number, Blob>) => {
+  try {
+    const formData = new FormData();
+    formData.append("session_id", sessionId);
 
-      // append each question's video
-      Object.entries(finalRecordings).forEach(([index, blob]) => {
-        formData.append("video", blob, `ques${Number(index) + 1}.mp4`);
-      });
+    Object.entries(finalRecordings).forEach(([index, blob]) => {
+      formData.append("video", blob, `ques${Number(index) + 1}.webm`);
+    });
 
-      for (const [key, val] of formData.entries()) {
-        console.log(key, val);
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      "http://13.60.253.43/api/response/",
+      formData,
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+          "Content-Type": "multipart/form-data",
+        },
       }
+    );
 
-      // send to API
-      // await axios.post("/api/response/", formData, {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // });
+    console.log("✅ Recordings uploaded successfully!", response.data);
+    router.push("/candidate/dashboard");
+  } catch (err) {
+    console.error("❌ Upload failed:", err);
+  } finally {
+    stopRecording();
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+  }
+};
 
-      console.log("✅ Recordings uploaded successfully!");
-
-      // cleanup: stop camera + mic
-      stopRecording();
-      streamRef.current?.getTracks().forEach((t) => t.stop());
-      if (videoRef.current) {
-        videoRef.current.srcObject = null;
-      }
-      router.push("/candidate/dashboard");
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
-    } catch (err) {
-      console.error("❌ Upload failed:", err);
-    }
-  };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
