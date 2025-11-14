@@ -121,32 +121,33 @@ const getStatusTextColor = (decision: string) => {
 };
 
 export default function CandidateResultCard({ result, updateDecision }: any) {
-  console.log(result, " this is res props");
+
   return (
     <Card
-      key={result.id}
+      key={result.session_id}
       className="bg-card border-border shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
     >
       <CardHeader>
         <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div className="flex-1">
             <CardTitle className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-              {result.session?.position || "Interview Session"}
+              {result.position || "Interview Session"}
             </CardTitle>
             <CardDescription className="flex flex-wrap items-center gap-2 mt-2">
               <span className="bg-muted rounded-md px-2 py-1 text-xs">
-                {result.session?.stack
+                {/* {result.session?.stack
                   ? Array.isArray(result.session.stack)
                     ? result.session.stack.join(", ")
                     : result.session.stack
-                  : "Technology Stack"}
+                  : "Technology Stack"} */}
+                {result.company}
               </span>
-              {result.session?.scheduled && (
+              {/* {result.session?.scheduled && (
                 <div className="flex items-center text-muted-foreground">
                   <Calendar className="w-3 h-3 mr-1" />
                   {formatDate(result.session.scheduled)}
                 </div>
-              )}
+              )} */}
             </CardDescription>
           </div>
           <div className="mt-4 md:mt-0">

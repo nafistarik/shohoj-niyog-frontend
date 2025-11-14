@@ -42,16 +42,13 @@ export default function SessionResultsPage() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `${API_BASE_URL}/api/find/${sessionId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
 
       const data = await response.json();
 
@@ -121,43 +118,41 @@ export default function SessionResultsPage() {
     });
   };
 
-const updateDecision = async (candidateId: string, decision: string) => {
+  const updateDecision = async (candidateId: string, decision: string) => {
+    // Update UI immediately (optimistic update)
+    setResultsData((prev) =>
+      prev.map((result) =>
+        result.candidate_id === candidateId
+          ? { ...result, decision: decision as any }
+          : result
+      )
+    );
 
-  // Update UI immediately (optimistic update)
-  setResultsData((prev) =>
-    prev.map((result) =>
-      result.candidate_id === candidateId
-        ? { ...result, decision: decision as any }
-        : result
-    )
-  );
+    try {
+      const token = localStorage.getItem("token");
 
-  try {
-    const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/decide/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify({
+          session_id: sessionId,
+          candidate_id: candidateId,
+          decision,
+        }),
+      });
 
-    const response = await fetch(`${API_BASE_URL}/api/decide/`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-      body: JSON.stringify({
-        session_id: sessionId,
-        candidate_id: candidateId,
-        decision,
-      }),
-    });
+      const data = await response.json();
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data?.error || "Failed to update decision");
+      if (!response.ok) {
+        throw new Error(data?.error || "Failed to update decision");
+      }
+    } catch (err) {
+      console.error("Failed to update decision:", err);
     }
-  } catch (err) {
-    console.error("Failed to update decision:", err);
-  }
-};
-
+  };
 
   const highestScore = Math.max(...resultsData.map((r) => r.total_score));
 

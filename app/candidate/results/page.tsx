@@ -48,6 +48,8 @@ export default function CandidateResultsPage() {
 
         const data = await response.json();
 
+        console.log(data, "this is api results data")
+
         if (response.ok) {
           setResultsData(data);
           console.log(data, "cand res");
@@ -66,23 +68,6 @@ export default function CandidateResultsPage() {
     fetchResults();
   }, []);
 
-  // const fetchResults = async () => {
-  //   try {
-  //     if (user?.user_id) {
-  //       // In a real app, this would fetch results for the authenticated candidate
-  //       const response = await fetch(`/api/candidate/results?candidate_id=${user.user_id}`)
-  //       if (response.ok) {
-  //         const data = await response.json()
-  //         setResults(data)
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to fetch results:", error)
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
   const updateDecision = async (resultId: string, newDecision: string) => {
     console.log(`Updating decision for result ${resultId} to ${newDecision}`);
 
@@ -95,6 +80,12 @@ export default function CandidateResultsPage() {
 
     try {
       const token = localStorage.getItem("token");
+
+      console.log({
+        session_id: resultId,
+        // candidate_id: candidateId,
+        decision: newDecision,
+      });
 
       const response = await fetch(`${API_BASE_URL}/api/decide/`, {
         method: "PATCH",
@@ -109,11 +100,6 @@ export default function CandidateResultsPage() {
         }),
       });
 
-      console.log({
-        session_id: resultId,
-        // candidate_id: candidateId,
-        decision: newDecision,
-      });
       const data = await response.json();
 
       console.log(data, "this is update response data");
@@ -124,68 +110,7 @@ export default function CandidateResultsPage() {
     } catch (err) {
       console.error("Failed to update decision:", err);
     }
-
-    // In a real app, you would make an API call here
-    // try {
-    //   const response = await fetch("/api/candidate/update-decision", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       result_id: resultId,
-    //       decision: newDecision,
-    //     }),
-    //   });
-    //
-    //   if (!response.ok) {
-    //     throw new Error("Failed to update decision");
-    //   }
-    // } catch (err) {
-    //   console.error("Failed to update decision:", err);
-    //   // Revert the change if the API call fails
-    //   setResultsData(prev =>
-    //     prev.map(result =>
-    //       result.id === resultId
-    //         ? { ...result, decision: originalDecision }
-    //         : result
-    //     )
-    //   );
-    // }
   };
-  // const updateDecision = async (candidateId: string, decision: string) => {
-
-  //   setResultsData((prev) =>
-  //     prev.map((result) =>
-  //       result.candidate_id === candidateId
-  //         ? { ...result, decision: decision as any }
-  //         : result
-  //     )
-  //   );
-
-  //   try {
-  //     const token = localStorage.getItem("token");
-
-  //     const response = await fetch("http://13.60.253.43/api/decide/", {
-  //       method: "PATCH",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: token ? `Bearer ${token}` : "",
-  //       },
-  //       body: JSON.stringify({
-  //         session_id: sessionId,
-  //         candidate_id: candidateId,
-  //         decision,
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (!response.ok) {
-  //       throw new Error(data?.error || "Failed to update decision");
-  //     }
-  //   } catch (err) {
-  //     console.error("Failed to update decision:", err);
-  //   }
-  // };
 
   if (isLoading) return <p>Loading session...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;

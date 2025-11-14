@@ -37,7 +37,7 @@ const VideoInterview: React.FC = () => {
   const isSubmittingRef = useRef(false);
 
   const pathname = usePathname();
-  const pathParts = pathname.split("/"); // ['', 'interviewer', 'session', '123', 'results']
+  const pathParts = pathname.split("/");
   const sessionId = pathParts[3];
 
   useEffect(() => {
@@ -48,16 +48,13 @@ const VideoInterview: React.FC = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(
-          `${API_BASE_URL}/api/find/${sessionId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token ? `Bearer ${token}` : "",
-            },
-          }
-        );
+        const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
 
         const data = await response.json();
 
@@ -80,28 +77,28 @@ const VideoInterview: React.FC = () => {
   }, []);
 
   // Setup camera + mic
-useEffect(() => {
-  const initMedia = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      });
-      streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
+  useEffect(() => {
+    const initMedia = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        streamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error("Error accessing media devices:", error);
       }
-    } catch (error) {
-      console.error("Error accessing media devices:", error);
-    }
-  };
-  initMedia();
+    };
+    initMedia();
 
-  return () => {
-    stopRecording();
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-  };
-}, []);
+    return () => {
+      stopRecording();
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+    };
+  }, []);
 
   // Start recording for a question
   const startRecording = () => {
@@ -124,9 +121,12 @@ useEffect(() => {
       setRecordings((prev) => {
         const updated = { ...prev, [currentQIndex]: blob };
         // If we were submitting, now actually submit after saving blob
-        if (isSubmittingRef.current && Object.keys(updated).length === questions.length) {
-  handleSubmit(updated);
-}
+        if (
+          isSubmittingRef.current &&
+          Object.keys(updated).length === questions.length
+        ) {
+          handleSubmit(updated);
+        }
         return updated;
       });
       chunksRef.current = [];
@@ -154,14 +154,14 @@ useEffect(() => {
     }
   };
 
-useEffect(() => {
-  if (timeLeft <= 0) {
-    handleNext();
-    return;
-  }
-  const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
-  return () => clearTimeout(timer);
-}, [timeLeft]);
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      handleNext();
+      return;
+    }
+    const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [timeLeft]);
 
   useEffect(() => {
     if (!streamRef.current) return;
@@ -170,37 +170,37 @@ useEffect(() => {
     startRecording();
   }, [currentQIndex]);
 
-const handleSubmit = async (finalRecordings: Record<number, Blob>) => {
-  try {
-    const formData = new FormData();
-    formData.append("session_id", sessionId);
+  const handleSubmit = async (finalRecordings: Record<number, Blob>) => {
+    console.log("handle submit clicked");
+    try {
+      const formData = new FormData();
+      formData.append("session_id", sessionId);
 
-    Object.entries(finalRecordings).forEach(([index, blob]) => {
-      formData.append("video", blob, `ques${Number(index) + 1}.webm`);
-    });
+      Object.entries(finalRecordings).forEach(([index, blob]) => {
+        formData.append("video", blob, `ques${Number(index) + 1}.webm`);
+      });
 
-    const token = localStorage.getItem("token");
-    const response = await axios.post(
-      `${API_BASE_URL}/api/response/`,
-      formData,
-      {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${API_BASE_URL}/api/response/`,
+        formData,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-    console.log("✅ Recordings uploaded successfully!", response.data);
-    router.push("/candidate/dashboard");
-  } catch (err) {
-    console.error("❌ Upload failed:", err);
-  } finally {
-    stopRecording();
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-  }
-};
-
+      console.log("✅ Recordings uploaded successfully!", response.data);
+      router.push("/candidate/dashboard");
+    } catch (err) {
+      console.error("❌ Upload failed:", err);
+    } finally {
+      stopRecording();
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+    }
+  };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -212,8 +212,6 @@ const handleSubmit = async (finalRecordings: Record<number, Blob>) => {
 
   if (isLoading) return <p>Loading session...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-
-  console.log(questions);
 
   return (
     <div className="min-h-screen">
