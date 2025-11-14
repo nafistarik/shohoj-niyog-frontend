@@ -13,6 +13,7 @@ import {
   Send,
 } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
+import { API_BASE_URL } from "@/lib/constants";
 
 type Question = {
   question: string;
@@ -48,7 +49,7 @@ const VideoInterview: React.FC = () => {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          `http://13.60.253.43/api/find/${sessionId}`,
+          `${API_BASE_URL}/api/find/${sessionId}`,
           {
             method: "GET",
             headers: {
@@ -180,7 +181,7 @@ const handleSubmit = async (finalRecordings: Record<number, Blob>) => {
 
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      "http://13.60.253.43/api/response/",
+      `${API_BASE_URL}/api/response/`,
       formData,
       {
         headers: {

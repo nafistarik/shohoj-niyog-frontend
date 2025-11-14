@@ -34,6 +34,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import AllowedCandidatesItem from "./_components/allowed-candidate-item";
 import { Session } from "inspector/promises";
 import SessionQAPair from "./_components/session-qa-pair";
+import { API_BASE_URL } from "@/lib/constants";
 
 function Label({
   className,
@@ -166,16 +167,13 @@ export default function SessionDetailsPage() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `http://13.60.253.43/api/find/${sessionId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
 
       const data = await response.json();
 
@@ -337,9 +335,22 @@ export default function SessionDetailsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {session?.qa_pairs.map((qa: { question_id: string, question: string, answer: string }, index: number) => (
-                    <SessionQAPair qa={qa} index={index} key={qa.question_id} />
-                  ))}
+                  {session?.qa_pairs.map(
+                    (
+                      qa: {
+                        question_id: string;
+                        question: string;
+                        answer: string;
+                      },
+                      index: number
+                    ) => (
+                      <SessionQAPair
+                        qa={qa}
+                        index={index}
+                        key={qa.question_id}
+                      />
+                    )
+                  )}
                 </div>
               </CardContent>
             </Card>

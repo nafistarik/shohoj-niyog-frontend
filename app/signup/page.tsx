@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import loginIllustrator from "@/assets/auth/login-illustrator.svg";
+import { API_BASE_URL } from "@/lib/constants";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -62,7 +63,7 @@ export default function SignupPage() {
     }
 
     try {
-      const response = await fetch("http://13.60.253.43/accounts/signup/", {
+      const response = await fetch(`${API_BASE_URL}/accounts/signup/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

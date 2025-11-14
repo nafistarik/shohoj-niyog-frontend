@@ -20,6 +20,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import signupIllustrator from "@/assets/auth/login-illustrator.svg";
+import { API_BASE_URL } from "@/lib/constants";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -37,7 +38,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://13.60.253.43/accounts/login/", {
+      const response = await fetch(`${API_BASE_URL}/accounts/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -34,6 +34,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { PageHeader } from "@/components/shared/page-header";
+import { API_BASE_URL } from "@/lib/constants";
 
 export default function CreateSessionPage() {
   const [formData, setFormData] = useState<CreateSessionPayload>({
@@ -163,7 +164,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   try {
     const token = localStorage.getItem("token");
 
-    const response = await fetch("http://13.60.253.43/api/gen/", {
+    const response = await fetch(`${API_BASE_URL}/api/gen/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

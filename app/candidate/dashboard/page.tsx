@@ -10,6 +10,7 @@ import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "./_components/candidate-dashboard-card";
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "@/lib/constants";
 
 // const sessions = [
 //   {
@@ -109,7 +110,7 @@ export default function CandidateDashboard() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://13.60.253.43/api/findall/", {
+      const response = await fetch(`${API_BASE_URL}/api/findall/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

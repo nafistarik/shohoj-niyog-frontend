@@ -19,6 +19,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateResultCard from "./_components/candidate-result-card";
+import { API_BASE_URL } from "@/lib/constants";
 
 interface CandidateResultWithSession extends CandidateResponse {
   session?: InterviewSession;
@@ -37,7 +38,7 @@ export default function CandidateResultsPage() {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://13.60.253.43/api/results/`, {
+        const response = await fetch(`${API_BASE_URL}/api/results/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -95,7 +96,7 @@ export default function CandidateResultsPage() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://13.60.253.43/api/decide/", {
+      const response = await fetch(`${API_BASE_URL}/api/decide/`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
