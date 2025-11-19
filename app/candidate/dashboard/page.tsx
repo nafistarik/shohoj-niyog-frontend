@@ -223,7 +223,7 @@ export default function CandidateDashboard() {
             {sessions?.map((session, index) => (
               <CandidateDashboardCard
                 session={session}
-                key={session.session_id}
+                key={session.id}
               />
             ))}
           </div>

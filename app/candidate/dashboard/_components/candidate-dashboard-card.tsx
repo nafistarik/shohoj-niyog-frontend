@@ -44,6 +44,7 @@ const getTotalDuration = (qaPairs: any[]) => {
 };
 
 export default function CandidateDashboardCard({ session }: { session: any }) {
+  console.log(session,"...........")
   return (
     <Card
       key={session?.id}
@@ -101,7 +102,7 @@ export default function CandidateDashboardCard({ session }: { session: any }) {
           </ul>
         </div>
         <Button asChild className="w-full gradient-bg">
-          <Link href={`/candidate/interview/${session?.session_id}`}>
+          <Link href={`/candidate/interview/${session?.id}`}>
             <Play className="w-4 h-4 mr-2" />
             Start Interview
           </Link>
