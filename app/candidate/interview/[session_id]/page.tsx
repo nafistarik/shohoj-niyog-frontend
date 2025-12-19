@@ -28,6 +28,7 @@ const VideoInterview: React.FC = () => {
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const pendingSubmitRef = useRef(false); // Track if we're waiting to submit
 
   const pathname = usePathname();
   const pathParts = pathname.split("/");
@@ -73,17 +74,85 @@ const VideoInterview: React.FC = () => {
     }
   }, [sessionId]);
 
-  // --- Stop recording ---
-  const stopRecording = useCallback(() => {
-    if (
-      mediaRecorderRef.current &&
-      mediaRecorderRef.current.state !== "inactive"
-    ) {
+  // --- Submit recordings ---
+  const submitRecordings = useCallback(
+    async (finalRecordings: Record<number, Blob>) => {
+      if (isSubmitting) {
+        console.log("Submission already in progress");
+        return;
+      }
+
+      setIsSubmitting(true);
+      console.log(
+        "submitRecordings called with recordings:",
+        Object.keys(finalRecordings).length,
+        "videos"
+      );
+
+      try {
+        console.log("Preparing FormData with recordings:", finalRecordings);
+        const formData = new FormData();
+        formData.append("session_id", sessionId);
+
+        Object.entries(finalRecordings).forEach(([index, blob]) => {
+          formData.append("video", blob, `ques${Number(index) + 1}.webm`);
+          console.log(`Appended recording for question ${index}`);
+        });
+
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `${API_BASE_URL}/api/response/`,
+          formData,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log("✅ Recordings uploaded successfully!", response.data);
+        streamRef.current?.getTracks().forEach((t) => t.stop());
+        console.log("Stopped all media tracks after submission");
+
+        router.push("/candidate/dashboard");
+      } catch (err) {
+        console.error("❌ Upload failed:", err);
+        setError("Failed to submit recordings. Please try again.");
+        setIsSubmitting(false);
+      }
+    },
+    [isSubmitting, sessionId, router]
+  );
+
+  // --- Stop recording and return a promise ---
+  const stopRecordingAsync = useCallback((): Promise<Blob | null> => {
+    return new Promise((resolve) => {
+      if (
+        !mediaRecorderRef.current ||
+        mediaRecorderRef.current.state === "inactive"
+      ) {
+        console.log("No active recording to stop.");
+        resolve(null);
+        return;
+      }
+
       console.log("Stopping current recording...");
+
+      // Set up one-time listener for the stop event
+      const handleStop = () => {
+        const blob = new Blob(chunksRef.current, { type: "video/webm" });
+        console.log("Recording stopped, blob created:", blob.size, "bytes");
+        chunksRef.current = [];
+        resolve(blob);
+      };
+
+      mediaRecorderRef.current.addEventListener("stop", handleStop, {
+        once: true,
+      });
       mediaRecorderRef.current.stop();
-    } else {
-      console.log("No active recording to stop.");
-    }
+      setIsRecording(false);
+    });
   }, []);
 
   // --- Setup camera + mic ---
@@ -143,16 +212,21 @@ const VideoInterview: React.FC = () => {
       }
     };
 
+    // Note: We handle onstop differently now when submitting
     mediaRecorder.onstop = () => {
       console.log("MediaRecorder stopped for question index:", currentQIndex);
       setIsRecording(false);
-      const blob = new Blob(chunksRef.current, { type: "video/webm" });
-      setRecordings((prev) => {
-        const newState = { ...prev, [currentQIndex]: blob };
-        console.log("Updated recordings state:", newState);
-        return newState;
-      });
-      chunksRef.current = [];
+      
+      // Only update state if we're not about to submit
+      if (!pendingSubmitRef.current) {
+        const blob = new Blob(chunksRef.current, { type: "video/webm" });
+        setRecordings((prev) => {
+          const newState = { ...prev, [currentQIndex]: blob };
+          console.log("Updated recordings state:", newState);
+          return newState;
+        });
+        chunksRef.current = [];
+      }
     };
 
     mediaRecorder.start();
@@ -160,67 +234,53 @@ const VideoInterview: React.FC = () => {
     setTimeLeft(MAX_TIME);
   }, [isRecording, currentQIndex]);
 
-  // --- Submit recordings ---
-  const handleSubmit = useCallback(async () => {
-    if (isSubmitting) {
-      console.log("Submission already in progress");
-      return;
-    }
-
-    setIsSubmitting(true);
-    console.log("handleSubmit clicked. Stopping current recording...");
-
-    stopRecording();
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    try {
-      console.log("Preparing FormData with recordings:", recordings);
-      const formData = new FormData();
-      formData.append("session_id", sessionId);
-
-      Object.entries(recordings).forEach(([index, blob]) => {
-        formData.append("video", blob, `ques${Number(index) + 1}.webm`);
-        console.log(`Appended recording for question ${index}`);
-      });
-
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${API_BASE_URL}/api/response/`,
-        formData,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("✅ Recordings uploaded successfully!", response.data);
-      streamRef.current?.getTracks().forEach((t) => t.stop());
-      console.log("Stopped all media tracks after submission");
-
-      router.push("/candidate/dashboard");
-    } catch (err) {
-      console.error("❌ Upload failed:", err);
-      setError("Failed to submit recordings. Please try again.");
-      setIsSubmitting(false);
-    }
-  }, [isSubmitting, recordings, sessionId, router, stopRecording]);
-
   // --- Handle next question ---
-  const handleNext = useCallback(() => {
+  const handleNext = useCallback(async () => {
     console.log("handleNext called. Current question index:", currentQIndex);
-    stopRecording();
 
     if (currentQIndex === questions.length - 1) {
-      console.log("Last question reached. Submitting all recordings...");
-      handleSubmit();
+      console.log("Last question reached. Stopping and submitting...");
+      pendingSubmitRef.current = true;
+
+      // Stop recording and wait for the blob
+      const finalBlob = await stopRecordingAsync();
+
+      // Build complete recordings object
+      const allRecordings = { ...recordings };
+      if (finalBlob) {
+        allRecordings[currentQIndex] = finalBlob;
+        console.log(
+          "Added final recording. Total recordings:",
+          Object.keys(allRecordings).length
+        );
+      }
+
+      // Now submit with ALL recordings including the last one
+      await submitRecordings(allRecordings);
     } else {
       console.log("Moving to next question...");
+      
+      // Stop current recording and wait for blob
+      const blob = await stopRecordingAsync();
+      
+      if (blob) {
+        setRecordings((prev) => {
+          const newState = { ...prev, [currentQIndex]: blob };
+          console.log("Updated recordings state:", newState);
+          return newState;
+        });
+      }
+
+      // Move to next question
       setCurrentQIndex((prev) => prev + 1);
     }
-  }, [currentQIndex, questions.length, stopRecording, handleSubmit]);
+  }, [
+    currentQIndex,
+    questions.length,
+    recordings,
+    stopRecordingAsync,
+    submitRecordings,
+  ]);
 
   // --- Timer countdown ---
   useEffect(() => {
@@ -235,7 +295,7 @@ const VideoInterview: React.FC = () => {
 
   // --- Auto-start recording on question change ---
   useEffect(() => {
-    if (!streamRef.current || questions.length === 0) return;
+    if (!streamRef.current || questions.length === 0 || isSubmitting) return;
 
     console.log("Auto-starting recording for question:", currentQIndex);
     const timer = setTimeout(() => {
@@ -243,7 +303,7 @@ const VideoInterview: React.FC = () => {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [currentQIndex, questions.length, startRecording]);
+  }, [currentQIndex, questions.length, startRecording, isSubmitting]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -398,9 +458,15 @@ const VideoInterview: React.FC = () => {
                 {questions.map((_, index) => (
                   <button
                     key={index}
-                    onClick={() => {
+                    onClick={async () => {
                       if (index !== currentQIndex && !isSubmitting) {
-                        stopRecording();
+                        const blob = await stopRecordingAsync();
+                        if (blob) {
+                          setRecordings((prev) => ({
+                            ...prev,
+                            [currentQIndex]: blob,
+                          }));
+                        }
                         setCurrentQIndex(index);
                       }
                     }}
