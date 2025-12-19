@@ -3,13 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
-import {
-  SkipForward,
-  Clock,
-  Video,
-  Mic,
-  Send,
-} from "lucide-react";
+import { SkipForward, Clock, Video, Mic, Send } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
 
@@ -28,7 +22,7 @@ const VideoInterview: React.FC = () => {
   const [recordings, setRecordings] = useState<Record<number, Blob>>({});
   const [isRecording, setIsRecording] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const router = useRouter();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -103,7 +97,7 @@ const VideoInterview: React.FC = () => {
         setError("Failed to access camera/microphone");
       }
     };
-    
+
     initMedia();
 
     return () => {
@@ -134,6 +128,7 @@ const VideoInterview: React.FC = () => {
       setIsRecording(false);
       const blob = new Blob(chunksRef.current, { type: "video/webm" });
       setRecordings((prev) => ({ ...prev, [currentQIndex]: blob }));
+      console.log(recordings, "this are the recordings on media stop");
       chunksRef.current = [];
     };
 
@@ -144,7 +139,7 @@ const VideoInterview: React.FC = () => {
   // Submit all recordings
   const handleSubmit = useCallback(async () => {
     if (isSubmitting) return;
-    
+
     setIsSubmitting(true);
     console.log("handle submit clicked");
 
@@ -152,7 +147,7 @@ const VideoInterview: React.FC = () => {
     stopRecording();
 
     // Wait a bit for the recording to finalize
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     try {
       const formData = new FormData();
@@ -161,6 +156,7 @@ const VideoInterview: React.FC = () => {
       // Use the recordings from state (after waiting for onstop)
       Object.entries(recordings).forEach(([index, blob]) => {
         formData.append("video", blob, `ques${Number(index) + 1}.webm`);
+        console.log("append count");
       });
 
       const token = localStorage.getItem("token");
@@ -176,10 +172,10 @@ const VideoInterview: React.FC = () => {
       );
 
       console.log("✅ Recordings uploaded successfully!", response.data);
-      
+
       // Cleanup
       streamRef.current?.getTracks().forEach((t) => t.stop());
-      
+
       router.push("/candidate/dashboard");
     } catch (err) {
       console.error("❌ Upload failed:", err);
@@ -191,7 +187,7 @@ const VideoInterview: React.FC = () => {
   // Handle next question or submit
   const handleNext = useCallback(() => {
     stopRecording();
-    
+
     if (currentQIndex === questions.length - 1) {
       // Last question - submit
       handleSubmit();
@@ -214,7 +210,7 @@ const VideoInterview: React.FC = () => {
   // Auto-start recording when question changes
   useEffect(() => {
     if (!streamRef.current || questions.length === 0) return;
-    
+
     // Small delay to ensure previous recording stopped
     const timer = setTimeout(() => {
       startRecording();
@@ -279,7 +275,8 @@ const VideoInterview: React.FC = () => {
                     Question {currentQIndex + 1}
                   </h2>
                   <p className="text-foreground text-lg">
-                    {questions[currentQIndex]?.question || "Loading question..."}
+                    {questions[currentQIndex]?.question ||
+                      "Loading question..."}
                   </p>
                 </div>
 

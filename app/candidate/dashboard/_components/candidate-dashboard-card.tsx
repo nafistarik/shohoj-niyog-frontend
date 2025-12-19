@@ -44,7 +44,6 @@ const getTotalDuration = (qaPairs: any[]) => {
 };
 
 export default function CandidateDashboardCard({ session }: { session: any }) {
-  console.log(session,"...........")
   return (
     <Card
       key={session?.id}

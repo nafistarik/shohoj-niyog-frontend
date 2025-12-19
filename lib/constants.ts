@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://16.16.186.219"
+export const API_BASE_URL = "https://16.16.186.219.sslip.io"
 
 export const API_ENDPOINTS = {
   // Auth endpoints
