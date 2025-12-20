@@ -55,9 +55,7 @@ export default function CandidateResultsPage() {
   }, []);
 
   const updateDecision = async (resultId: string, newDecision: string) => {
-    console.log(`Updating decision for result ${resultId} to ${newDecision}`);
 
-    // Update local state
     setResultsData((prev: any) =>
       prev.map((result: any) =>
         result.id === resultId ? { ...result, decision: newDecision } : result
