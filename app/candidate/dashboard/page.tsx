@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "./_components/candidate-dashboard-card";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/lib/constants";
+import { getCookie } from "@/lib/utils";
 
 export default function CandidateDashboard() {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -19,7 +20,7 @@ export default function CandidateDashboard() {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
+      const token = getCookie("access_token")
 
       const response = await fetch(`${API_BASE_URL}/api/findall/`, {
         method: "GET",

@@ -16,7 +16,6 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Video, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import signupIllustrator from "@/assets/auth/login-illustrator.svg";
@@ -28,8 +27,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const { login } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,13 +47,10 @@ export default function LoginPage() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
-        // Example: store token if backend returns it
-        localStorage.setItem("token", data.access);
-        localStorage.setItem("refresh", data.refresh);
-
-        // Example: redirect after success
+        document.cookie = `access_token=${data.access}; path=/;`;
+        document.cookie = `refresh_token=${data.refresh}; path=/;`;
+        document.cookie = `user_role=${data.role}; path=/;`;
         router.push(`${data.role}/dashboard`);
       } else {
         console.error("❌ Login failed:", data);

@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/popover";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
+import { getCookie } from "@/lib/utils";
 
 export default function CreateSessionPage() {
   const [formData, setFormData] = useState<CreateSessionPayload>({
@@ -162,7 +163,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   setIsLoading(true);
 
   try {
-    const token = localStorage.getItem("token");
+    const token = getCookie("access_token")
 
     const response = await fetch(`${API_BASE_URL}/api/gen/`, {
       method: "POST",
@@ -311,7 +312,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     setFormData((prev) => ({ ...prev, level: value }))
                   }
                 >
-                  <SelectTrigger className="!h-11 bg-input border-sidebar-border text-foreground hover:bg-secondary/50 animate-scale-in min-w-[220px]">
+                  <SelectTrigger className="h-11! bg-input border-sidebar-border text-foreground hover:bg-secondary/50 animate-scale-in min-w-55">
                     <SelectValue placeholder="Select experience level" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-sidebar-border">
@@ -344,7 +345,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     }))
                   }
                 >
-                  <SelectTrigger className="!h-11 bg-input border-sidebar-border text-foreground hover:bg-secondary/50 animate-scale-in min-w-[220px]">
+                  <SelectTrigger className="h-11! bg-input border-sidebar-border text-foreground hover:bg-secondary/50 animate-scale-in min-w-55">
                     <SelectValue placeholder="Select number of questions" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-sidebar-border">
@@ -460,7 +461,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     </Label>
                     <Select value={time} onValueChange={setTime}>
                       <SelectTrigger
-                        className="w-full !h-11 px-3 flex items-center justify-start gap-2
+                        className="w-full h-11! px-3 flex items-center justify-start gap-2
                    border-sidebar-border text-foreground bg-input
                    hover:bg-secondary/50 hover:text-primary-dark
                    shadow-soft animate-scale-in"

@@ -6,6 +6,7 @@ import axios from "axios";
 import { SkipForward, Clock, Video, Mic, Send } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
+import { getCookie } from "@/lib/utils";
 
 type Question = {
   question: string;
@@ -42,7 +43,7 @@ const VideoInterview: React.FC = () => {
       setError("");
 
       try {
-        const token = localStorage.getItem("token");
+        const token = getCookie("access_token")
         const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
           method: "GET",
           headers: {
@@ -99,7 +100,7 @@ const VideoInterview: React.FC = () => {
           console.log(`Appended recording for question ${index}`);
         });
 
-        const token = localStorage.getItem("token");
+        const token = getCookie("access_token")
         const response = await axios.post(
           `${API_BASE_URL}/api/response/`,
           formData,

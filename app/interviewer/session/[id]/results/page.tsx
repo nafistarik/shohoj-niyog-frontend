@@ -18,6 +18,7 @@ import CandidateResultCard from "./_components/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
+import { getCookie } from "@/lib/utils";
 
 // Candidate Result Card Component
 
@@ -40,7 +41,7 @@ export default function SessionResultsPage() {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
+      const token = getCookie("access_token")
 
       const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
         method: "GET",
@@ -78,7 +79,7 @@ export default function SessionResultsPage() {
       setResultError("");
 
       try {
-        const token = localStorage.getItem("token");
+        const token = getCookie("access_token")
 
         const response = await fetch(
           `${API_BASE_URL}/api/results/${sessionId}`,
@@ -129,7 +130,7 @@ export default function SessionResultsPage() {
     );
 
     try {
-      const token = localStorage.getItem("token");
+      const token = getCookie("access_token")
 
       const response = await fetch(`${API_BASE_URL}/api/decide/`, {
         method: "PATCH",

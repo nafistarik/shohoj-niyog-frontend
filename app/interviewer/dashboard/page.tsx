@@ -1,133 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import InterviewerSessionCard from "@/app/interviewer/dashboard/_components/interviewer-session-card";
-import { Plus, Users, Clock, FileText } from "lucide-react";
-import Link from "next/link";
-import { useAuth } from "@/hooks/use-auth";
-import type { InterviewSession } from "@/lib/types";
+import { Users, Clock, FileText } from "lucide-react";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
-
-// const sessions = [
-//   {
-//     id: "68935b9fc5f8140275f8b24a",
-//     position: "Backend Developer",
-//     stack: "Node, Django, MongoDB",
-//     level: "Intermediate",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe898",
-//         question: "What is the difference between a hash table and a hash map?",
-//         answer: "...",
-//       },
-//     ],
-
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-08-25T06:30:00Z",
-//   },
-//   {
-//     id: "68935b9fc5f8140275f8b24a",
-//     position: "Backend Developer",
-//     stack: "Node, Django, MongoDB",
-//     level: "Intermediate",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe898",
-//         question: "What is the difference between a hash table and a hash map?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-08-25T06:30:00Z",
-//   },
-//   {
-//     id: "68935b9fc5f8140275f8b24a",
-//     position: "Backend Developer",
-//     stack: "Node, Django, MongoDB",
-//     level: "Intermediate",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe898",
-//         question: "What is the difference between a hash table and a hash map?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-08-25T06:30:00Z",
-//   },
-//   {
-//     id: "68935b9fc5f8140275f8b24a",
-//     position: "Backend Developer",
-//     stack: "Node, Django, MongoDB",
-//     level: "Intermediate",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe898",
-//         question: "What is the difference between a hash table and a hash map?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-08-25T06:30:00Z",
-//   },
-//   {
-//     id: "68935b9fc5f8140275f8b24a",
-//     position: "Backend Developer",
-//     stack: "Node, Django, MongoDB",
-//     level: "Intermediate",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe898",
-//         question: "What is the difference between a hash table and a hash map?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-08-25T06:30:00Z",
-//   },
-//   {
-//     id: "68935b9fc5f8140275f8b24a",
-//     position: "Backend Developer",
-//     stack: "Node, Django, MongoDB",
-//     level: "Intermediate",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe898",
-//         question: "What is the difference between a hash table and a hash map?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-08-25T06:30:00Z",
-//   },
-//   {
-//     id: "68935b9fc5f8140275f8b24a",
-//     position: "Backend Developer",
-//     stack: "Node, Django, MongoDB",
-//     level: "Intermediate",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe898",
-//         question: "What is the difference between a hash table and a hash map?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-09-25T06:30:00Z",
-//   },
-// ];
+import { getCookie } from "@/lib/utils";
 
 const user = {
   _id: "ObjectId",
@@ -149,7 +30,7 @@ export default function InterviewerDashboard() {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
+      const token = getCookie("access_token")
 
       const response = await fetch(`${API_BASE_URL}/api/findall/`, {
         method: "GET",
@@ -160,9 +41,7 @@ export default function InterviewerDashboard() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
-        console.log("✅ Sessions fetched successfully:", data);
         setSessions(data);
       } else {
         console.error("❌ Failed to fetch sessions:", data);
@@ -179,29 +58,7 @@ export default function InterviewerDashboard() {
     fetchSessions();
   }, []);
 
-  if (isLoading) return <p>Loading sessions...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-
-  // const { user } = useAuth()
-
-  // useEffect(() => {
-  //   fetchSessions()
-  // }, [])
-
-  // const fetchSessions = async () => {
-  //   try {
-  //     const response = await fetch("/api/findall")
-  //     if (response.ok) {
-  //       const data = await response.json()
-  //       setSessions(data)
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to fetch sessions:", error)
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#E1F1FF] flex items-center justify-center">

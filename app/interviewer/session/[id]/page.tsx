@@ -35,6 +35,7 @@ import AllowedCandidatesItem from "./_components/allowed-candidate-item";
 import { Session } from "inspector/promises";
 import SessionQAPair from "./_components/session-qa-pair";
 import { API_BASE_URL } from "@/lib/constants";
+import { getCookie } from "@/lib/utils";
 
 function Label({
   className,
@@ -53,43 +54,6 @@ function Label({
     </label>
   );
 }
-
-// const session = {
-//   id: "68935b9fc5f8140275f8b24a",
-//   position: "Backend Developer",
-//   stack: "Node, Django, MongoDB",
-//   level: "Intermediate",
-//   created_by: "recruiter_id",
-//   qa_pairs: [
-//     {
-//       question_id: "1",
-//       question:
-//         "Explain the concept of middleware in Express.js and provide an example of how you would implement custom middleware for authentication.",
-//       answer:
-//         "Middleware in Express.js are functions that have access to the request and response objects, and the next middleware function in the application's request-response cycle. They can execute any code, make changes to request/response objects, end the request-response cycle, or call the next middleware. For authentication, I would create middleware that verifies JWT tokens from the Authorization header.",
-//     },
-//     {
-//       question_id: "2",
-//       question:
-//         "Describe how you would optimize MongoDB queries for better performance in a high-traffic application.",
-//       answer:
-//         "I would use indexing on frequently queried fields, implement pagination with skip() and limit(), use projection to return only necessary fields, leverage aggregation pipeline for complex operations, and implement caching with Redis for frequently accessed data.",
-//     },
-//     {
-//       question_id: "3",
-//       question:
-//         "How would you handle database migrations and schema changes in a production Django application without causing downtime?",
-//       answer:
-//         "I would use Django's migration system with careful planning: create migrations in development, test thoroughly in staging, deploy during low-traffic periods, use backward-compatible changes initially, and consider using tools like Django-migrations-graph for complex deployment scenarios.",
-//     },
-//   ],
-//   allowed_candidates: [
-//     "john.doe@example.com",
-//     "sarah.smith@techcorp.com",
-//     "mike.johnson@devteam.io",
-//   ],
-//   scheduled: "2025-08-25T06:30:00Z",
-// };
 
 export default function SessionDetailsPage() {
   const [copiedEmails, setCopiedEmails] = useState<string[]>([]);
@@ -165,7 +129,7 @@ export default function SessionDetailsPage() {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
+      const token = getCookie("access_token")
 
       const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
         method: "GET",
@@ -199,7 +163,7 @@ export default function SessionDetailsPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
       <PageHeader
         title={session?.position}
         description="Interview Session Details"

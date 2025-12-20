@@ -1,6 +1,9 @@
+"use client";
+
 import { Video } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const navItems = [
   { label: "Features", href: "#features" },
@@ -10,6 +13,12 @@ const navItems = [
 ];
 
 function Navbar() {
+  const router = useRouter();
+  const handleLogout = () => {
+    document.cookie = "access_token=; Max-Age=0; path=/;";
+    document.cookie = "user_role=; Max-Age=0; path=/;";
+    router.push("/login");
+  };
   return (
     <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-sidebar-border glass-effect">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between animate-fade-in">
@@ -34,6 +43,9 @@ function Navbar() {
           </Button>
           <Button asChild>
             <Link href="/signup">Get Started</Link>
+          </Button>
+          <Button onClick={handleLogout} variant="outline" asChild>
+            Logout
           </Button>
         </div>
       </div>

@@ -1,25 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  ArrowLeft,
-  Calendar,
-  CheckCircle,
-  Clock,
-  FileText,
-  Star,
-  TrendingUp,
-  XCircle,
-} from "lucide-react";
-import Link from "next/link";
-import { useAuth } from "@/hooks/use-auth";
+import { CheckCircle, Clock, FileText } from "lucide-react";
 import type { CandidateResponse, InterviewSession } from "@/lib/types";
-import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateResultCard from "./_components/candidate-result-card";
 import { API_BASE_URL } from "@/lib/constants";
+import { getCookie } from "@/lib/utils";
 
 interface CandidateResultWithSession extends CandidateResponse {
   session?: InterviewSession;
@@ -36,7 +25,7 @@ export default function CandidateResultsPage() {
       setError("");
 
       try {
-        const token = localStorage.getItem("token");
+        const token = getCookie("access_token");
 
         const response = await fetch(`${API_BASE_URL}/api/results/`, {
           method: "GET",
@@ -48,11 +37,8 @@ export default function CandidateResultsPage() {
 
         const data = await response.json();
 
-        console.log(data, "this is api results data")
-
         if (response.ok) {
           setResultsData(data);
-          console.log(data, "cand res");
         } else {
           console.error("❌ Failed to fetch results:", data);
           setError(data?.error || "Failed to load results");
@@ -72,20 +58,14 @@ export default function CandidateResultsPage() {
     console.log(`Updating decision for result ${resultId} to ${newDecision}`);
 
     // Update local state
-    setResultsData((prev) =>
-      prev.map((result) =>
+    setResultsData((prev: any) =>
+      prev.map((result: any) =>
         result.id === resultId ? { ...result, decision: newDecision } : result
       )
     );
 
     try {
-      const token = localStorage.getItem("token");
-
-      console.log({
-        session_id: resultId,
-        // candidate_id: candidateId,
-        decision: newDecision,
-      });
+      const token = getCookie("access_token");
 
       const response = await fetch(`${API_BASE_URL}/api/decide/`, {
         method: "PATCH",
@@ -95,14 +75,11 @@ export default function CandidateResultsPage() {
         },
         body: JSON.stringify({
           session_id: resultId,
-          // candidate_id: candidateId,
           decision: newDecision,
         }),
       });
 
       const data = await response.json();
-
-      console.log(data, "this is update response data");
 
       if (!response.ok) {
         throw new Error(data?.error || "Failed to update decision");
@@ -146,7 +123,7 @@ export default function CandidateResultsPage() {
                 icon={<CheckCircle className="w-6 h-6 text-primary" />}
                 title={`${
                   resultsData.filter(
-                    (r) =>
+                    (r: any) =>
                       r.decision === "interested" || r.decision === "accept"
                   ).length
                 }`}
@@ -155,7 +132,8 @@ export default function CandidateResultsPage() {
               <StatCard
                 icon={<Clock className="w-6 h-6 text-primary" />}
                 title={`${
-                  resultsData.filter((r) => r.decision === "pending").length
+                  resultsData.filter((r: any) => r.decision === "pending")
+                    .length
                 }`}
                 description="Pending Review"
               />
@@ -167,7 +145,7 @@ export default function CandidateResultsPage() {
                 Interview Results
               </h2>
 
-              {resultsData.map((result) => (
+              {resultsData.map((result: any) => (
                 <CandidateResultCard
                   result={result}
                   updateDecision={updateDecision}
