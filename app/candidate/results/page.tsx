@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { CheckCircle, Clock, FileText } from "lucide-react";
 import type { CandidateResponse, InterviewSession } from "@/lib/types";
-import { EmptyState } from "@/components/shared/empty-state";
+import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateResultCard from "./_components/candidate-result-card";

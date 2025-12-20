@@ -26,10 +26,7 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
-import type { InterviewSession } from "@/lib/types";
-import { LoadingSpinner } from "@/components/shared/loading-spinner";
-import { ErrorMessage } from "@/components/shared/error-message";
+import { usePathname } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
 import AllowedCandidatesItem from "./_components/allowed-candidate-item";
 import { Session } from "inspector/promises";

@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Award, Clock, CalendarDays, Eye } from "lucide-react";
 import Link from "next/link";
-import { EmptyState } from "@/components/shared/empty-state";
+import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "./_components/candidate-dashboard-card";

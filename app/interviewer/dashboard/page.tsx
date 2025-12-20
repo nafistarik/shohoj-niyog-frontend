@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import InterviewerSessionCard from "@/app/interviewer/dashboard/_components/interviewer-session-card";
 import { Users, Clock, FileText } from "lucide-react";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
-import { EmptyState } from "@/components/shared/empty-state";
+import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
