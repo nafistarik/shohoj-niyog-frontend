@@ -1,9 +1,12 @@
-// components/PageHeader.tsx
+"use client";
 
 import { ReactNode } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Plus, ArrowLeft } from "lucide-react";
+import { Plus, ArrowLeft, LogOut } from "lucide-react";
+import Image from "next/image";
+import logo from "@/assets/auth/logo_icon.png";
+import { useRouter } from "next/navigation";
 
 interface PageHeaderProps {
   title?: string;
@@ -33,24 +36,42 @@ export function PageHeader({
   backIcon,
   children,
 }: PageHeaderProps) {
+  const router = useRouter();
+  const handleLogout = () => {
+    document.cookie = "access_token=; Max-Age=0; path=/;";
+    document.cookie = "user_role=; Max-Age=0; path=/;";
+    router.push("/login");
+  };
   return (
     <header className="bg-card border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-6">
           {/* Left Side */}
-          <div>
-            {title && (
-              <h1 className="text-3xl font-heading font-bold text-foreground">
-                {title}
-              </h1>
-            )}
-            {description && (
-              <p className="text-muted-foreground mt-1">{description}</p>
-            )}
+          <div className="flex gap-2">
+            <Link href="/" className="inline-flex items-center">
+              <Image
+                src={logo}
+                alt="logo"
+                width={1000}
+                height={1000}
+                className="object-cover w-auto m-auto h-16 animate-fade-in"
+                priority
+              />
+            </Link>
+            <div>
+              {title && (
+                <h1 className="text-3xl font-heading font-bold text-foreground">
+                  {title}
+                </h1>
+              )}
+              {description && (
+                <p className="text-muted-foreground mt-1">{description}</p>
+              )}
+            </div>
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center space-x-4">
             {welcomeText && (
               <span className="text-sm text-muted-foreground">
                 {welcomeText}
@@ -81,6 +102,10 @@ export function PageHeader({
                 </Link>
               </Button>
             )}
+
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut /> Logout
+            </Button>
           </div>
         </div>
       </div>

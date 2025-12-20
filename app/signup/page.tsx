@@ -107,7 +107,7 @@ export default function SignupPage() {
                   alt="logo"
                   width={1000}
                   height={1000}
-                  className="object-cover w-[80%] m-auto h-auto animate-fade-in"
+                  className="object-cover w-auto m-auto h-14 animate-fade-in"
                   priority
                 />
               </Link>
