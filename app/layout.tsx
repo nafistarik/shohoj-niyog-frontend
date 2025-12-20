@@ -2,8 +2,6 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Space_Grotesk, DM_Sans } from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/shared/footer";
-import Navbar from "@/components/shared/navbar";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -36,9 +34,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${dmSans.variable} antialiased`}
     >
       <body className="font-sans">
-        {/* <Navbar /> */}
         {children}
-        {/* <Footer /> */}
       </body>
     </html>
   );

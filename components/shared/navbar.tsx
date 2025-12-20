@@ -4,6 +4,8 @@ import { Video } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import logo from "@/assets/auth/logo.png";
+import Image from "next/image";
 
 const navItems = [
   { label: "Features", href: "#features" },
@@ -21,15 +23,17 @@ function Navbar() {
   };
   return (
     <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-sidebar-border glass-effect">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between animate-fade-in">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-primary">
-            <Video className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-heading font-bold text-foreground">
-            Shohoj Niyog
-          </span>
-        </div>
+      <div className="container mx-auto max-w-6xl py-4 flex items-center justify-between animate-fade-in">
+        <Link href="/" className="inline-flex items-center">
+          <Image
+            src={logo}
+            alt="logo"
+            width={1000}
+            height={1000}
+            className="object-cover w-auto m-auto h-16 animate-fade-in"
+            priority
+          />
+        </Link>
         <nav className="hidden md:flex items-center space-x-2 font-body">
           {navItems.map((item) => (
             <Button key={item.href} variant="ghost" size="lg" asChild>

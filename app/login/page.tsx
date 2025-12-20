@@ -14,11 +14,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Video, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import signupIllustrator from "@/assets/auth/login-illustrator.svg";
+import logo from "@/assets/auth/logo.png";
 import { API_BASE_URL } from "@/lib/constants";
 
 export default function LoginPage() {
@@ -83,17 +84,18 @@ export default function LoginPage() {
         <div className="w-full max-w-md space-y-8">
           <Card className="border-sidebar-border shadow-soft glass-effect overflow-hidden">
             <div className="text-center">
-              <Link
-                href="/"
-                className="inline-flex items-center space-x-2 text-2xl font-bold text-foreground"
-              >
-                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                  <Video className="w-6 h-6 text-primary-foreground" />
-                </div>
-                <span>Shohoj Niyog</span>
+              <Link href="/" className="inline-flex items-center">
+                <Image
+                  src={logo}
+                  alt="logo"
+                  width={1000}
+                  height={1000}
+                  className="object-cover w-[80%] m-auto h-auto animate-fade-in"
+                  priority
+                />
               </Link>
+              <div className="h-1 bg-primary w-full"></div>
             </div>
-            <div className="h-1 bg-primary w-full"></div>
             <CardHeader className="text-center space-y-2">
               <CardTitle className="text-2xl font-heading text-foreground">
                 Sign In
