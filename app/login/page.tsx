@@ -52,7 +52,6 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-
         // Example: store token if backend returns it
         localStorage.setItem("token", data.access);
         localStorage.setItem("refresh", data.refresh);
@@ -69,17 +68,6 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
-
-    // try {
-    //   const success = await login(email, password)
-    //   if (!success) {
-    //     setError("Invalid email or password. Please try again.")
-    //   }
-    // } catch (err) {
-    //   setError("An error occurred. Please try again.")
-    // } finally {
-    //   setIsLoading(false)
-    // }
   };
 
   return (

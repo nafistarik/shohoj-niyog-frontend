@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -94,35 +93,6 @@ export default function SignupPage() {
       setIsLoading(false);
     }
   };
-
-  // try {
-  //   const response = await fetch("/api/auth/signup", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       username: formData.username,
-  //       email: formData.email,
-  //       phone: formData.phone,
-  //       password: formData.password,
-  //       role: formData.role,
-  //     }),
-  //   })
-
-  //   const data = await response.json()
-
-  //   if (response.ok) {
-  //     setSuccess("Account created successfully! Redirecting to login...")
-  //     setTimeout(() => {
-  //       router.push("/login")
-  //     }, 2000)
-  //   } else {
-  //     setError(data.error || "Failed to create account")
-  //   }
-  // } catch (err) {
-  //   setError("An error occurred. Please try again.")
-  // } finally {
-  //   setIsLoading(false)
-  // }
 
   return (
     <div className="min-h-screen flex gradient-bg-subtle-reverse">

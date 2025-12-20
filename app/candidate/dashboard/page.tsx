@@ -2,101 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Award, Clock, CalendarDays, Eye } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/hooks/use-auth";
-import type { InterviewSession } from "@/lib/types";
-import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { EmptyState } from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "./_components/candidate-dashboard-card";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/lib/constants";
-
-// const sessions = [
-//   {
-//     id: "68935b9fc5f8140275f8b24a",
-//     position: "Backend Developer",
-//     stack: "Node.js, Express, MongoDB",
-//     level: "Intermediate",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe898",
-//         question: "What is the difference between a hash table and a hash map?",
-//         answer: "...",
-//       },
-//       {
-//         question_id: "q5b6fe899",
-//         question: "Explain the concept of middleware in Express.js",
-//         answer: "...",
-//       },
-//       {
-//         question_id: "q5b6fe900",
-//         question: "How would you optimize database queries in MongoDB?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-08-25T06:30:00Z",
-//   },
-//   {
-//     id: "68935b9fc5f8140275f8b24b",
-//     position: "Frontend Developer",
-//     stack: "React, TypeScript, Next.js",
-//     level: "Advanced",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe901",
-//         question: "Explain the Virtual DOM concept in React",
-//         answer: "...",
-//       },
-//       {
-//         question_id: "q5b6fe902",
-//         question: "What are React hooks and when would you use them?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-09-27T09:15:00Z",
-//   },
-//   {
-//     id: "68935b9fc5f8140275f8b24c",
-//     position: "Full Stack Engineer",
-//     stack: "React, Node.js, PostgreSQL",
-//     level: "Beginner",
-//     created_by: "recruiter_id",
-//     qa_pairs: [
-//       {
-//         question_id: "q5b6fe903",
-//         question: "What is the difference between SQL and NoSQL databases?",
-//         answer: "...",
-//       },
-//       {
-//         question_id: "q5b6fe904",
-//         question: "Explain REST API principles",
-//         answer: "...",
-//       },
-//       {
-//         question_id: "q5b6fe905",
-//         question: "What is JWT and how does it work?",
-//         answer: "...",
-//       },
-//     ],
-//     allowed_candidates: ["uuid", "can2@gmail.com"],
-//     scheduled: "2025-09-30T14:00:00Z",
-//   },
-// ];
-
-const user = {
-  _id: "ObjectId",
-  username: "Beximco Group",
-  email: "support@beximco.com",
-  phone: "0171111111",
-  password: "<hashed>",
-  role: "candidate",
-  created: "ISODate",
-};
 
 export default function CandidateDashboard() {
   const [sessions, setSessions] = useState<any[]>([]);
