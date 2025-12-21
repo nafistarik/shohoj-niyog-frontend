@@ -1,11 +1,11 @@
 "use client";
 
-import { Video } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import logo from "@/assets/auth/logo.png";
 import Image from "next/image";
+import { getCookie } from "@/lib/utils";
 
 const navItems = [
   { label: "Features", href: "#features" },
@@ -21,6 +21,7 @@ function Navbar() {
     document.cookie = "user_role=; Max-Age=0; path=/;";
     router.push("/login");
   };
+  const token = getCookie("access_token");
   return (
     <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-sidebar-border glass-effect">
       <div className="container mx-auto max-w-6xl py-4 flex items-center justify-between animate-fade-in">
@@ -30,10 +31,11 @@ function Navbar() {
             alt="logo"
             width={1000}
             height={1000}
-            className="object-cover w-auto m-auto h-16 animate-fade-in"
+            className="object-cover w-auto m-auto h-12 animate-fade-in"
             priority
           />
         </Link>
+
         <nav className="hidden md:flex items-center space-x-2 font-body">
           {navItems.map((item) => (
             <Button key={item.href} variant="ghost" size="lg" asChild>
@@ -41,16 +43,22 @@ function Navbar() {
             </Button>
           ))}
         </nav>
+
         <div className="flex items-center space-x-3">
-          <Button variant="outline" asChild>
-            <Link href="/login">Sign In</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/signup">Get Started</Link>
-          </Button>
-          <Button onClick={handleLogout} variant="outline" asChild>
-            Logout
-          </Button>
+          {token ? (
+            <Button onClick={handleLogout} variant="outline">
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button variant="outline" asChild>
+                <Link href="/login">Sign In</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/signup">Get Started</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>

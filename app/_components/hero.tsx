@@ -1,19 +1,19 @@
-import { CheckCircle, Flame, Star, TvMinimalPlay } from "lucide-react";
-import Link from "next/link";
-import { Badge } from "../../components/ui/badge";
-import { Button } from "../../components/ui/button";
+import { CheckCircle, Star } from "lucide-react";
+// import Link from "next/link";
+// import { Badge } from "../../components/ui/badge";
+// import { Button } from "../../components/ui/button";
 
 function Hero() {
   return (
-    <section className="py-20 px-4">
+    <section className="py-20 px-4 min-h-[85vh]">
       <div className="container mx-auto text-center max-w-4xl animate-fade-in">
-        <Badge
+        {/* <Badge
           variant="secondary"
           className="mb-6 bg-primary/10 text-primary border-primary/20 font-medium"
         >
           <Star className="w-3 h-3 mr-1 fill-primary" />
           Trusted by 500+ Companies
-        </Badge>
+        </Badge> */}
         <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
           Streamline Your
           <span className="text-primary block">Video Interviews</span>
@@ -23,7 +23,7 @@ function Hero() {
           platform. Create sessions, evaluate candidates, and make informed
           decisions—all in one place.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" asChild>
             <Link href="/interviewer/dashboard">
               <Flame />
@@ -35,7 +35,7 @@ function Hero() {
               Watch Demo <TvMinimalPlay />
             </Link>
           </Button>
-        </div>
+        </div> */}
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 text-sm text-muted-foreground">
           <div className="flex items-center space-x-2">
             <CheckCircle className="w-4 h-4 text-green-500" />

@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Flame, UserRoundPlus } from "lucide-react";
-import Link from "next/link";
+// import { Button } from "@/components/ui/button";
+// import { Flame, UserRoundPlus } from "lucide-react";
+// import Link from "next/link";
 
 function CTA() {
   return (
@@ -13,7 +13,7 @@ function CTA() {
           Join hundreds of companies already using InterviewFlow to streamline
           their hiring process.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" asChild>
             <Link href="/signup">
               <Flame />
@@ -26,7 +26,7 @@ function CTA() {
               <UserRoundPlus />
             </Link>
           </Button>
-        </div>
+        </div> */}
       </div>
     </section>
   );

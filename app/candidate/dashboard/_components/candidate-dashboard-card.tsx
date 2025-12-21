@@ -49,7 +49,7 @@ export default function CandidateDashboardCard({ session }: { session: any }) {
       key={session?.id}
       className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300 overflow-hidden group animate-fade-in"
     >
-      <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-accent"></div>
+      <div className="absolute top-0 left-0 w-1 h-full bg-linear-to-b from-primary to-accent"></div>
 
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
