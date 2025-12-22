@@ -1,4 +1,4 @@
-# Interview Selection — Frontend (Next.js + TypeScript + Tailwind CSS)
+# Shohoj Niyog — Frontend (Next.js + TypeScript + Tailwind CSS)
 
 ## 1. Quick story — *why this exists*
 
@@ -13,11 +13,11 @@ The frontend's job is to be small, testable, and API-ready: build components wit
 ## 2. Goals for this repository
 
 * **Tech stack:** Next.js (App Router), TypeScript, Tailwind CSS
-* **Theming:** Global CSS variables + Tailwind; light/dark toggle
+* **Theming:** Global CSS variables + Tailwind;
 * **Forms & validation:** react-hook-form + Zod
 * **Data:** Static fixtures that mirror backend payloads (easy API swap later)
 * **Component design:** Tiny, reusable components (Button, Input, Card, Loading, Empty, Error, etc.)
-* **Pages:** Public, Interviewer, Candidate routes (see below)
+* **Pages:** Public, Interviewer, Candidate routes
 * **Accessibility & responsiveness** from the start
 
 ---
@@ -32,23 +32,16 @@ The frontend's job is to be small, testable, and API-ready: build components wit
 
 ### Interviewer (authenticated & role-guarded)
 
-* `/interviewer` — Interviewer dashboard (sidebar + topbar)
-* `/interviewer/sessions/new` — Create interview session (form + scheduled time)
-* `/interviewer/sessions` — List of sessions created by the logged-in interviewer
+* `/interviewer/dashboard` — Interviewer dashboard (sidebar + topbar)
+* `/interviewer/sessions/create` — Create interview session (form + scheduled time)
 * `/interviewer/sessions/[id]` — Session details (QA pairs, allowed candidates, scheduled, status)
 * `/interviewer/sessions/[id]/results` — All candidate responses & scores for the session
 
 ### Candidate (authenticated & role-guarded)
 
-* `/candidate` — Candidate dashboard (sidebar + topbar)
-* `/candidate/sessions` — Sessions allowed for the candidate (cards with Participate button)
-* `/candidate/sessions/[id]` — Participate page: see questions and record video answers (one-by-one or sequential UX)
+* `/candidate/dashboard` — Candidate dashboard
+* `/candidate/interview/[id]` — Participate page: see questions and record video answers (one-by-one or sequential UX)
 * `/candidate/results` — Candidate's interview results and decisions
-
-### Shared / Utility
-
-* `/404` — Not Found
-* `/no-sessions` — Empty states for dashboards
 
 ---
 
@@ -58,38 +51,6 @@ The frontend's job is to be small, testable, and API-ready: build components wit
 * Toggle switch saves preference in `localStorage` and uses a root class (`.dark`).
 * Primary color palette: `0891b2` (blue), sky-blue tints and very light-white background shades.
 * Tailwind config extends colors using tokens mapped to CSS variables; use utility classes + small component-level classes.
-
-Example variables to include:
-
-```css
-:root{
-  --bg: 255 255 255; /* rgb as token */
-  --text: 17 24 39;
-  --primary: 8 145 178; /* 0891b2 */
-  --primary-600: 6 118 145;
-  --muted: 147 197 253;
-}
-.dark{
-  --bg: 12 18 22;
-  --text: 230 230 230;
-}
-```
-
----
-
-## 5. Data contracts (static fixtures)
-
-Use `./data/` with files that mirror backend responses exactly. That way switching to real API requires only changing the data provider.
-
-* `data/auth/signup.json` — Signup response payload
-* `data/auth/login.json` — Login response payload
-* `data/sessions/list_interviewer.json` — GET `/api/findall/` for interviewer
-* `data/sessions/session_detail.json` — GET `/api/find/:id`
-* `data/results/session_results.json` — GET `/api/results/:session_id`
-* `data/candidate/sessions_list.json` — GET `/api/findall/` for candidate
-* `data/questions/session_questions.json` — GET `/api/find/:id` (for question list)
-
-**Important:** Keep field names and types identical to the backend payloads you gave (ObjectId, ISODate can be mocked as strings). Example sample included in `data/README.md`.
 
 ---
 
@@ -298,15 +259,6 @@ NPM scripts:
 
 ---
 
-## 19. Tips & gotchas
-
-* Keep components small — one responsibility each.
-* Mirror backend payloads strictly in static data to avoid integration friction.
-* Use `FormData` for video uploads; name fields according to backend expectations (e.g., `video` array fields).
-* Use ISO strings for scheduled times and `Date` parsing on the client.
-
----
-
 ## 20. Contributing
 
 Please create feature branches and open PRs. Keep commits small and self-contained.
@@ -318,11 +270,3 @@ Please create feature branches and open PRs. Keep commits small and self-contain
 MIT
 
 ---
-
-If you want, I can now:
-
-* generate the initial `tailwind.config.js` and `globals.css` tokens,
-* scaffold the `data/` JSON fixtures from the payloads you gave,
-* or create the `Button`, `Input`, and `SessionCard` components step-by-step (explain → code → next task).
-
-Tell me which of these you'd like and I will scaffold it next.
