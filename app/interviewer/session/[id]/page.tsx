@@ -126,7 +126,7 @@ export default function SessionDetailsPage() {
     setIsLoading(true);
 
     try {
-      const token = getCookie("access_token")
+      const token = getCookie("access_token");
 
       const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
         method: "GET",
@@ -171,7 +171,7 @@ export default function SessionDetailsPage() {
         <Button variant="outline" asChild>
           <Link href={`/interviewer/session/${session?.id}/results`}>
             <Eye />
-            View Results
+            <span className="hidden md:flex">View Results</span>
           </Link>
         </Button>
       </PageHeader>
