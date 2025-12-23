@@ -65,15 +65,17 @@ export function PageHeader({
                 </h1>
               )}
               {description && (
-                <p className="text-muted-foreground mt-1">{description}</p>
+                <p className="hidden md:flex text-muted-foreground mt-1">
+                  {description}
+                </p>
               )}
             </div>
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-row md:flex-col items-center space-x-4">
             {welcomeText && (
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground hidden md:flex">
                 {welcomeText}
               </span>
             )}
@@ -83,7 +85,7 @@ export function PageHeader({
               <Button asChild>
                 <Link href={actionHref}>
                   {actionIcon ?? <Plus className="w-4 h-4 mr-2" />}
-                  {actionLabel}
+                  <span className="hidden md:flex">{actionLabel}</span>
                 </Link>
               </Button>
             )}
@@ -98,13 +100,13 @@ export function PageHeader({
                   {backIcon ?? (
                     <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
                   )}
-                  {backLabel}
+                  <span className="hidden md:flex">{backLabel}</span>
                 </Link>
               </Button>
             )}
 
             <Button variant="outline" onClick={handleLogout}>
-              <LogOut /> Logout
+              <LogOut /> <span className="hidden md:flex">Logout</span>{" "}
             </Button>
           </div>
         </div>

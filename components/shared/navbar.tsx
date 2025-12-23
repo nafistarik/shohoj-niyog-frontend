@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import logo from "@/assets/auth/logo.png";
 import Image from "next/image";
 import { getCookie } from "@/lib/utils";
+import { LogInIcon, LucideLogIn, User2Icon } from "lucide-react";
 
 const navItems = [
   { label: "Features", href: "#features" },
@@ -31,7 +32,7 @@ function Navbar() {
             alt="logo"
             width={1000}
             height={1000}
-            className="object-cover w-auto m-auto h-12 animate-fade-in"
+            className="object-cover w-auto m-auto h-10 md:h-12 animate-fade-in"
             priority
           />
         </Link>
@@ -50,14 +51,21 @@ function Navbar() {
               Logout
             </Button>
           ) : (
-            <>
+            <div className="flex gap-2 mr-2">
               <Button variant="outline" asChild>
-                <Link href="/login">Sign In</Link>
+                <Link href="/login">
+                  {" "}
+                  <LogInIcon /> <span className="hidden md:flex">Sign In</span>
+                </Link>
               </Button>
               <Button asChild>
-                <Link href="/signup">Get Started</Link>
+                <Link href="/signup">
+                  {" "}
+                  <User2Icon />{" "}
+                  <span className="hidden md:flex">Get Started</span>
+                </Link>
               </Button>
-            </>
+            </div>
           )}
         </div>
       </div>
