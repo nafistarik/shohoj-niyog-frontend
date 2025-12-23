@@ -60,7 +60,7 @@ export function PageHeader({
             </Link>
             <div>
               {title && (
-                <h1 className="text-3xl font-heading font-bold text-foreground">
+                <h1 className="text-2xl md:text-3xl font-heading font-bold text-foreground">
                   {title}
                 </h1>
               )}

@@ -20,7 +20,7 @@ export default function CandidateDashboard() {
     setIsLoading(true);
 
     try {
-      const token = getCookie("access_token")
+      const token = getCookie("access_token");
 
       const response = await fetch(`${API_BASE_URL}/api/findall/`, {
         method: "GET",
@@ -91,7 +91,7 @@ export default function CandidateDashboard() {
         <Button variant="outline" asChild>
           <Link href="/candidate/results">
             <Eye />
-            View Results
+            <span className="hidden md:flex">View Results</span>
           </Link>
         </Button>
       </PageHeader>
@@ -133,10 +133,7 @@ export default function CandidateDashboard() {
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {sessions?.map((session, index) => (
-              <CandidateDashboardCard
-                session={session}
-                key={session.id}
-              />
+              <CandidateDashboardCard session={session} key={session.id} />
             ))}
           </div>
         )}
