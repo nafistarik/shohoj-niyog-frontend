@@ -33,9 +33,7 @@ export default function RootLayout({
       suppressHydrationWarning={true}
       className={`${spaceGrotesk.variable} ${dmSans.variable} antialiased`}
     >
-      <body className="font-sans">
-        {children}
-      </body>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }

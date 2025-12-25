@@ -17,19 +17,14 @@ import {
   Calendar,
   Users,
   Eye,
-  Copy,
-  CheckCircle,
   FileText,
   Code,
-  Clock,
   Star,
-  Link as LinkIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
 import AllowedCandidatesItem from "./_components/allowed-candidate-item";
-import { Session } from "inspector/promises";
 import SessionQAPair from "./_components/session-qa-pair";
 import { API_BASE_URL } from "@/lib/constants";
 import { getCookie } from "@/lib/utils";

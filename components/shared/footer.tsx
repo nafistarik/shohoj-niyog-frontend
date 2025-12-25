@@ -27,16 +27,16 @@ function Footer() {
       <div className="container mx-auto max-w-6xl">
         <div className="grid md:grid-cols-4 gap-8">
           <div className="animate-slide-in">
-                    <Link href="/" className="inline-flex items-center">
-          <Image
-            src={logo}
-            alt="logo"
-            width={1000}
-            height={1000}
-            className="object-cover w-auto m-auto h-12 animate-fade-in"
-            priority
-          />
-        </Link>
+            <Link href="/" className="inline-flex items-center">
+              <Image
+                src={logo}
+                alt="logo"
+                width={1000}
+                height={1000}
+                className="object-cover w-auto m-auto h-12 animate-fade-in"
+                priority
+              />
+            </Link>
             <p className="text-muted-foreground font-body">
               Streamline your hiring process with professional video interviews.
             </p>
@@ -47,7 +47,12 @@ function Footer() {
             </h3>
             <div className="flex flex-col">
               {productItems.map((item) => (
-                <Button asChild className="p-0 justify-start" variant="link" key={item.id}>
+                <Button
+                  asChild
+                  className="p-0 justify-start"
+                  variant="link"
+                  key={item.id}
+                >
                   <a href={item.href}>{item.label}</a>
                 </Button>
               ))}
@@ -59,7 +64,12 @@ function Footer() {
             </h3>
             <div className="flex flex-col">
               {companyItems.map((item) => (
-                <Button asChild className="p-0 justify-start" variant="link" key={item.id}>
+                <Button
+                  asChild
+                  className="p-0 justify-start"
+                  variant="link"
+                  key={item.id}
+                >
                   <a href={item.href}>{item.label}</a>
                 </Button>
               ))}
@@ -71,7 +81,12 @@ function Footer() {
             </h3>
             <div className="flex flex-col">
               {supportItems.map((item) => (
-                <Button asChild className="p-0 justify-start" variant="link" key={item.id}>
+                <Button
+                  asChild
+                  className="p-0 justify-start"
+                  variant="link"
+                  key={item.id}
+                >
                   <a href={item.href}>{item.label}</a>
                 </Button>
               ))}

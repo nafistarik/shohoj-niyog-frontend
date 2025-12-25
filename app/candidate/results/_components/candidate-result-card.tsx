@@ -13,16 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  ArrowLeft,
-  Calendar,
-  CheckCircle,
-  Clock,
-  FileText,
-  Star,
-  TrendingUp,
-  XCircle,
-} from "lucide-react";
+import { CheckCircle, Clock, XCircle } from "lucide-react";
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -121,7 +112,6 @@ const getStatusTextColor = (decision: string) => {
 };
 
 export default function CandidateResultCard({ result, updateDecision }: any) {
-
   return (
     <Card
       key={result.session_id}

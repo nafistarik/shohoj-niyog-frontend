@@ -17,13 +17,7 @@ type ImpactCardProps = {
   label: string;
 };
 
-export function ImpactCard({
-  start,
-  end,
-  duration,
-  isVisible,
-  label,
-}: ImpactCardProps) {
+export function ImpactCard({ start, end, isVisible, label }: ImpactCardProps) {
   const value = useCountUp(start, end, true, isVisible);
 
   return (

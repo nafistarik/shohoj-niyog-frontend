@@ -1,4 +1,4 @@
-export const API_BASE_URL = "https://16.16.186.219.sslip.io"
+export const API_BASE_URL = "https://16.16.186.219.sslip.io";
 
 export const API_ENDPOINTS = {
   // Auth endpoints
@@ -14,12 +14,12 @@ export const API_ENDPOINTS = {
   // Response endpoints
   SUBMIT_RESPONSE: "/api/response/",
   UPDATE_DECISION: "/api/decide/",
-} as const
+} as const;
 
 export const USER_ROLES = {
   CANDIDATE: "candidate",
   INTERVIEWER: "interviewer",
-} as const
+} as const;
 
 export const DECISION_STATUS = {
   PENDING: "pending",
@@ -27,10 +27,10 @@ export const DECISION_STATUS = {
   NOT_INTERESTED: "not_interested",
   ACCEPT: "accept",
   REJECT: "reject",
-} as const
+} as const;
 
 export const SKILL_LEVELS = {
   BEGINNER: "Beginner",
   INTERMEDIATE: "Intermediate",
   ADVANCED: "Advanced",
-} as const
+} as const;

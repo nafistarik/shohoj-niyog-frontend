@@ -1,31 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  ArrowLeft,
-  Calendar,
-  Users,
-  Target,
-  Clock,
-  BarChart3,
-} from "lucide-react";
-import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
-import type { CandidateResponse, InterviewSession } from "@/lib/types";
+import { Calendar, Users, Target, Clock } from "lucide-react";
+import { usePathname } from "next/navigation";
 import CandidateResultCard from "./_components/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
 import { getCookie } from "@/lib/utils";
 
-// Candidate Result Card Component
-
 export default function SessionResultsPage() {
-  // const [resultsData, setResultsData] = useState(results);
-  // const params = useParams();
-
   const [resultsData, setResultsData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -41,7 +26,7 @@ export default function SessionResultsPage() {
     setIsLoading(true);
 
     try {
-      const token = getCookie("access_token")
+      const token = getCookie("access_token");
 
       const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
         method: "GET",
@@ -79,7 +64,7 @@ export default function SessionResultsPage() {
       setResultError("");
 
       try {
-        const token = getCookie("access_token")
+        const token = getCookie("access_token");
 
         const response = await fetch(
           `${API_BASE_URL}/api/results/${sessionId}`,
@@ -130,7 +115,7 @@ export default function SessionResultsPage() {
     );
 
     try {
-      const token = getCookie("access_token")
+      const token = getCookie("access_token");
 
       const response = await fetch(`${API_BASE_URL}/api/decide/`, {
         method: "PATCH",

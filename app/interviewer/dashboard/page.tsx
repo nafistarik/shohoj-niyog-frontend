@@ -30,7 +30,7 @@ export default function InterviewerDashboard() {
     setIsLoading(true);
 
     try {
-      const token = getCookie("access_token")
+      const token = getCookie("access_token");
 
       const response = await fetch(`${API_BASE_URL}/api/findall/`, {
         method: "GET",

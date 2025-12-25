@@ -43,7 +43,7 @@ const VideoInterview: React.FC = () => {
       setError("");
 
       try {
-        const token = getCookie("access_token")
+        const token = getCookie("access_token");
         const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
           method: "GET",
           headers: {
@@ -100,7 +100,7 @@ const VideoInterview: React.FC = () => {
           console.log(`Appended recording for question ${index}`);
         });
 
-        const token = getCookie("access_token")
+        const token = getCookie("access_token");
         const response = await axios.post(
           `${API_BASE_URL}/api/response/`,
           formData,
@@ -217,7 +217,7 @@ const VideoInterview: React.FC = () => {
     mediaRecorder.onstop = () => {
       console.log("MediaRecorder stopped for question index:", currentQIndex);
       setIsRecording(false);
-      
+
       // Only update state if we're not about to submit
       if (!pendingSubmitRef.current) {
         const blob = new Blob(chunksRef.current, { type: "video/webm" });
@@ -260,10 +260,10 @@ const VideoInterview: React.FC = () => {
       await submitRecordings(allRecordings);
     } else {
       console.log("Moving to next question...");
-      
+
       // Stop current recording and wait for blob
       const blob = await stopRecordingAsync();
-      
+
       if (blob) {
         setRecordings((prev) => {
           const newState = { ...prev, [currentQIndex]: blob };

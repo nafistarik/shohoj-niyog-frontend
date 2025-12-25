@@ -55,7 +55,6 @@ export default function CandidateResultsPage() {
   }, []);
 
   const updateDecision = async (resultId: string, newDecision: string) => {
-
     setResultsData((prev: any) =>
       prev.map((result: any) =>
         result.id === resultId ? { ...result, decision: newDecision } : result
