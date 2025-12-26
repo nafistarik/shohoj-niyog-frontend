@@ -16,7 +16,7 @@ function Hero() {
         </Badge> */}
         <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
           Streamline Your{" "}
-          <span className="text-primary leading-tight">Video Interviews</span>
+          <span className="text-primary leading-tight block">Video Interviews</span>
         </h1>
         <p className="md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
           Transform your hiring process with our comprehensive video interview

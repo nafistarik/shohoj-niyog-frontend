@@ -16,7 +16,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Shohoj Niyog - Video Interview Platform",
+  title: "Shohoj Niyog",
   description:
     "Streamline your hiring process with our comprehensive video interview platform",
   generator: "Md. Nafis Tarik",

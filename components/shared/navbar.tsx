@@ -37,7 +37,7 @@ function Navbar() {
           />
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-2 font-body">
+        <nav className="hidden md:flex items-center space-x-0.5 font-body">
           {navItems.map((item) => (
             <Button key={item.href} variant="ghost" size="lg" asChild>
               <a href={item.href}>{item.label}</a>

@@ -50,7 +50,7 @@ function FAQ() {
   return (
     <section id="faq" className="py-8 md:py-20 px-4 animate-fade-in">
       <div className="container mx-auto max-w-3xl">
-        <div className="text-center mb-16">
+        <div className="text-center mb-6 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">
             Frequently Asked Questions
           </h2>
@@ -59,7 +59,7 @@ function FAQ() {
           </p>
         </div>
 
-        <Accordion type="single" collapsible className="space-y-4">
+        <Accordion type="single" collapsible className="space-y-3">
           {faqItems.map((item, index) => (
             <AccordionItem
               key={item.value}
@@ -67,8 +67,8 @@ function FAQ() {
               className="border-sidebar-border rounded-lg overflow-hidden glass-effect shadow-soft animate-slide-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <AccordionTrigger className="px-6 py-4 transition-all duration-300 rounded-t-lg data-[state=open]:rounded-b-none group">
-                <span className="font-heading text-lg text-foreground text-left flex-1 group-hover:text-primary transition-colors">
+              <AccordionTrigger className="px-4 py-3 md:px-6 md:py-4 transition-all duration-300 rounded-t-lg data-[state=open]:rounded-b-none group">
+                <span className="font-heading md:text-lg text-foreground text-left flex-1 group-hover:text-primary transition-all cursor-pointer">
                   {item.question}
                 </span>
               </AccordionTrigger>
