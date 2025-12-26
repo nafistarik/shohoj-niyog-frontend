@@ -47,14 +47,14 @@ export function PageHeader({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-6">
           {/* Left Side */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Link href="/" className="inline-flex items-center">
               <Image
                 src={logo}
                 alt="logo"
                 width={1000}
                 height={1000}
-                className="object-cover w-auto m-auto h-16 animate-fade-in"
+                className="object-cover w-auto m-auto h-10 md:h-14 animate-fade-in"
                 priority
               />
             </Link>
@@ -73,7 +73,7 @@ export function PageHeader({
           </div>
 
           {/* Right Side */}
-          <div className="flex flex-row md:flex-col items-center space-x-4">
+          <div className="flex items-center space-x-2">
             {welcomeText && (
               <span className="text-sm text-muted-foreground hidden md:flex">
                 {welcomeText}
@@ -82,7 +82,7 @@ export function PageHeader({
 
             {/* Action Button */}
             {actionLabel && actionHref && (
-              <Button asChild>
+              <Button asChild size="sm">
                 <Link href={actionHref}>
                   {actionIcon ?? <Plus className="w-4 h-4 mr-2" />}
                   <span className="hidden md:flex">{actionLabel}</span>
@@ -105,7 +105,7 @@ export function PageHeader({
               </Button>
             )}
 
-            <Button variant="outline" onClick={handleLogout}>
+            <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut /> <span className="hidden md:flex">Logout</span>{" "}
             </Button>
           </div>
