@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import logo from "@/assets/auth/logo.png";
 import Image from "next/image";
 import { getCookie } from "@/lib/utils";
-import { LogInIcon, LucideLogIn, User2Icon } from "lucide-react";
+import { LogInIcon, User2Icon } from "lucide-react";
 
 const navItems = [
   { label: "Features", href: "#features" },
@@ -25,7 +25,7 @@ function Navbar() {
   const token = getCookie("access_token");
   return (
     <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-sidebar-border glass-effect">
-      <div className="container mx-auto max-w-6xl py-4 flex items-center justify-between animate-fade-in">
+      <div className="container mx-auto max-w-6xl py-4 px-4 flex items-center justify-between animate-fade-in">
         <Link href="/" className="inline-flex items-center">
           <Image
             src={logo}
@@ -52,13 +52,17 @@ function Navbar() {
             </Button>
           ) : (
             <div className="flex gap-2 mr-2">
-              <Button variant="outline" asChild>
+              <Button
+                variant="outline"
+                asChild
+                className="px-2! py-0.5! md:px-4! md:py-2!"
+              >
                 <Link href="/login">
                   {" "}
                   <LogInIcon /> <span className="hidden md:flex">Sign In</span>
                 </Link>
               </Button>
-              <Button asChild>
+              <Button asChild className="px-2.5! py-0.5! md:px-4! md:py-2!">
                 <Link href="/signup">
                   {" "}
                   <User2Icon />{" "}

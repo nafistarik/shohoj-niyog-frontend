@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
     }
 
-    // Find user in mock database
     const user = mockDB.users.findByEmail(email)
 
     if (!user || user.password !== password) {
