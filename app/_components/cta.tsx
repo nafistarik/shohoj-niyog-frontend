@@ -12,7 +12,7 @@ function CTA() {
         <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">
           Ready to Get Started?
         </h2>
-        <p className="md:text-xl text-muted-foreground font-body mb-4">
+        <p className="md:text-xl text-muted-foreground font-body mb-4 md:mb-6">
           Join hundreds of companies already using InterviewFlow to streamline
           their hiring process.
         </p>
