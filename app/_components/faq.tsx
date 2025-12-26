@@ -48,13 +48,13 @@ const faqItems = [
 
 function FAQ() {
   return (
-    <section id="faq" className="py-20 px-4 animate-fade-in">
+    <section id="faq" className="py-8 md:py-20 px-4 animate-fade-in">
       <div className="container mx-auto max-w-3xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-heading font-bold text-foreground mb-4">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-muted-foreground font-body">
+          <p className="md:text-xl text-muted-foreground font-body">
             Everything you need to know about Shohoj Niyog
           </p>
         </div>
