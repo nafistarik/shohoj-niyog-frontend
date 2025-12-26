@@ -163,7 +163,7 @@ export default function SessionDetailsPage() {
         backHref="/interviewer/dashboard"
         backIcon={<ArrowLeft />}
       >
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild size="sm">
           <Link href={`/interviewer/session/${session?.id}/results`}>
             <Eye />
             <span className="hidden md:flex">View Results</span>

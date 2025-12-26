@@ -88,7 +88,7 @@ export default function CandidateDashboard() {
         title="My Interviews"
         description="Participate in video interviews and track your progress"
       >
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild size="sm">
           <Link href="/candidate/results">
             <Eye />
             <span className="hidden md:flex">View Results</span>
