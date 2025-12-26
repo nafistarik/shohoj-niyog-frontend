@@ -17,7 +17,7 @@ function AllowedCandidatesItem({
       key={email}
       className="flex items-center justify-between p-3 bg-slate-50/50 rounded-lg border border-slate-200/50"
     >
-      <span className="text-sm font-medium text-slate-900 truncate">
+      <span className="text-sm font-medium text-slate-900 text-wrap">
         {email}
       </span>
       <Button

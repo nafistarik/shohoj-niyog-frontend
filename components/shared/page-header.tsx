@@ -54,13 +54,13 @@ export function PageHeader({
                 alt="logo"
                 width={1000}
                 height={1000}
-                className="object-cover w-auto m-auto h-10 md:h-14 animate-fade-in"
+                className="object-cover w-auto m-auto h-12 md:h-14 animate-fade-in"
                 priority
               />
             </Link>
             <div>
               {title && (
-                <h1 className="text-2xl md:text-3xl font-heading font-bold text-foreground">
+                <h1 className="text-xl md:text-3xl font-heading font-bold text-foreground">
                   {title}
                 </h1>
               )}
@@ -84,7 +84,7 @@ export function PageHeader({
             {actionLabel && actionHref && (
               <Button asChild size="sm">
                 <Link href={actionHref}>
-                  {actionIcon ?? <Plus className="w-4 h-4 mr-2" />}
+                  {actionIcon ?? <Plus className="w-4 h-4 md:mr-2" />}
                   <span className="hidden md:flex">{actionLabel}</span>
                 </Link>
               </Button>
@@ -98,7 +98,7 @@ export function PageHeader({
               <Button variant="secondary" size="sm" asChild className="group">
                 <Link href={backHref}>
                   {backIcon ?? (
-                    <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                    <ArrowLeft className="w-4 h-4 transition-transform group-hover:border" />
                   )}
                   <span className="hidden md:flex">{backLabel}</span>
                 </Link>
