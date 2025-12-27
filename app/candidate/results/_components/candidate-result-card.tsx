@@ -13,6 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DECISIONS } from "@/lib/static/decision";
+import { getAllowedOptions, isSelectEnabled } from "@/lib/utils";
 import { CheckCircle, Clock, XCircle } from "lucide-react";
 
 const formatDate = (dateString: string) => {
@@ -112,6 +114,9 @@ const getStatusTextColor = (decision: string) => {
 };
 
 export default function CandidateResultCard({ result, updateDecision }: any) {
+  const enabled = isSelectEnabled("candidate", result.decision);
+  const allowedOptions = getAllowedOptions("candidate", result.decision);
+
   return (
     <Card
       key={result.session_id}
@@ -170,16 +175,19 @@ export default function CandidateResultCard({ result, updateDecision }: any) {
           <Select
             value={result.decision}
             onValueChange={(value) => updateDecision(result.session_id, value)}
+            disabled={!enabled}
           >
             <SelectTrigger className="w-40 border-border">
-              <SelectValue placeholder="Select decision" />
+              <SelectValue placeholder="Update decision" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="pending">Under Review</SelectItem>
-              <SelectItem value="interested">Interested</SelectItem>
-              <SelectItem value="not_interested">Not Interested</SelectItem>
-              <SelectItem value="accept">Accept</SelectItem>
-              <SelectItem value="reject">Reject</SelectItem>
+              {DECISIONS.filter((option) =>
+                allowedOptions.includes(option.value)
+              ).map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
