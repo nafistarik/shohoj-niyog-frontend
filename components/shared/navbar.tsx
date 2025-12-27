@@ -20,6 +20,7 @@ function Navbar() {
   const handleLogout = () => {
     document.cookie = "access_token=; Max-Age=0; path=/;";
     document.cookie = "user_role=; Max-Age=0; path=/;";
+    document.cookie = "user_name=; Max-Age=0; path=/;";
     router.push("/login");
   };
   const token = getCookie("access_token");

@@ -206,9 +206,9 @@ export default function SessionDetailsPage() {
                     Experience Level
                   </Label>
                   <Badge
-                  // className={`${getLevelColor(
-                  //   session?.level
-                  // )} px-3 py-1 font-medium`}
+                    className={`${getLevelColor(
+                      session?.level
+                    )} px-3 py-1 font-medium`}
                   >
                     {/* {getLevelIcon(session?.level)} */}
                     <span className="ml-1">{session?.level}</span>

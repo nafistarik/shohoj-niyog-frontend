@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
-import { Calendar, Clock, Play, Zap } from "lucide-react";
+import { Calendar, Play, Zap } from "lucide-react";
 import Link from "next/link";
 
 const getLevelColor = (level: string) => {

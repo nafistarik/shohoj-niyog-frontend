@@ -51,6 +51,7 @@ export default function LoginPage() {
         document.cookie = `access_token=${data.access}; path=/;`;
         document.cookie = `refresh_token=${data.refresh}; path=/;`;
         document.cookie = `user_role=${data.role}; path=/;`;
+        document.cookie = `user_name=${data.username}; path=/;`;
         router.push(`${data.role}/dashboard`);
       } else {
         console.error("❌ Login failed:", data);

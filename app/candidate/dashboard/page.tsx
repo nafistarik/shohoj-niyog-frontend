@@ -11,6 +11,7 @@ import { API_BASE_URL } from "@/lib/constants";
 import { formatDate, getCookie } from "@/lib/utils";
 
 export default function CandidateDashboard() {
+  const userName = getCookie("user_name");
   const [sessions, setSessions] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -77,6 +78,7 @@ export default function CandidateDashboard() {
       <PageHeader
         title="My Interviews"
         description="Participate in video interviews and track your progress"
+        welcomeText={`Welcome, ${userName}`}
       >
         <Button variant="outline" asChild size="sm">
           <Link href="/candidate/results">
@@ -111,7 +113,6 @@ export default function CandidateDashboard() {
         </div>
       </section>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {sessions.length === 0 ? (
           <EmptyState

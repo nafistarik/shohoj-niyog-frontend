@@ -10,17 +10,8 @@ import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
 import { getCookie } from "@/lib/utils";
 
-const user = {
-  _id: "ObjectId",
-  username: "Beximco Group",
-  email: "support@beximco.com",
-  phone: "0171111111",
-  password: "<hashed>",
-  role: "interviewer",
-  created: "ISODate",
-};
-
 export default function InterviewerDashboard() {
+  const userName = getCookie("user_name");
   const [sessions, setSessions] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -72,7 +63,7 @@ export default function InterviewerDashboard() {
       <PageHeader
         title="Interview Sessions"
         description="Manage your interview sessions and review candidates"
-        welcomeText={`Welcome, ${user?.username}`}
+        welcomeText={`Welcome, ${userName}`}
         actionLabel="Create Session"
         actionHref="/interviewer/create"
       />
