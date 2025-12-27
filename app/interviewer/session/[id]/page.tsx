@@ -29,24 +29,7 @@ import SessionQAPair from "./_components/session-qa-pair";
 import { API_BASE_URL } from "@/lib/constants";
 import { formatDate, getCookie } from "@/lib/utils";
 import { LevelBadge } from "@/components/shared/level-badge";
-
-function Label({
-  className,
-  children,
-  ...props
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label
-      className={`text-sm font-medium text-slate-600 ${className}`}
-      {...props}
-    >
-      {children}
-    </label>
-  );
-}
+import { CustomLabel } from "@/components/shared/custom-label";
 
 export default function SessionDetailsPage() {
   const [copiedEmails, setCopiedEmails] = useState<string[]>([]);
@@ -119,6 +102,8 @@ export default function SessionDetailsPage() {
   if (isLoading) return <p>Loading sessions...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
+  console.log(session?.level, "session.level");
+
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
       <PageHeader
@@ -150,18 +135,14 @@ export default function SessionDetailsPage() {
               </CardHeader>
               <CardContent className="space-y-5">
                 <div>
-                  <Label className="text-sm font-medium text-slate-600 mb-2 block">
-                    Position
-                  </Label>
+                  <CustomLabel>Position</CustomLabel>
                   <p className="text-slate-900 font-medium text-lg">
                     {session?.position}
                   </p>
                 </div>
 
                 <div>
-                  <Label className="text-sm font-medium text-slate-600 mb-2 block">
-                    Technology Stack
-                  </Label>
+                  <CustomLabel>Technology Stack</CustomLabel>
                   <div className="flex flex-wrap gap-2">
                     {session?.stack.split(", ").map((tech: string) => (
                       <Badge
@@ -176,17 +157,15 @@ export default function SessionDetailsPage() {
                   </div>
                 </div>
 
-                <div>
-                  <Label className="text-sm font-medium text-slate-600 mb-2 block">
-                    Experience Level
-                  </Label>
-                  <LevelBadge level={session.level} />
-                </div>
+                {session?.level && (
+                  <div>
+                    <CustomLabel>Experience Level</CustomLabel>
+                    <LevelBadge level={session.level} />
+                  </div>
+                )}
 
                 <div>
-                  <Label className="text-sm font-medium text-slate-600 mb-2 block">
-                    Questions
-                  </Label>
+                  <CustomLabel>Questions</CustomLabel>
                   <div className="flex items-center text-slate-900">
                     <FileText className="w-4 h-4 mr-2 text-primary" />
                     <span className="font-semibold">
@@ -197,9 +176,7 @@ export default function SessionDetailsPage() {
 
                 {session?.scheduled && (
                   <div>
-                    <Label className="text-sm font-medium text-slate-600 mb-2 block">
-                      Scheduled Date
-                    </Label>
+                    <CustomLabel>Scheduled Date</CustomLabel>
                     <div className="flex items-center text-slate-900">
                       <Calendar className="w-4 h-4 mr-2 text-primary" />
                       <span className="font-medium">

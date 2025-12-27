@@ -40,11 +40,6 @@ export default function CandidateDashboardCard({ session }: { session: any }) {
               {formatDate(session?.scheduled_time)}
             </div>
           )}
-          {/* <div className="flex items-center text-sm text-muted-foreground">
-            <Clock className="w-4 h-4 mr-2" />
-            {session?.qa_pairs?.length} questions • ~
-            {getTotalDuration(session?.qa_pairs)}
-          </div> */}
         </div>
 
         <div className="bg-secondary/30 p-3 rounded-lg border border-border">
