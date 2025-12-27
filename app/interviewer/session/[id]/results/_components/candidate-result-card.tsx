@@ -21,6 +21,8 @@ import {
   Mail,
   MessageSquare,
 } from "lucide-react";
+import { getAllowedOptions, isSelectEnabled } from "@/lib/utils";
+import { DECISIONS } from "@/lib/static/decision";
 
 export default function CandidateResultCard({
   result,
@@ -68,6 +70,9 @@ export default function CandidateResultCard({
     if (score >= 6) return "text-yellow-600 dark:text-yellow-400";
     return "text-red-600 dark:text-red-400";
   };
+
+  const enabled = isSelectEnabled("interviewer", result.decision);
+  const allowedOptions = getAllowedOptions("candidate", result.decision);
 
   return (
     <Card
@@ -128,16 +133,19 @@ export default function CandidateResultCard({
                 onValueChange={(value) =>
                   updateDecision(result.candidate_id, value)
                 }
+                disabled={!enabled}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Update decision" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="interested">Interested</SelectItem>
-                  <SelectItem value="not_interested">Not Interested</SelectItem>
-                  <SelectItem value="accept">Accept</SelectItem>
-                  <SelectItem value="reject">Reject</SelectItem>
+                  {DECISIONS.filter((option) =>
+                    allowedOptions.includes(option.value)
+                  ).map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

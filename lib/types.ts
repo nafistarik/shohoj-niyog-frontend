@@ -63,3 +63,10 @@ export interface DecisionPayload {
   candidate_id: string;
   decision: "interested" | "not_interested" | "accept" | "reject";
 }
+
+export type Decision =
+  | "pending"
+  | "interested"
+  | "not_interested"
+  | "accept"
+  | "reject";
