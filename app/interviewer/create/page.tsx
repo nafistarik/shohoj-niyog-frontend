@@ -315,13 +315,13 @@ export default function CreateSessionPage() {
                     <SelectValue placeholder="Select experience level" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-sidebar-border">
-                    <SelectItem value="Beginner" className="font-body">
+                    <SelectItem value="beginner" className="font-body">
                       Beginner (0-2 years)
                     </SelectItem>
-                    <SelectItem value="Intermediate" className="font-body">
+                    <SelectItem value="intermediate" className="font-body">
                       Intermediate (2-5 years)
                     </SelectItem>
-                    <SelectItem value="Advanced" className="font-body">
+                    <SelectItem value="advanced" className="font-body">
                       Advanced (5+ years)
                     </SelectItem>
                   </SelectContent>

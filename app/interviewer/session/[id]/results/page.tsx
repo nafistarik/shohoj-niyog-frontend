@@ -9,6 +9,7 @@ import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
 import { formatDate, getCookie } from "@/lib/utils";
+import { LevelBadge } from "@/components/shared/level-badge";
 
 export default function SessionResultsPage() {
   const [resultsData, setResultsData] = useState<any[]>([]);
@@ -158,7 +159,6 @@ export default function SessionResultsPage() {
           </div>
         ) : (
           <div className="space-y-8">
-            {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
               <StatCard
                 icon={<Users className="w-6 h-6 text-primary" />}
@@ -197,7 +197,7 @@ export default function SessionResultsPage() {
                       Session Details
                     </h3>
                     <p className="mt-1 text-muted-foreground">
-                      {session.stack} • {session.level} Level
+                      <LevelBadge level={session.level} /> • {session.stack}
                     </p>
                     {session.scheduled && (
                       <div className="flex items-center text-muted-foreground mt-2">

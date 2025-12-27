@@ -28,6 +28,7 @@ import AllowedCandidatesItem from "./_components/allowed-candidate-item";
 import SessionQAPair from "./_components/session-qa-pair";
 import { API_BASE_URL } from "@/lib/constants";
 import { formatDate, getCookie } from "@/lib/utils";
+import { LevelBadge } from "@/components/shared/level-badge";
 
 function Label({
   className,
@@ -56,32 +57,6 @@ export default function SessionDetailsPage() {
 
   const pathname = usePathname();
   const sessionId = pathname.split("/")[3];
-
-  const getLevelColor = (level: string) => {
-    switch (level.toLowerCase()) {
-      case "beginner":
-        return "bg-green-100 text-green-700 border-green-200";
-      case "intermediate":
-        return "bg-amber-100 text-amber-700 border-amber-200";
-      case "advanced":
-        return "bg-red-100 text-red-700 border-red-200";
-      default:
-        return "bg-slate-100 text-slate-700 border-slate-200";
-    }
-  };
-
-  const getLevelIcon = (level: string) => {
-    switch (level.toLowerCase()) {
-      case "beginner":
-        return <Star className="w-4 h-4 fill-green-500 text-green-500" />;
-      case "intermediate":
-        return <Star className="w-4 h-4 fill-amber-500 text-amber-500" />;
-      case "advanced":
-        return <Star className="w-4 h-4 fill-red-500 text-red-500" />;
-      default:
-        return <Star className="w-4 h-4 fill-slate-500 text-slate-500" />;
-    }
-  };
 
   const copyToClipboard = async (text: string, identifier: string) => {
     try {
@@ -205,14 +180,7 @@ export default function SessionDetailsPage() {
                   <Label className="text-sm font-medium text-slate-600 mb-2 block">
                     Experience Level
                   </Label>
-                  <Badge
-                    className={`${getLevelColor(
-                      session?.level
-                    )} px-3 py-1 font-medium`}
-                  >
-                    {/* {getLevelIcon(session?.level)} */}
-                    <span className="ml-1">{session?.level}</span>
-                  </Badge>
+                  <LevelBadge level={session.level} />
                 </div>
 
                 <div>

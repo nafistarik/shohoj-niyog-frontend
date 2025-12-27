@@ -18,32 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
-
-const getLevelColor = (level: string) => {
-  switch (level.toLowerCase()) {
-    case "beginner":
-      return "bg-green-100 text-green-700 border-green-200";
-    case "intermediate":
-      return "bg-yellow-100 text-yellow-700 border-yellow-200";
-    case "advanced":
-      return "bg-red-100 text-red-700 border-red-200";
-    default:
-      return "bg-muted text-muted-foreground border-border";
-  }
-};
-
-const getLevelVariant = (level: string) => {
-  switch (level.toLowerCase()) {
-    case "beginner":
-      return "success";
-    case "intermediate":
-      return "warning";
-    case "advanced":
-      return "destructive";
-    default:
-      return "secondary";
-  }
-};
+import { LevelBadge } from "@/components/shared/level-badge";
 
 export default function InterviewerSessionCard({ session }: { session: any }) {
   return (
@@ -85,12 +60,7 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
-          <Badge
-            variant={getLevelVariant(session.level) as any}
-            className="capitalize"
-          >
-            {session.level}
-          </Badge>
+          <LevelBadge level={session.level} />
           {/* <span className="text-sm text-muted-foreground">
             {session.qa_pairs?.length} question
             {session.qa_pairs?.length !== 1 ? "s" : ""}
