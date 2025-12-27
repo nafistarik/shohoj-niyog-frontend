@@ -116,6 +116,14 @@ const getStatusTextColor = (decision: string) => {
 export default function CandidateResultCard({ result, updateDecision }: any) {
   const enabled = isSelectEnabled("candidate", result.decision);
   const allowedOptions = getAllowedOptions("candidate", result.decision);
+  const visibleOptions = enabled
+    ? [
+        // current state (read-only, shown in trigger)
+        ...DECISIONS.filter((option) => option.value === result.decision),
+        // allowed transitions
+        ...DECISIONS.filter((option) => allowedOptions.includes(option.value)),
+      ]
+    : DECISIONS.filter((option) => option.value === result.decision);
 
   return (
     <Card
@@ -181,13 +189,18 @@ export default function CandidateResultCard({ result, updateDecision }: any) {
               <SelectValue placeholder="Update decision" />
             </SelectTrigger>
             <SelectContent>
-              {DECISIONS.filter((option) =>
-                allowedOptions.includes(option.value)
-              ).map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
+              {visibleOptions.map((option) => {
+                const isCurrent = option.value === result.decision;
+                return (
+                  <SelectItem
+                    key={option.value}
+                    value={option.value}
+                    disabled={isCurrent}
+                  >
+                    {option.label}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         </div>
