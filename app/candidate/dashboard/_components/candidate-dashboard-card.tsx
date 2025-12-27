@@ -6,18 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatDate } from "@/lib/utils";
 import { Calendar, Clock, Play, Zap } from "lucide-react";
 import Link from "next/link";
-
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
 
 const getLevelColor = (level: string) => {
   switch (level.toLowerCase()) {
@@ -36,7 +27,6 @@ const getTotalDuration = (qaPairs: any[]) => {
   const estimatedMinutes = qaPairs?.length * 3;
   const hours = Math.floor(estimatedMinutes / 60);
   const minutes = estimatedMinutes % 60;
-
   if (hours > 0) {
     return `${hours}h ${minutes}m`;
   }
@@ -44,9 +34,6 @@ const getTotalDuration = (qaPairs: any[]) => {
 };
 
 export default function CandidateDashboardCard({ session }: { session: any }) {
-  console.log(session, "session");
-  console.log(session?.scheduled_time, "schedule");
-  console.log(formatDate(session?.scheduled_time), "format");
   return (
     <Card
       key={session?.id}

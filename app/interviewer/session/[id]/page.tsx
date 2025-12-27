@@ -27,7 +27,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import AllowedCandidatesItem from "./_components/allowed-candidate-item";
 import SessionQAPair from "./_components/session-qa-pair";
 import { API_BASE_URL } from "@/lib/constants";
-import { getCookie } from "@/lib/utils";
+import { formatDate, getCookie } from "@/lib/utils";
 
 function Label({
   className,
@@ -56,16 +56,6 @@ export default function SessionDetailsPage() {
 
   const pathname = usePathname();
   const sessionId = pathname.split("/")[3];
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const getLevelColor = (level: string) => {
     switch (level.toLowerCase()) {

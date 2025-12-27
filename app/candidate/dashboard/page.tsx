@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "./_components/candidate-dashboard-card";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/lib/constants";
-import { getCookie } from "@/lib/utils";
+import { formatDate, getCookie } from "@/lib/utils";
 
 export default function CandidateDashboard() {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -51,16 +51,6 @@ export default function CandidateDashboard() {
 
   if (isLoading) return <p>Loading sessions...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   // Calculate upcoming interviews (scheduled in the future)
   const now = new Date();

@@ -17,14 +17,6 @@ import { DECISIONS } from "@/lib/static/decision";
 import { getAllowedOptions, isSelectEnabled } from "@/lib/utils";
 import { CheckCircle, Clock, XCircle } from "lucide-react";
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
-
 const getDecisionColor = (decision: string) => {
   switch (decision) {
     case "interested":

@@ -8,7 +8,7 @@ import CandidateResultCard from "./_components/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
-import { getCookie } from "@/lib/utils";
+import { formatDate, getCookie } from "@/lib/utils";
 
 export default function SessionResultsPage() {
   const [resultsData, setResultsData] = useState<any[]>([]);
@@ -95,14 +95,6 @@ export default function SessionResultsPage() {
 
     fetchResults();
   }, [sessionId]);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   const updateDecision = async (candidateId: string, decision: string) => {
     // Update UI immediately (optimistic update)
