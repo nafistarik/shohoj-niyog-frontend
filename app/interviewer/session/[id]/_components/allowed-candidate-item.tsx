@@ -20,7 +20,7 @@ function AllowedCandidatesItem({
       <span className="text-sm font-medium text-slate-900 text-wrap">
         {email}
       </span>
-      <Button
+      {/* <Button
         variant="outline"
         size="sm"
         onClick={() => copyToClipboard(generateInviteLink(email), email)}
@@ -31,7 +31,7 @@ function AllowedCandidatesItem({
           <LinkIcon className="w-3 h-3 mr-1" />
         )}
         {copiedEmails.includes(email) ? "Copied!" : "Link"}
-      </Button>
+      </Button> */}
     </div>
   );
 }
