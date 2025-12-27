@@ -80,6 +80,18 @@ export function PageHeader({
               </span>
             )}
 
+            {/* Back Button */}
+            {backLabel && backHref && (
+              <Button variant="secondary" size="sm" asChild className="group">
+                <Link href={backHref}>
+                  {backIcon ?? (
+                    <ArrowLeft className="w-4 h-4 transition-transform group-hover:border" />
+                  )}
+                  <span className="hidden md:flex">{backLabel}</span>
+                </Link>
+              </Button>
+            )}
+
             {/* Action Button */}
             {actionLabel && actionHref && (
               <Button asChild size="sm">
@@ -92,18 +104,6 @@ export function PageHeader({
 
             {/* Fallback for custom stuff */}
             {children}
-
-            {/* Back Button */}
-            {backLabel && backHref && (
-              <Button variant="secondary" size="sm" asChild className="group">
-                <Link href={backHref}>
-                  {backIcon ?? (
-                    <ArrowLeft className="w-4 h-4 transition-transform group-hover:border" />
-                  )}
-                  <span className="hidden md:flex">{backLabel}</span>
-                </Link>
-              </Button>
-            )}
 
             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut /> <span className="hidden md:flex">Logout</span>{" "}
