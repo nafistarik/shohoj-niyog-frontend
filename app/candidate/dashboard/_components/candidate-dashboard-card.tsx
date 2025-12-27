@@ -44,40 +44,43 @@ const getTotalDuration = (qaPairs: any[]) => {
 };
 
 export default function CandidateDashboardCard({ session }: { session: any }) {
+  console.log(session, "session");
+  console.log(session?.scheduled_time, "schedule");
+  console.log(formatDate(session?.scheduled_time), "format");
   return (
     <Card
       key={session?.id}
-      className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300 overflow-hidden group animate-fade-in"
+      className="border-border/50 shadow-soft hover:shadow-primary transition-all duration-300 overflow-hidden group animate-fade-in gap-0!"
     >
       <div className="absolute top-0 left-0 w-1 h-full bg-linear-to-b from-primary to-accent"></div>
 
-      <CardHeader className="pb-3">
+      <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1 pr-2">
             <CardTitle className="text-lg font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
               {session?.position}
             </CardTitle>
-            <CardDescription className="mt-1 line-clamp-1 text-muted-foreground">
-              {Array.isArray(session?.stack)
-                ? session?.stack.join(", ")
-                : session?.stack}
-            </CardDescription>
+            {session.company && (
+              <CardDescription className="mt-1 line-clamp-1 text-muted-foreground">
+                Company: {session?.company}
+              </CardDescription>
+            )}
           </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          {session?.scheduled && (
+          {session?.scheduled_time && (
             <div className="flex items-center text-sm text-muted-foreground">
               <Calendar className="w-4 h-4 mr-2" />
-              {formatDate(session?.scheduled)}
+              {formatDate(session?.scheduled_time)}
             </div>
           )}
-          <div className="flex items-center text-sm text-muted-foreground">
+          {/* <div className="flex items-center text-sm text-muted-foreground">
             <Clock className="w-4 h-4 mr-2" />
             {session?.qa_pairs?.length} questions • ~
             {getTotalDuration(session?.qa_pairs)}
-          </div>
+          </div> */}
         </div>
 
         <div className="bg-secondary/30 p-3 rounded-lg border border-border">
