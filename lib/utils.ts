@@ -16,13 +16,23 @@ export const formatDate = (dateString: string) => {
   });
 };
 
-export function getCookie(name: string) {
+// lib/auth/cookies.ts
+export const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
   const match = document.cookie
     .split("; ")
     .find((row) => row.startsWith(name + "="));
-  return match ? match.split("=")[1] : null;
-}
+  return match ? decodeURIComponent(match.split("=")[1]) : null;
+};
+
+export const setCookie = (name: string, value: string) => {
+  document.cookie = `${name}=${encodeURIComponent(value)}; path=/;`;
+};
+
+export const clearCookie = (name: string) => {
+  document.cookie = `${name}=; Max-Age=0; path=/;`;
+};
+
 
 export const isSelectEnabled = (
   role: "interviewer" | "candidate",
