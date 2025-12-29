@@ -4,7 +4,7 @@ import { refreshAccessToken } from "@/lib/auth/refresh";
 
 export type BaseRequestResult<T> = {
   response: Response;
-  parsed: T | null;
+  parsed: unknown;
 };
 
 export const createBaseRequest = async <T>(
