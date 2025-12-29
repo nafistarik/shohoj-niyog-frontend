@@ -1,40 +1,31 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getData } from "@/lib/api/methods";
-import type { ApiResponse } from "@/lib/api/fetchApi";
 
 export function useFetch<T>(endpoint: string | null) {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
     if (!endpoint) return;
 
-    let active = true;
     setLoading(true);
     setError("");
 
-    getData<T>(endpoint)
-      .then((res: ApiResponse<T>) => {
-        if (!active) return;
+    const res = await getData<T>(endpoint);
 
-        if (res.success) {
-          setData(res.data);
-        } else {
-          setError(res.message);
-        }
-      })
-      .catch(() => {
-        if (active) setError("Something went wrong");
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
+    if (res.success) {
+      setData(res.data);
+    } else {
+      setError(res.message);
+    }
 
-    return () => {
-      active = false;
-    };
+    setLoading(false);
   }, [endpoint]);
 
-  return { data, loading, error };
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return { data, loading, error, refetch: fetchData };
 }
