@@ -16,7 +16,6 @@ export const formatDate = (dateString: string) => {
   });
 };
 
-// lib/auth/cookies.ts
 export const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
   const match = document.cookie
@@ -32,7 +31,6 @@ export const setCookie = (name: string, value: string) => {
 export const clearCookie = (name: string) => {
   document.cookie = `${name}=; Max-Age=0; path=/;`;
 };
-
 
 export const isSelectEnabled = (
   role: "interviewer" | "candidate",
