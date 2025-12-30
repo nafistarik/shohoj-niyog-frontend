@@ -2,25 +2,19 @@
 
 import InterviewerSessionCard from "@/app/interviewer/dashboard/_components/interviewer-session-card";
 import { Users, Clock, FileText } from "lucide-react";
-import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { getCookie } from "@/lib/utils";
 import { useFetch } from "@/hooks/use-fetch";
+import LoadingState from "@/components/shared/loading-state";
+import ErrorState from "@/components/shared/error-state";
 
 export default function InterviewerDashboard() {
   const userName = getCookie("user_name");
   const { data: sessions, loading, error } = useFetch<any[]>("/api/findall/");
-
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#E1F1FF] flex items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  if (error) return <ErrorState message={error} />;
+  if (loading) return <LoadingState data="Interview Sessions" />;
 
   return (
     <div className="min-h-screen bg-background">

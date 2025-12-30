@@ -21,6 +21,7 @@ import signupIllustrator from "@/assets/auth/login-illustrator.svg";
 import logo from "@/assets/auth/logo.png";
 import { useMutation } from "@/hooks/use-mutation";
 import { loginApi } from "@/lib/api/auth";
+import { LoadingSpinner } from "@/components/shared/loading-spinner";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -149,7 +150,14 @@ export default function LoginPage() {
                   className="w-full h-11 text-base bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in delay-400"
                   disabled={loading}
                 >
-                  {loading ? "Signing In..." : "Sign In"}
+                  {loading ? (
+                    <>
+                      <LoadingSpinner />
+                      Signing In...
+                    </>
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
               </form>
 
