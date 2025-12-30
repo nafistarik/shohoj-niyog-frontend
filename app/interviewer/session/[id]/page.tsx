@@ -1,8 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,17 +24,16 @@ import { usePathname } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
 import AllowedCandidatesItem from "./_components/allowed-candidate-item";
 import SessionQAPair from "./_components/session-qa-pair";
-import { API_BASE_URL } from "@/lib/constants";
-import { formatDate, getCookie } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { LevelBadge } from "@/components/shared/level-badge";
 import { CustomLabel } from "@/components/shared/custom-label";
+import { useFetch } from "@/hooks/use-fetch";
+import ErrorState from "@/components/shared/error-state";
+import LoadingState from "@/components/shared/loading-state";
 
 export default function SessionDetailsPage() {
   const [copiedEmails, setCopiedEmails] = useState<string[]>([]);
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
-  const [session, setSession] = useState<any>(null);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const pathname = usePathname();
   const sessionId = pathname.split("/")[3];
@@ -64,45 +61,13 @@ export default function SessionDetailsPage() {
     }?email=${encodeURIComponent(candidateEmail)}`;
   };
 
-  const fetchSessions = async () => {
-    setError("");
-    setIsLoading(true);
-
-    try {
-      const token = getCookie("access_token");
-
-      const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSession(data);
-      } else {
-        console.error("❌ Failed to fetch sessions:", data);
-        setError(data?.error || "Failed to load interview sessions");
-      }
-    } catch (error) {
-      console.error("🚨 Error fetching sessions:", error);
-      setError("Something went wrong while fetching sessions.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchSessions();
-  }, []);
-
-  if (isLoading) return <p>Loading sessions...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
-
-  console.log(session?.level, "session.level");
+  const {
+    data: session,
+    loading,
+    error,
+  } = useFetch<any>(`/api/find/${sessionId}`);
+  if (error) return <ErrorState message={error} />;
+  if (loading) return <LoadingState data="Interview Sessions" />;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">

@@ -2,7 +2,7 @@ import { BrainCog } from "lucide-react";
 
 export default function LoadingState({ data = "data" }) {
   return (
-    <div className="bg-background flex items-center justify-center animate-fade-in py-8">
+    <div className="bg-background flex items-center justify-center animate-fade-in py-8 min-h-screen">
       <div className="max-w-xl w-full text-center">
         <div className="rounded-xl border border-border bg-card shadow-sm p-8">
           <div className="mx-auto mb-6 flex h-28 w-28 items-center justify-center rounded-full bg-primary/10">
