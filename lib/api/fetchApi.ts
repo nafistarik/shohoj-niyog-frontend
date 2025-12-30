@@ -16,30 +16,27 @@ export const fetchApi = async <T>(
   body?: unknown
 ): Promise<ApiResponse<T>> => {
   try {
-    const { response, parsed } = await createBaseRequest(
-      endpoint,
-      method,
-      body
-    );
-
-    const apiResponse = parsed as ApiResponse<T>;
+    const { response, parsed } = await createBaseRequest(endpoint, method, body);
 
     if (!response.ok) {
       return {
         success: false,
         error: true,
         status: response.status,
-        message: apiResponse?.message || "Request failed",
+        message: (parsed as any)?.error || "Request failed",
         data: null,
       };
     }
+
+    // If backend returns raw LoginResponse instead of ApiResponse<LoginResponse>
+    const data: T = (parsed as T) ?? null;
 
     return {
       success: true,
       error: false,
       status: response.status,
-      message: apiResponse?.message || "Success",
-      data: apiResponse.data,
+      message: "Success",
+      data,
     };
   } catch {
     return {
@@ -51,3 +48,4 @@ export const fetchApi = async <T>(
     };
   }
 };
+

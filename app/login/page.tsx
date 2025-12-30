@@ -19,50 +19,31 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import signupIllustrator from "@/assets/auth/login-illustrator.svg";
 import logo from "@/assets/auth/logo.png";
-import { API_BASE_URL } from "@/lib/constants";
+import { useMutation } from "@/hooks/use-mutation";
+import { loginApi } from "@/lib/api/auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { mutate: login, loading, error } = useMutation(loginApi);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/accounts/login/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    login(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          if (!data) return;
+          document.cookie = `access_token=${data.access}; path=/;`;
+          document.cookie = `refresh_token=${data.refresh}; path=/;`;
+          document.cookie = `user_role=${data.role}; path=/;`;
+          document.cookie = `user_name=${data.username}; path=/;`;
+          router.push(`/${data.role}/dashboard`);
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        document.cookie = `access_token=${data.access}; path=/;`;
-        document.cookie = `refresh_token=${data.refresh}; path=/;`;
-        document.cookie = `user_role=${data.role}; path=/;`;
-        document.cookie = `user_name=${data.username}; path=/;`;
-        router.push(`${data.role}/dashboard`);
-      } else {
-        console.error("❌ Login failed:", data);
-        setError(data?.error || "Invalid email or password");
       }
-    } catch (error) {
-      console.error("🚨 Error during login:", error);
-      setError("Something went wrong. Please try again later.");
-    } finally {
-      setIsLoading(false);
-    }
+    );
   };
 
   return (
@@ -166,9 +147,9 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   className="w-full h-11 text-base bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in delay-400"
-                  disabled={isLoading}
+                  disabled={loading}
                 >
-                  {isLoading ? "Signing In..." : "Sign In"}
+                  {loading ? "Signing In..." : "Sign In"}
                 </Button>
               </form>
 

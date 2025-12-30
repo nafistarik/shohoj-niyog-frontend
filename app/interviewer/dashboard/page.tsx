@@ -1,56 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import InterviewerSessionCard from "@/app/interviewer/dashboard/_components/interviewer-session-card";
 import { Users, Clock, FileText } from "lucide-react";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
-import { API_BASE_URL } from "@/lib/constants";
 import { getCookie } from "@/lib/utils";
+import { useFetch } from "@/hooks/use-fetch";
 
 export default function InterviewerDashboard() {
   const userName = getCookie("user_name");
-  const [sessions, setSessions] = useState<any[]>([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchSessions = async () => {
-    setError("");
-    setIsLoading(true);
-
-    try {
-      const token = getCookie("access_token");
-
-      const response = await fetch(`${API_BASE_URL}/api/findall/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setSessions(data);
-      } else {
-        console.error("❌ Failed to fetch sessions:", data);
-        setError(data?.error || "Failed to load interview sessions");
-      }
-    } catch (error) {
-      console.error("🚨 Error fetching sessions:", error);
-      setError("Something went wrong while fetching sessions.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchSessions();
-  }, []);
+  const { data: sessions, loading, error } = useFetch<any[]>("/api/findall/");
 
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-[#E1F1FF] flex items-center justify-center">
         <LoadingSpinner />
@@ -73,12 +37,12 @@ export default function InterviewerDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <StatCard
               icon={<FileText className="w-6 h-6 text-primary" />}
-              title={`${sessions.length}`}
+              title={`${sessions?.length}`}
               description="Total Sessions"
             />
             <StatCard
               icon={<Users className="w-6 h-6 text-primary" />}
-              title={`${sessions.reduce(
+              title={`${sessions?.reduce(
                 (acc, session) => acc + session.allowed_candidates.length,
                 0
               )}`}
@@ -87,7 +51,7 @@ export default function InterviewerDashboard() {
             <StatCard
               icon={<Clock className="w-6 h-6 text-primary" />}
               title={`${
-                sessions.filter((s) => new Date(s.scheduled) > new Date())
+                sessions?.filter((s) => new Date(s.scheduled) > new Date())
                   .length
               }`}
               description="Upcoming"
@@ -97,7 +61,7 @@ export default function InterviewerDashboard() {
       </section>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        {sessions.length === 0 ? (
+        {sessions?.length === 0 ? (
           <EmptyState
             title="No interview sessions yet"
             description="Create your first interview session to start evaluating candidates."
@@ -106,7 +70,7 @@ export default function InterviewerDashboard() {
           />
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {sessions.map((session) => (
+            {sessions?.map((session) => (
               <InterviewerSessionCard key={session.id} session={session} />
             ))}
           </div>
