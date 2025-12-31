@@ -14,6 +14,7 @@ import ErrorState from "@/components/shared/error-state";
 import LoadingState from "@/components/shared/loading-state";
 import { decideMutation } from "@/lib/api/interviewer";
 import { useMutation } from "@/hooks/use-mutation";
+import EmptyState from "@/components/shared/empty-state";
 
 export default function SessionResultsPage() {
   const [resultsData, setResultsData] = useState<any[]>([]);
@@ -80,9 +81,12 @@ export default function SessionResultsPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {resultsData.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No responses yet</p>
-          </div>
+          <EmptyState
+            title="No interview responses yet"
+            description="Please contact the candidates to give the interview!"
+            actionLabel="Go to dashboard"
+            actionHref="/interviewer/dashboard"
+          />
         ) : (
           <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-5">

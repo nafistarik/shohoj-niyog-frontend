@@ -10,15 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  ArrowLeft,
-  Calendar,
-  Users,
-  Eye,
-  FileText,
-  Code,
-  Star,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Users, Eye, FileText, Code } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
