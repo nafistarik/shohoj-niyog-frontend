@@ -114,7 +114,6 @@ export default function CreateSessionPage() {
     }));
   };
 
-  // Update the scheduled value when date or time changes
   useEffect(() => {
     if (date && time) {
       const [hours, minutes] = time.split(":");
@@ -168,67 +167,6 @@ export default function CreateSessionPage() {
       },
     });
   };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError("");
-  //   setSuccess("");
-
-  //   // Validation
-  //   if (!formData.position.trim()) {
-  //     setError("Position title is required");
-  //     return;
-  //   }
-  //   if (formData.stacks.length === 0) {
-  //     setError("At least one technology stack is required");
-  //     return;
-  //   }
-  //   if (!formData.level) {
-  //     setError("Experience level is required");
-  //     return;
-  //   }
-  //   if (formData.allowed_candidates.length === 0) {
-  //     setError("At least one candidate email is required");
-  //     return;
-  //   }
-
-  //   setIsLoading(true);
-
-  //   try {
-  //     const token = getCookie("access_token");
-
-  //     const response = await fetch(`${API_BASE_URL}/api/gen/`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: token ? `Bearer ${token}` : "",
-  //       },
-  //       body: JSON.stringify({
-  //         position: formData.position,
-  //         stacks: formData.stacks,
-  //         level: formData.level,
-  //         allowed_candidates: formData.allowed_candidates,
-  //         num_questions: formData.num_questions,
-  //         scheduled: formData.scheduled,
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       setSuccess("Interview session created successfully!");
-  //       router.push(`/interviewer/session/${data.Session_ID}`);
-  //     } else {
-  //       console.error("❌ Failed to create session:", data);
-  //       setError(data?.error || "Failed to create session");
-  //     }
-  //   } catch (err) {
-  //     console.error("🚨 Error creating session:", err);
-  //     setError("An error occurred. Please try again.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   return (
     <div className="min-h-screen bg-background animate-fade-in">
