@@ -22,6 +22,7 @@ import logo from "@/assets/auth/logo.png";
 import { useMutation } from "@/hooks/use-mutation";
 import { loginApi } from "@/lib/api/auth";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
+import { setCookie } from "@/lib/utils";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -39,10 +40,10 @@ export default function LoginPage() {
         successMessage: "Login successful",
         onSuccess: (data) => {
           if (!data) return;
-          document.cookie = `access_token=${data.access}; path=/;`;
-          document.cookie = `refresh_token=${data.refresh}; path=/;`;
-          document.cookie = `user_role=${data.role}; path=/;`;
-          document.cookie = `user_name=${data.username}; path=/;`;
+          setCookie("access_token", data.access);
+          setCookie("refresh_token", data.refresh);
+          setCookie("user_role", data.role);
+          setCookie("user_name", data.username);
           router.push(`/${data.role}/dashboard`);
         },
       }
@@ -90,17 +91,6 @@ export default function LoginPage() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
-                {error && (
-                  <Alert
-                    variant="destructive"
-                    className="bg-destructive/15 border-destructive/50 animate-slide-in delay-100"
-                  >
-                    <AlertDescription className="text-destructive-foreground font-body">
-                      {error}
-                    </AlertDescription>
-                  </Alert>
-                )}
-
                 <div className="space-y-2 animate-slide-in delay-200">
                   <Label htmlFor="email" className="text-foreground font-body">
                     Email Address
