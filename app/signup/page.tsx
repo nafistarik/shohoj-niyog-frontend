@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Eye, EyeOff, Users, UserCheck } from "lucide-react";
 import Link from "next/link";
@@ -20,7 +19,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import loginIllustrator from "@/assets/auth/login-illustrator.svg";
 import logo from "@/assets/auth/logo.png";
-import { API_BASE_URL } from "@/lib/constants";
 import { showError } from "@/lib/toast";
 import { useMutation } from "@/hooks/use-mutation";
 import { signupApi } from "@/lib/api/auth";
@@ -38,9 +36,6 @@ export default function SignupPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  // const [error, setError] = useState("");
-  // const [success, setSuccess] = useState("");
-  // const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -49,16 +44,12 @@ export default function SignupPage() {
   };
 
   const { mutate: signup, loading, error } = useMutation(signupApi);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // client-side validation stays here
     if (formData.password !== formData.confirmPassword) {
       showError("Passwords do not match");
       return;
     }
-
     if (formData.password.length < 6) {
       showError("Password must be at least 6 characters long");
       return;
@@ -81,57 +72,6 @@ export default function SignupPage() {
       }
     );
   };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError("");
-  //   setSuccess("");
-  //   setIsLoading(true);
-
-  //   if (formData.password !== formData.confirmPassword) {
-  //     setError("Passwords do not match");
-  //     setIsLoading(false);
-  //     return;
-  //   }
-
-  //   if (formData.password.length < 6) {
-  //     setError("Password must be at least 6 characters long");
-  //     setIsLoading(false);
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch(`${API_BASE_URL}/accounts/signup/`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         role: formData.role,
-  //         username: formData.username,
-  //         email: formData.email,
-  //         password: formData.password,
-  //         phone: formData.phone,
-  //         company: formData.company,
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       setSuccess("Signup successful!");
-  //       router.push("/login");
-  //     } else {
-  //       console.error("❌ Signup failed:", data);
-  //       setError(data?.error || "Signup failed. Please try again.");
-  //     }
-  //   } catch (error) {
-  //     console.error("🚨 Error during signup:", error);
-  //     setError("Something went wrong. Please try again later.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   return (
     <div className="min-h-screen flex gradient-bg-subtle-reverse">
@@ -161,25 +101,6 @@ export default function SignupPage() {
             </CardHeader>
             <CardContent className="max-h-[50vh] overflow-y-auto">
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* {error && (
-                  <Alert
-                    variant="destructive"
-                    className="bg-destructive/15 border-destructive/50 animate-slide-in delay-100"
-                  >
-                    <AlertDescription className="text-destructive-foreground font-body">
-                      {error}
-                    </AlertDescription>
-                  </Alert>
-                )}
-
-                {success && (
-                  <Alert className="border-chart-1/50 bg-chart-1/15 text-chart-1 animate-slide-in delay-100">
-                    <AlertDescription className="font-body">
-                      {success}
-                    </AlertDescription>
-                  </Alert>
-                )} */}
-
                 <div className="space-y-3 animate-slide-in delay-200">
                   <RadioGroup
                     value={formData.role}
