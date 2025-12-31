@@ -34,8 +34,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { PageHeader } from "@/components/shared/page-header";
-import { API_BASE_URL } from "@/lib/constants";
-import { getCookie } from "@/lib/utils";
+import { useMutation } from "@/hooks/use-mutation";
+import { createSessionApi } from "@/lib/api/interviewer";
 
 export default function CreateSessionPage() {
   const [formData, setFormData] = useState<CreateSessionPayload>({
@@ -49,14 +49,10 @@ export default function CreateSessionPage() {
   const [newStack, setNewStack] = useState("");
   const [newCandidate, setNewCandidate] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState("");
-
   const router = useRouter();
 
-  // Generate time options in 30-minute intervals
   const generateTimeOptions = () => {
     const options = [];
     for (let hour = 0; hour < 24; hour++) {
@@ -137,12 +133,12 @@ export default function CreateSessionPage() {
     }
   }, [date, time]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const { mutate: createSession, loading } = useMutation(createSessionApi);
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
-    // Validation
     if (!formData.position.trim()) {
       setError("Position title is required");
       return;
@@ -159,44 +155,80 @@ export default function CreateSessionPage() {
       setError("At least one candidate email is required");
       return;
     }
-
-    setIsLoading(true);
-
-    try {
-      const token = getCookie("access_token");
-
-      const response = await fetch(`${API_BASE_URL}/api/gen/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: JSON.stringify({
-          position: formData.position,
-          stacks: formData.stacks,
-          level: formData.level,
-          allowed_candidates: formData.allowed_candidates,
-          num_questions: formData.num_questions,
-          scheduled: formData.scheduled,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess("Interview session created successfully!");
-        router.push(`/interviewer/session/${data.Session_ID}`);
-      } else {
-        console.error("❌ Failed to create session:", data);
-        setError(data?.error || "Failed to create session");
-      }
-    } catch (err) {
-      console.error("🚨 Error creating session:", err);
-      setError("An error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
+    if (!formData.scheduled) {
+      setError("Scheduled date & time is required");
+      return;
     }
+
+    createSession(formData, {
+      successMessage: "Interview session created successfully!",
+      onSuccess: (data) => {
+        if (!data) return;
+        router.push(`/interviewer/session/${data.Session_ID}`);
+      },
+    });
   };
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setSuccess("");
+
+  //   // Validation
+  //   if (!formData.position.trim()) {
+  //     setError("Position title is required");
+  //     return;
+  //   }
+  //   if (formData.stacks.length === 0) {
+  //     setError("At least one technology stack is required");
+  //     return;
+  //   }
+  //   if (!formData.level) {
+  //     setError("Experience level is required");
+  //     return;
+  //   }
+  //   if (formData.allowed_candidates.length === 0) {
+  //     setError("At least one candidate email is required");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+
+  //   try {
+  //     const token = getCookie("access_token");
+
+  //     const response = await fetch(`${API_BASE_URL}/api/gen/`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: token ? `Bearer ${token}` : "",
+  //       },
+  //       body: JSON.stringify({
+  //         position: formData.position,
+  //         stacks: formData.stacks,
+  //         level: formData.level,
+  //         allowed_candidates: formData.allowed_candidates,
+  //         num_questions: formData.num_questions,
+  //         scheduled: formData.scheduled,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       setSuccess("Interview session created successfully!");
+  //       router.push(`/interviewer/session/${data.Session_ID}`);
+  //     } else {
+  //       console.error("❌ Failed to create session:", data);
+  //       setError(data?.error || "Failed to create session");
+  //     }
+  //   } catch (err) {
+  //     console.error("🚨 Error creating session:", err);
+  //     setError("An error occurred. Please try again.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-background animate-fade-in">
@@ -226,14 +258,6 @@ export default function CreateSessionPage() {
                 >
                   <AlertDescription className="text-destructive-foreground font-body">
                     {error}
-                  </AlertDescription>
-                </Alert>
-              )}
-
-              {success && (
-                <Alert className="bg-chart-2/15 text-chart-2 border-chart-2/50 animate-slide-in delay-100">
-                  <AlertDescription className="font-body">
-                    {success}
                   </AlertDescription>
                 </Alert>
               )}
@@ -509,9 +533,9 @@ export default function CreateSessionPage() {
                 <Button
                   type="submit"
                   className="bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in"
-                  disabled={isLoading}
+                  disabled={loading}
                 >
-                  {isLoading ? "Creating Session..." : "Create Session"}
+                  {loading ? "Creating Session..." : "Create Session"}
                 </Button>
               </div>
             </form>
