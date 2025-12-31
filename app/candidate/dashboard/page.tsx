@@ -5,7 +5,7 @@ import Link from "next/link";
 import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
-import CandidateDashboardCard from "./_components/candidate-dashboard-card";
+import CandidateDashboardCard from "../../../features/candidate/candidate-dashboard-card";
 import {
   formatDate,
   getCookie,

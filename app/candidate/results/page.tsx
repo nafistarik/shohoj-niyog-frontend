@@ -6,7 +6,7 @@ import type { CandidateResponse, InterviewSession } from "@/lib/types";
 import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
-import CandidateResultCard from "./_components/candidate-result-card";
+import CandidateResultCard from "../../../features/candidate/candidate-result-card";
 import { useFetch } from "@/hooks/use-fetch";
 import { useMutation } from "@/hooks/use-mutation";
 import { decideMutation } from "@/lib/api/interviewer";
