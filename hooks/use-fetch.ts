@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { getData } from "@/lib/api/methods";
+import { showError } from "@/lib/toast";
 
-export function useFetch<T>(endpoint: string | null) {
+export function useFetch<T>(endpoint: string | null, showToast = false) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -18,10 +19,11 @@ export function useFetch<T>(endpoint: string | null) {
       setData(res.data);
     } else {
       setError(res.message);
+      if (showToast) showError(res.message);
     }
 
     setLoading(false);
-  }, [endpoint]);
+  }, [endpoint, showToast]);
 
   useEffect(() => {
     fetchData();

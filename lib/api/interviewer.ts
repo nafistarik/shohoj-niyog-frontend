@@ -1,10 +1,10 @@
-import { getData } from "@/lib/api/methods";
+// import { getData } from "@/lib/api/methods";
 
-export interface InterviewSession {
-  id: string;
-  scheduled: string;
-  allowed_candidates: any[];
-}
+// export interface InterviewSession {
+//   id: string;
+//   scheduled: string;
+//   allowed_candidates: any[];
+// }
 
-export const getInterviewerSessions = () =>
-  getData<InterviewSession[]>("/api/findall/");
+// export const getInterviewerSessions = () =>
+//   getData<InterviewSession[]>("/api/findall/");

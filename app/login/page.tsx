@@ -32,9 +32,11 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     login(
       { email, password },
       {
+        successMessage: "Login successful",
         onSuccess: (data) => {
           if (!data) return;
           document.cookie = `access_token=${data.access}; path=/;`;

@@ -16,7 +16,11 @@ export const fetchApi = async <T>(
   body?: unknown
 ): Promise<ApiResponse<T>> => {
   try {
-    const { response, parsed } = await createBaseRequest(endpoint, method, body);
+    const { response, parsed } = await createBaseRequest(
+      endpoint,
+      method,
+      body
+    );
 
     if (!response.ok) {
       return {
@@ -29,7 +33,7 @@ export const fetchApi = async <T>(
     }
 
     // If backend returns raw LoginResponse instead of ApiResponse<LoginResponse>
-    const data: T = (parsed as T) ?? null;
+    const data: T | null = (parsed as T) ?? null;
 
     return {
       success: true,
@@ -48,4 +52,3 @@ export const fetchApi = async <T>(
     };
   }
 };
-
