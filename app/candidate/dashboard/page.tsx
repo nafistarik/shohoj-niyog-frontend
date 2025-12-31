@@ -6,62 +6,29 @@ import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "./_components/candidate-dashboard-card";
-import { useEffect, useState } from "react";
-import { API_BASE_URL } from "@/lib/constants";
 import { formatDate, getCookie } from "@/lib/utils";
+import LoadingState from "@/components/shared/loading-state";
+import ErrorState from "@/components/shared/error-state";
+import { useFetch } from "@/hooks/use-fetch";
 
 export default function CandidateDashboard() {
   const userName = getCookie("user_name");
-  const [sessions, setSessions] = useState<any[]>([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchSessions = async () => {
-    setError("");
-    setIsLoading(true);
+  const {
+    data: sessions = [],
+    loading,
+    error,
+  } = useFetch<any[]>("/api/findall/");
+  if (loading) return <LoadingState data="Interview Sessions" />;
+  if (error) return <ErrorState message={error} />;
 
-    try {
-      const token = getCookie("access_token");
-
-      const response = await fetch(`${API_BASE_URL}/api/findall/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSessions(data);
-      } else {
-        console.error("❌ Failed to fetch sessions:", data);
-        setError(data?.error || "Failed to load interview sessions");
-      }
-    } catch (error) {
-      console.error("🚨 Error fetching sessions:", error);
-      setError("Something went wrong while fetching sessions.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchSessions();
-  }, []);
-
-  if (isLoading) return <p>Loading sessions...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
-
-  // Calculate upcoming interviews (scheduled in the future)
   const now = new Date();
   const upcomingInterviews = sessions?.filter(
     (session) => new Date(session.scheduled) > now
   );
 
-  // Find the next interview (closest upcoming)
   const nextInterview =
-    upcomingInterviews.length > 0
+    upcomingInterviews?.length && upcomingInterviews.length > 0
       ? upcomingInterviews.reduce((closest, current) => {
           const closestTime = new Date(closest.scheduled).getTime();
           const currentTime = new Date(current.scheduled).getTime();
@@ -98,7 +65,7 @@ export default function CandidateDashboard() {
           />
           <StatCard
             icon={<Clock className="w-6 h-6 text-primary" />}
-            title={`${upcomingInterviews.length}`}
+            title={`${upcomingInterviews?.length}`}
             description="Upcoming Interviews"
           />
           <StatCard
@@ -114,7 +81,7 @@ export default function CandidateDashboard() {
       </section>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {sessions.length === 0 ? (
+        {sessions?.length === 0 ? (
           <EmptyState
             title="No interviews available"
             description="You haven't been invited to any interviews yet. Check back later or contact the interviewer."
