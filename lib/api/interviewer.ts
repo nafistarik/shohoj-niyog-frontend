@@ -8,3 +8,14 @@
 
 // export const getInterviewerSessions = () =>
 //   getData<InterviewSession[]>("/api/findall/");
+
+import { patchData } from "@/lib/api/methods";
+
+type DecidePayload = {
+  session_id: string;
+  candidate_id: string;
+  decision: string;
+};
+
+export const decideMutation = (payload: DecidePayload) =>
+  patchData<DecidePayload, null>("/api/decide/", payload);
