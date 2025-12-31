@@ -1,6 +1,6 @@
 "use client";
 
-import InterviewerSessionCard from "@/app/interviewer/dashboard/_components/interviewer-session-card";
+import InterviewerSessionCard from "@/features/interviewer/interviewer-session-card";
 import { Users, Clock, FileText } from "lucide-react";
 import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";

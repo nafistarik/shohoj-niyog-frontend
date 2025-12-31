@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Users, Target, Clock } from "lucide-react";
 import { usePathname } from "next/navigation";
-import CandidateResultCard from "./_components/candidate-result-card";
+import CandidateResultCard from "../../../../../features/interviewer/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { formatDate } from "@/lib/utils";
