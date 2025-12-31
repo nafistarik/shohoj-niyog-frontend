@@ -6,14 +6,18 @@ import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "./_components/candidate-dashboard-card";
-import { formatDate, getCookie } from "@/lib/utils";
+import {
+  formatDate,
+  getCookie,
+  getNextInterview,
+  getUpcomingInterviews,
+} from "@/lib/utils";
 import LoadingState from "@/components/shared/loading-state";
 import ErrorState from "@/components/shared/error-state";
 import { useFetch } from "@/hooks/use-fetch";
 
 export default function CandidateDashboard() {
   const userName = getCookie("user_name");
-
   const {
     data: sessions = [],
     loading,
@@ -23,22 +27,8 @@ export default function CandidateDashboard() {
   if (error) return <ErrorState message={error} />;
 
   const now = new Date();
-  const upcomingInterviews = sessions?.filter(
-    (session) => new Date(session.scheduled) > now
-  );
-
-  const nextInterview =
-    upcomingInterviews?.length && upcomingInterviews.length > 0
-      ? upcomingInterviews.reduce((closest, current) => {
-          const closestTime = new Date(closest.scheduled).getTime();
-          const currentTime = new Date(current.scheduled).getTime();
-          const nowTime = now.getTime();
-
-          return currentTime - nowTime < closestTime - nowTime
-            ? current
-            : closest;
-        })
-      : null;
+  const upcomingInterviews = getUpcomingInterviews(sessions, now);
+  const nextInterview = getNextInterview(upcomingInterviews, now);
 
   return (
     <div className="min-h-screen bg-background pb-12">

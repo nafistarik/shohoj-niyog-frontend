@@ -2,6 +2,18 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Decision } from "./types";
 
+export interface InterviewSession {
+  scheduled: string;
+  [key: string]: any;
+}
+
+type CookieOptions = {
+  path?: string;
+  maxAge?: number;
+  secure?: boolean;
+  sameSite?: "strict" | "lax" | "none";
+};
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -24,14 +36,6 @@ export const getCookie = (name: string): string | null => {
   return found ? decodeURIComponent(found.split("=")[1]) : null;
 };
 
-
-type CookieOptions = {
-  path?: string;
-  maxAge?: number;
-  secure?: boolean;
-  sameSite?: "strict" | "lax" | "none";
-};
-
 export const setCookie = (
   name: string,
   value: string,
@@ -39,12 +43,7 @@ export const setCookie = (
 ) => {
   if (typeof document === "undefined") return;
 
-  const {
-    path = "/",
-    maxAge,
-    secure = true,
-    sameSite = "lax",
-  } = options;
+  const { path = "/", maxAge, secure = true, sameSite = "lax" } = options;
 
   let cookie = `${name}=${encodeURIComponent(value)}; path=${path};`;
 
@@ -91,3 +90,29 @@ export const getAllowedOptions = (
   }
   return [];
 };
+
+export function getUpcomingInterviews(
+  sessions: any[] | null,
+  now: Date = new Date()
+): any[] {
+  return (
+    sessions?.filter(
+      (session) => new Date(session.scheduled_time).getTime() > now.getTime()
+    ) || []
+  );
+}
+
+export function getNextInterview(
+  sessions: any[] | null,
+  now: Date = new Date()
+): any | null {
+  if (!sessions || sessions.length === 0) return null;
+
+  return sessions.reduce((closest, current) => {
+    const closestTime = new Date(closest.scheduled_time).getTime();
+    const currentTime = new Date(current.scheduled_time).getTime();
+    const nowTime = now.getTime();
+
+    return currentTime - nowTime < closestTime - nowTime ? current : closest;
+  });
+}
