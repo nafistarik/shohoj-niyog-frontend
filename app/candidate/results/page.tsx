@@ -7,87 +7,52 @@ import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
 import CandidateResultCard from "./_components/candidate-result-card";
-import { API_BASE_URL } from "@/lib/constants";
-import { getCookie } from "@/lib/utils";
+import { useFetch } from "@/hooks/use-fetch";
+import { useMutation } from "@/hooks/use-mutation";
+import { decideMutation } from "@/lib/api/interviewer";
+import LoadingState from "@/components/shared/loading-state";
+import ErrorState from "@/components/shared/error-state";
 
 interface CandidateResultWithSession extends CandidateResponse {
   session?: InterviewSession;
 }
 
 export default function CandidateResultsPage() {
-  const [resultsData, setResultsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [resultsData, setResultsData] = useState<any[]>([]);
 
+  const {
+    data: fetchedResults = [],
+    loading: resultsLoading,
+    error: resultsError,
+    refetch: refetchResults,
+  } = useFetch<any[]>("/api/results/");
   useEffect(() => {
-    const fetchResults = async () => {
-      setIsLoading(true);
-      setError("");
+    if (fetchedResults?.length) setResultsData(fetchedResults);
+  }, [fetchedResults]);
 
-      try {
-        const token = getCookie("access_token");
-
-        const response = await fetch(`${API_BASE_URL}/api/results/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setResultsData(data);
-        } else {
-          console.error("❌ Failed to fetch results:", data);
-          setError(data?.error || "Failed to load results");
-        }
-      } catch (error) {
-        console.error("🚨 Error fetching results:", error);
-        setError("Something went wrong while fetching results.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchResults();
-  }, []);
-
-  const updateDecision = async (resultId: string, newDecision: string) => {
-    setResultsData((prev: any) =>
-      prev.map((result: any) =>
-        result.id === resultId ? { ...result, decision: newDecision } : result
+  const { mutate: updateDecision, loading: decisionLoading } =
+    useMutation(decideMutation);
+  const handleDecisionChange = (resultId: string, newDecision: string) => {
+    const previousData = [...resultsData]; // snapshot for rollback
+    // Optimistically update UI
+    setResultsData(
+      resultsData.map((r) =>
+        r.id === resultId ? { ...r, decision: newDecision } : r
       )
     );
-
-    try {
-      const token = getCookie("access_token");
-
-      const response = await fetch(`${API_BASE_URL}/api/decide/`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
+    updateDecision(
+      { session_id: resultId, decision: newDecision },
+      {
+        successMessage: "Decision updated",
+        onError: () => {
+          setResultsData(previousData); // rollback if API fails
         },
-        body: JSON.stringify({
-          session_id: resultId,
-          decision: newDecision,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data?.error || "Failed to update decision");
       }
-    } catch (err) {
-      console.error("Failed to update decision:", err);
-    }
+    );
   };
 
-  if (isLoading) return <p>Loading session...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (resultsLoading) return <LoadingState data="Interview Results" />;
+  if (resultsError) return <ErrorState message={resultsError} />;
 
   return (
     <div className="min-h-screen pb-12">
@@ -98,7 +63,6 @@ export default function CandidateResultsPage() {
         backLabel="Back to Dashboard"
       />
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {resultsData.length === 0 ? (
           <EmptyState
@@ -109,7 +73,6 @@ export default function CandidateResultsPage() {
           />
         ) : (
           <div className="space-y-8">
-            {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <StatCard
                 icon={<FileText className="w-6 h-6 text-primary" />}
@@ -136,7 +99,6 @@ export default function CandidateResultsPage() {
               />
             </div>
 
-            {/* Results List */}
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                 Interview Results
@@ -145,7 +107,7 @@ export default function CandidateResultsPage() {
               {resultsData.map((result: any) => (
                 <CandidateResultCard
                   result={result}
-                  updateDecision={updateDecision}
+                  updateDecision={handleDecisionChange}
                   key={result.session_id}
                 />
               ))}

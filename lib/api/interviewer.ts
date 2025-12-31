@@ -25,8 +25,8 @@ export interface CreateSessionResponse {
 }
 
 type DecidePayload = {
-  session_id: string;
-  candidate_id: string;
+  session_id?: string;
+  candidate_id?: string;
   decision: string;
 };
 

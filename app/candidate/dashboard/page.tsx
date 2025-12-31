@@ -60,10 +60,10 @@ export default function CandidateDashboard() {
           />
           <StatCard
             icon={<CalendarDays className="w-6 h-6 text-primary" />}
-            title={`${nextInterview ? nextInterview.created_by : "🚫"}`}
+            title={`${nextInterview ? nextInterview.position : "🚫"}`}
             description={`${
               nextInterview
-                ? formatDate(nextInterview.scheduled)
+                ? formatDate(nextInterview.scheduled_time)
                 : "No upcoming interviews"
             }`}
           />
