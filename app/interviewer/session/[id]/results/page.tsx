@@ -7,8 +7,7 @@ import { usePathname } from "next/navigation";
 import CandidateResultCard from "./_components/candidate-result-card";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
-import { API_BASE_URL } from "@/lib/constants";
-import { formatDate, getCookie } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { LevelBadge } from "@/components/shared/level-badge";
 import { useFetch } from "@/hooks/use-fetch";
 import ErrorState from "@/components/shared/error-state";
@@ -18,49 +17,9 @@ import { useMutation } from "@/hooks/use-mutation";
 
 export default function SessionResultsPage() {
   const [resultsData, setResultsData] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [resultLoading, setIsResultLoading] = useState(false);
-  const [resultError, setResultError] = useState("");
-  // const [session, setSession] = useState<any>(null);
   const pathname = usePathname();
   const pathParts = pathname.split("/"); // ['', 'interviewer', 'session', '123', 'results']
   const sessionId = pathParts[3];
-
-  // const fetchSessions = async () => {
-  //   setError("");
-  //   setIsLoading(true);
-
-  //   try {
-  //     const token = getCookie("access_token");
-
-  //     const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: token ? `Bearer ${token}` : "",
-  //       },
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       setSession(data);
-  //     } else {
-  //       console.error("❌ Failed to fetch sessions:", data);
-  //       setError(data?.error || "Failed to load interview sessions");
-  //     }
-  //   } catch (error) {
-  //     console.error("🚨 Error fetching sessions:", error);
-  //     setError("Something went wrong while fetching sessions.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchSessions();
-  // }, []);
 
   const {
     data: session,
@@ -74,22 +33,19 @@ export default function SessionResultsPage() {
     error: resultsError,
     refetch: refetchResults,
   } = useFetch<any[]>(sessionId ? `/api/results/${sessionId}` : null);
-
-  const { mutate: updateDecisions, loading: decisionLoading } =
-    useMutation(decideMutation);
-
   useEffect(() => {
     if (resultData?.length) {
       setResultsData(resultData);
     }
   }, [resultData]);
 
+  const { mutate: updateDecisions, loading: decisionLoading } =
+    useMutation(decideMutation);
   const handleDecisionChange = (candidateId: string, decision: string) => {
     // optimistic UI
     setResultsData((prev) =>
       prev.map((r) => (r.candidate_id === candidateId ? { ...r, decision } : r))
     );
-
     updateDecisions(
       {
         session_id: sessionId!,
@@ -104,95 +60,12 @@ export default function SessionResultsPage() {
       }
     );
   };
+  const highestScore = Math.max(...resultsData.map((r) => r.total_score));
 
   if (resultsError) return <ErrorState message={resultsError} />;
   if (resultsLoading) return <LoadingState data="Interview Results" />;
-
   if (sessionError) return <ErrorState message={sessionError} />;
   if (sessionLoading) return <LoadingState data="Interview Session" />;
-
-  // useEffect(() => {
-  //   if (!sessionId) return;
-
-  //   const fetchResults = async () => {
-  //     setIsResultLoading(true);
-  //     setResultError("");
-
-  //     try {
-  //       const token = getCookie("access_token");
-
-  //       const response = await fetch(
-  //         `${API_BASE_URL}/api/results/${sessionId}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: token ? `Bearer ${token}` : "",
-  //           },
-  //         }
-  //       );
-
-  //       const data = await response.json();
-
-  //       if (response.ok) {
-  //         setResultsData(data);
-  //       } else {
-  //         console.error("❌ Failed to fetch results:", data);
-  //         setResultError(data?.error || "Failed to load results");
-  //       }
-  //     } catch (error) {
-  //       console.error("🚨 Error fetching results:", error);
-  //       setResultError("Something went wrong while fetching results.");
-  //     } finally {
-  //       setIsResultLoading(false);
-  //     }
-  //   };
-
-  //   fetchResults();
-  // }, [sessionId]);
-
-  // const updateDecision = async (candidateId: string, decision: string) => {
-  //   // Update UI immediately (optimistic update)
-  //   setResultsData((prev) =>
-  //     prev.map((result) =>
-  //       result.candidate_id === candidateId
-  //         ? { ...result, decision: decision as any }
-  //         : result
-  //     )
-  //   );
-
-  //   try {
-  //     const token = getCookie("access_token");
-
-  //     const response = await fetch(`${API_BASE_URL}/api/decide/`, {
-  //       method: "PATCH",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: token ? `Bearer ${token}` : "",
-  //       },
-  //       body: JSON.stringify({
-  //         session_id: sessionId,
-  //         candidate_id: candidateId,
-  //         decision,
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (!response.ok) {
-  //       throw new Error(data?.error || "Failed to update decision");
-  //     }
-  //   } catch (err) {
-  //     console.error("Failed to update decision:", err);
-  //   }
-  // };
-
-  const highestScore = Math.max(...resultsData.map((r) => r.total_score));
-
-  // if (isLoading) return <p>Loading session...</p>;
-  // if (error) return <p style={{ color: "red" }}>{error}</p>;
-  // if (resultLoading) return <p>Loading results...</p>;
-  // if (resultError) return <p style={{ color: "red" }}>{resultError}</p>;
 
   return (
     <div className="min-h-screen bg-white pb-12">
@@ -205,7 +78,6 @@ export default function SessionResultsPage() {
         />
       )}
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {resultsData.length === 0 ? (
           <div className="text-center py-12">
@@ -242,7 +114,6 @@ export default function SessionResultsPage() {
               />
             </div>
 
-            {/* Session Info Card */}
             <Card>
               <CardContent>
                 <div className="flex flex-col md:flex-row md:items-center justify-between">
@@ -268,7 +139,6 @@ export default function SessionResultsPage() {
               </CardContent>
             </Card>
 
-            {/* Results Grid */}
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-foreground">
                 Candidate Results
