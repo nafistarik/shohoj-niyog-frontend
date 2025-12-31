@@ -1,5 +1,24 @@
 import { postData } from "@/lib/api/methods";
 
+export interface SignupPayload {
+  role: string;
+  username: string;
+  email: string;
+  password: string;
+  phone?: string;
+  company?: string;
+}
+
+export interface SignupResponse {
+  id: number;
+  email: string;
+  username: string;
+  role: string;
+}
+
+export const signupApi = (payload: SignupPayload) =>
+  postData<SignupPayload, SignupResponse>("/accounts/signup/", payload);
+
 export interface LoginPayload {
   email: string;
   password: string;

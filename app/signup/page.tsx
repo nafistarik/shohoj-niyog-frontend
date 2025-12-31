@@ -21,6 +21,10 @@ import Image from "next/image";
 import loginIllustrator from "@/assets/auth/login-illustrator.svg";
 import logo from "@/assets/auth/logo.png";
 import { API_BASE_URL } from "@/lib/constants";
+import { showError } from "@/lib/toast";
+import { useMutation } from "@/hooks/use-mutation";
+import { signupApi } from "@/lib/api/auth";
+import { LoadingSpinner } from "@/components/shared/loading-spinner";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -34,9 +38,9 @@ export default function SignupPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState("");
+  // const [success, setSuccess] = useState("");
+  // const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -44,56 +48,90 @@ export default function SignupPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    setIsLoading(true);
+  const { mutate: signup, loading, error } = useMutation(signupApi);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // client-side validation stays here
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
+      showError("Passwords do not match");
       return;
     }
 
     if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters long");
-      setIsLoading(false);
+      showError("Password must be at least 6 characters long");
       return;
     }
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/accounts/signup/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    signup(
+      {
+        role: formData.role,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        company: formData.company,
+      },
+      {
+        successMessage: "Signup successful 🎉",
+        onSuccess: () => {
+          router.push("/login");
         },
-        body: JSON.stringify({
-          role: formData.role,
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          phone: formData.phone,
-          company: formData.company,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess("Signup successful!");
-        router.push("/login");
-      } else {
-        console.error("❌ Signup failed:", data);
-        setError(data?.error || "Signup failed. Please try again.");
       }
-    } catch (error) {
-      console.error("🚨 Error during signup:", error);
-      setError("Something went wrong. Please try again later.");
-    } finally {
-      setIsLoading(false);
-    }
+    );
   };
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setSuccess("");
+  //   setIsLoading(true);
+
+  //   if (formData.password !== formData.confirmPassword) {
+  //     setError("Passwords do not match");
+  //     setIsLoading(false);
+  //     return;
+  //   }
+
+  //   if (formData.password.length < 6) {
+  //     setError("Password must be at least 6 characters long");
+  //     setIsLoading(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/accounts/signup/`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         role: formData.role,
+  //         username: formData.username,
+  //         email: formData.email,
+  //         password: formData.password,
+  //         phone: formData.phone,
+  //         company: formData.company,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       setSuccess("Signup successful!");
+  //       router.push("/login");
+  //     } else {
+  //       console.error("❌ Signup failed:", data);
+  //       setError(data?.error || "Signup failed. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("🚨 Error during signup:", error);
+  //     setError("Something went wrong. Please try again later.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex gradient-bg-subtle-reverse">
@@ -123,7 +161,7 @@ export default function SignupPage() {
             </CardHeader>
             <CardContent className="max-h-[50vh] overflow-y-auto">
               <form onSubmit={handleSubmit} className="space-y-4">
-                {error && (
+                {/* {error && (
                   <Alert
                     variant="destructive"
                     className="bg-destructive/15 border-destructive/50 animate-slide-in delay-100"
@@ -140,7 +178,7 @@ export default function SignupPage() {
                       {success}
                     </AlertDescription>
                   </Alert>
-                )}
+                )} */}
 
                 <div className="space-y-3 animate-slide-in delay-200">
                   <RadioGroup
@@ -326,9 +364,16 @@ export default function SignupPage() {
                 <Button
                   type="submit"
                   className="w-full h-11 text-base bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in delay-800"
-                  disabled={isLoading}
+                  disabled={loading}
                 >
-                  {isLoading ? "Creating Account..." : "Create Account"}
+                  {loading ? (
+                    <>
+                      <LoadingSpinner />
+                      Creating Account...
+                    </>
+                  ) : (
+                    "Create Account"
+                  )}
                 </Button>
               </form>
 
