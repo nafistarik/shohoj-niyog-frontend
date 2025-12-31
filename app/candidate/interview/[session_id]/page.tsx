@@ -7,6 +7,7 @@ import { SkipForward, Clock, Video, Mic, Send } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { API_BASE_URL } from "@/lib/constants";
 import { getCookie } from "@/lib/utils";
+import { useFetch } from "@/hooks/use-fetch";
 
 type Question = {
   question: string;
@@ -15,8 +16,6 @@ type Question = {
 const MAX_TIME = 120;
 
 const VideoInterview: React.FC = () => {
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(MAX_TIME);
@@ -35,47 +34,12 @@ const VideoInterview: React.FC = () => {
   const pathParts = pathname.split("/");
   const sessionId = pathParts[3];
 
-  // --- Fetch questions ---
-  useEffect(() => {
-    const fetchResults = async () => {
-      console.log("Fetching questions for session:", sessionId);
-      setIsLoading(true);
-      setError("");
+  const {
+    data: questions = [],
+    loading: loadingQuestions,
+    error: fetchError,
+  } = useFetch<Question[]>(sessionId ? `/api/find/${sessionId}` : null);
 
-      try {
-        const token = getCookie("access_token");
-        const response = await fetch(`${API_BASE_URL}/api/find/${sessionId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        });
-
-        const data = await response.json();
-        console.log("Fetch response:", data);
-
-        if (response.ok) {
-          setQuestions(data);
-          console.log("Questions set:", data);
-        } else {
-          console.error("❌ Failed to fetch results:", data);
-          setError(data?.error || "Failed to load results");
-        }
-      } catch (error) {
-        console.error("🚨 Error fetching results:", error);
-        setError("Something went wrong while fetching results.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (sessionId) {
-      fetchResults();
-    }
-  }, [sessionId]);
-
-  // --- Submit recordings ---
   const submitRecordings = useCallback(
     async (finalRecordings: Record<number, Blob>) => {
       if (isSubmitting) {
@@ -126,7 +90,6 @@ const VideoInterview: React.FC = () => {
     [isSubmitting, sessionId, router]
   );
 
-  // --- Stop recording and return a promise ---
   const stopRecordingAsync = useCallback((): Promise<Blob | null> => {
     return new Promise((resolve) => {
       if (
@@ -140,7 +103,6 @@ const VideoInterview: React.FC = () => {
 
       console.log("Stopping current recording...");
 
-      // Set up one-time listener for the stop event
       const handleStop = () => {
         const blob = new Blob(chunksRef.current, { type: "video/webm" });
         console.log("Recording stopped, blob created:", blob.size, "bytes");
@@ -156,7 +118,6 @@ const VideoInterview: React.FC = () => {
     });
   }, []);
 
-  // --- Setup camera + mic ---
   useEffect(() => {
     const initMedia = async () => {
       try {
@@ -189,7 +150,6 @@ const VideoInterview: React.FC = () => {
     };
   }, []);
 
-  // --- Start recording ---
   const startRecording = useCallback(() => {
     if (!streamRef.current) {
       console.log("Cannot start recording: no stream available");
@@ -235,11 +195,10 @@ const VideoInterview: React.FC = () => {
     setTimeLeft(MAX_TIME);
   }, [isRecording, currentQIndex]);
 
-  // --- Handle next question ---
   const handleNext = useCallback(async () => {
     console.log("handleNext called. Current question index:", currentQIndex);
 
-    if (currentQIndex === questions.length - 1) {
+    if (questions?.length && currentQIndex === questions?.length - 1) {
       console.log("Last question reached. Stopping and submitting...");
       pendingSubmitRef.current = true;
 
@@ -277,13 +236,12 @@ const VideoInterview: React.FC = () => {
     }
   }, [
     currentQIndex,
-    questions.length,
+    questions?.length,
     recordings,
     stopRecordingAsync,
     submitRecordings,
   ]);
 
-  // --- Timer countdown ---
   useEffect(() => {
     if (timeLeft <= 0) {
       console.log("Time expired for question:", currentQIndex);
@@ -294,9 +252,8 @@ const VideoInterview: React.FC = () => {
     return () => clearTimeout(timer);
   }, [timeLeft, handleNext, currentQIndex]);
 
-  // --- Auto-start recording on question change ---
   useEffect(() => {
-    if (!streamRef.current || questions.length === 0 || isSubmitting) return;
+    if (!streamRef.current || questions?.length === 0 || isSubmitting) return;
 
     console.log("Auto-starting recording for question:", currentQIndex);
     const timer = setTimeout(() => {
@@ -304,7 +261,7 @@ const VideoInterview: React.FC = () => {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [currentQIndex, questions.length, startRecording, isSubmitting]);
+  }, [currentQIndex, questions?.length, startRecording, isSubmitting]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -314,9 +271,9 @@ const VideoInterview: React.FC = () => {
 
   const progress = ((MAX_TIME - timeLeft) / MAX_TIME) * 100;
 
-  if (isLoading) return <p>Loading session...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (questions.length === 0) return <p>No questions available</p>;
+  if (loadingQuestions) return <p>Loading session...</p>;
+  if (fetchError) return <p style={{ color: "red" }}>{error}</p>;
+  if (questions?.length === 0) return <p>No questions available</p>;
 
   return (
     <div className="min-h-screen">
@@ -336,7 +293,7 @@ const VideoInterview: React.FC = () => {
                   </span>
                 </div>
                 <span className="text-muted-foreground">
-                  of {questions.length}
+                  of {questions?.length}
                 </span>
               </div>
               <div className="flex items-center space-x-4">
@@ -362,7 +319,7 @@ const VideoInterview: React.FC = () => {
                     Question {currentQIndex + 1}
                   </h2>
                   <p className="text-foreground text-lg">
-                    {questions[currentQIndex]?.question ||
+                    {(questions && questions[currentQIndex]?.question) ||
                       "Loading question..."}
                   </p>
                 </div>
@@ -400,7 +357,7 @@ const VideoInterview: React.FC = () => {
                 >
                   {isSubmitting ? (
                     "Submitting..."
-                  ) : currentQIndex === questions.length - 1 ? (
+                  ) : questions?.length && currentQIndex === questions?.length - 1 ? (
                     <>
                       <Send className="w-5 h-5 mr-2" />
                       Submit All Responses
@@ -456,7 +413,7 @@ const VideoInterview: React.FC = () => {
             {/* Question navigation */}
             <div className="mt-8 pt-6 border-t border-border">
               <div className="flex justify-center space-x-2">
-                {questions.map((_, index) => (
+                {questions?.map((_, index) => (
                   <button
                     key={index}
                     onClick={async () => {

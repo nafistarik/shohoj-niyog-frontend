@@ -36,6 +36,7 @@ import {
 import { PageHeader } from "@/components/shared/page-header";
 import { useMutation } from "@/hooks/use-mutation";
 import { createSessionApi } from "@/lib/api/interviewer";
+import { LoadingSpinner } from "@/components/shared/loading-spinner";
 
 export default function CreateSessionPage() {
   const [formData, setFormData] = useState<CreateSessionPayload>({
@@ -473,7 +474,14 @@ export default function CreateSessionPage() {
                   className="bg-primary text-primary-foreground hover:bg-primary-light shadow-primary animate-scale-in"
                   disabled={loading}
                 >
-                  {loading ? "Creating Session..." : "Create Session"}
+                  {loading ? (
+                    <>
+                      <LoadingSpinner />
+                      Creating Session...
+                    </>
+                  ) : (
+                    "Create Session"
+                  )}
                 </Button>
               </div>
             </form>
