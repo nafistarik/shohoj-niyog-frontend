@@ -18,7 +18,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import loginIllustrator from "@/assets/auth/login-illustrator.svg";
-import logo from "@/assets/auth/logo.png";
+import logo from "@/assets/public/logo.png";
 import { showError } from "@/lib/toast";
 import { useMutation } from "@/hooks/use-mutation";
 import { signupApi } from "@/lib/api/auth";

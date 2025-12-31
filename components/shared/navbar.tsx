@@ -3,7 +3,7 @@
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import logo from "@/assets/auth/logo.png";
+import logo from "@/assets/public/logo.png";
 import Image from "next/image";
 import { getCookie } from "@/lib/utils";
 import { LogInIcon, User2Icon } from "lucide-react";
