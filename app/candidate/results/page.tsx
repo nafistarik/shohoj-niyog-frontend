@@ -33,7 +33,6 @@ export default function CandidateResultsPage() {
   const { mutate: updateDecision, loading: decisionLoading } =
     useMutation(decideMutation);
   const handleDecisionChange = (resultId: string, newDecision: string) => {
-    const previousData = [...resultsData]; // snapshot for rollback
     // Optimistically update UI
     setResultsData(
       resultsData.map((r) =>
@@ -45,7 +44,7 @@ export default function CandidateResultsPage() {
       {
         successMessage: "Decision updated",
         onError: () => {
-          setResultsData(previousData); // rollback if API fails
+          refetchResults(); // rollback if API fails
         },
       }
     );
