@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import logo from "@/assets/logos/logo.png";
 import Image from "next/image";
-import { getCookie } from "@/lib/utils";
+import { clearCookie, getCookie } from "@/lib/utils";
 import { LayoutDashboard, LogInIcon, LogOut, User2Icon } from "lucide-react";
 
 const navItems = [
@@ -18,9 +18,9 @@ const navItems = [
 function Navbar() {
   const router = useRouter();
   const handleLogout = () => {
-    document.cookie = "access_token=; Max-Age=0; path=/;";
-    document.cookie = "user_role=; Max-Age=0; path=/;";
-    document.cookie = "user_name=; Max-Age=0; path=/;";
+    clearCookie("access_token");
+    clearCookie("user_role");
+    clearCookie("user_name");
     router.push("/login");
   };
   const token = getCookie("access_token");

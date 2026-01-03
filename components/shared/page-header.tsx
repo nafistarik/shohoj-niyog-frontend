@@ -7,21 +7,18 @@ import { Plus, ArrowLeft, LogOut } from "lucide-react";
 import Image from "next/image";
 import logo from "@/assets/logos/logo_icon.png";
 import { useRouter } from "next/navigation";
-import { getCookie } from "@/lib/utils";
+import { clearCookie, getCookie } from "@/lib/utils";
 
 interface PageHeaderProps {
   title?: string;
   description?: string;
   welcomeText?: string;
-
   actionLabel?: string;
   actionHref?: string;
   actionIcon?: ReactNode;
-
   backLabel?: string;
   backHref?: string;
   backIcon?: ReactNode;
-
   children?: ReactNode;
 }
 
@@ -39,8 +36,9 @@ export function PageHeader({
 }: PageHeaderProps) {
   const router = useRouter();
   const handleLogout = () => {
-    document.cookie = "access_token=; Max-Age=0; path=/;";
-    document.cookie = "user_role=; Max-Age=0; path=/;";
+    clearCookie("access_token");
+    clearCookie("user_role");
+    clearCookie("user_name");
     router.push("/login");
   };
   return (
@@ -73,15 +71,12 @@ export function PageHeader({
             </div>
           </div>
 
-          {/* Right Side */}
           <div className="flex items-center space-x-2">
             {welcomeText && (
               <span className="text-sm text-muted-foreground hidden md:flex">
                 {welcomeText}
               </span>
             )}
-
-            {/* Back Button */}
             {backLabel && backHref && (
               <Button variant="secondary" size="sm" asChild className="group">
                 <Link href={backHref}>
@@ -92,8 +87,6 @@ export function PageHeader({
                 </Link>
               </Button>
             )}
-
-            {/* Action Button */}
             {actionLabel && actionHref && (
               <Button asChild size="sm">
                 <Link href={actionHref}>
@@ -102,10 +95,7 @@ export function PageHeader({
                 </Link>
               </Button>
             )}
-
-            {/* Fallback for custom stuff */}
             {children}
-
             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut /> <span className="hidden md:flex">Logout</span>{" "}
             </Button>
