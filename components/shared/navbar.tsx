@@ -50,27 +50,25 @@ function Navbar() {
         <div className="flex items-center space-x-3">
           {token && user_role ? (
             <div className="flex gap-2 mr-2">
-              <Button variant="outline" asChild>
+              <Button asChild size="sm">
                 <Link href={`${user_role}/dashboard`}>
                   <LayoutDashboard />{" "}
                   <span className="hidden md:flex">Go to Dashboard</span>
                 </Link>
               </Button>
-              <Button variant="outline" onClick={handleLogout}>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut /> <span className="hidden md:flex">Logout</span>{" "}
               </Button>
             </div>
           ) : (
             <div className="flex gap-2 mr-2">
-              <Button variant="outline" asChild>
+              <Button variant="outline" asChild size="sm">
                 <Link href="/login">
-                  {" "}
                   <LogInIcon /> <span className="hidden md:flex">Sign In</span>
                 </Link>
               </Button>
-              <Button asChild>
+              <Button asChild size="sm">
                 <Link href="/signup">
-                  {" "}
                   <User2Icon />{" "}
                   <span className="hidden md:flex">Get Started</span>
                 </Link>
