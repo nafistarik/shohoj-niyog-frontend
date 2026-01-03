@@ -68,21 +68,21 @@ function Navbar() {
             </div>
           ) : (
             <div className="flex gap-2 mr-2">
-              <Button
-                variant="outline"
-                asChild
-                className="px-2! py-0.5! md:px-4! md:py-2!"
-              >
-                <Link href="/login">
-                  {" "}
-                  <LogInIcon /> <span className="hidden md:flex">Sign In</span>
-                </Link>
-              </Button>
-              <Button asChild className="px-2.5! py-0.5! md:px-4! md:py-2!">
+              <Button asChild>
                 <Link href="/signup">
                   {" "}
                   <User2Icon />{" "}
                   <span className="hidden md:flex">Get Started</span>
+                </Link>
+              </Button>
+
+              <Button
+                variant="outline"
+                asChild
+              >
+                <Link href="/login">
+                  {" "}
+                  <LogInIcon /> <span className="hidden md:flex">Sign In</span>
                 </Link>
               </Button>
             </div>
