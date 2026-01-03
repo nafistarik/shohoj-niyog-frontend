@@ -30,7 +30,7 @@ export default function ErrorState({
             We couldn’t load the data. Please try again.
           </p>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-center">
             {onRetry && (
               <Button onClick={onRetry}>
                 <RefreshCcw className="mr-2 h-4 w-4" />
