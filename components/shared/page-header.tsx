@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus, ArrowLeft, LogOut } from "lucide-react";
 import Image from "next/image";
-import logo from "@/assets/logos/logo_icon.png"
+import logo from "@/assets/logos/logo_icon.png";
 import { useRouter } from "next/navigation";
+import { getCookie } from "@/lib/utils";
 
 interface PageHeaderProps {
   title?: string;
