@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/assets/public/logo.png";
+import logo from "@/assets/logos/logo.png";
 
 const productItems = [
   { label: "Features", href: "#features", id: 1 },

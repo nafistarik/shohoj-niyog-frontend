@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import signupIllustrator from "@/assets/auth/login-illustrator.svg";
-import logo from "@/assets/public/logo.png";
+import logo from "@/assets/logos/logo.png";
 import LoginForm from "@/features/auth/login-form";
 
 export default function LoginPage() {
