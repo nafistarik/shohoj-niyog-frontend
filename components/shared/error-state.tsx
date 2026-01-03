@@ -1,5 +1,8 @@
+"use client";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, RefreshCcw } from "lucide-react";
+import { getCookie } from "@/lib/utils";
+import { AlertTriangle, LayoutDashboard, RefreshCcw } from "lucide-react";
+import Link from "next/link";
 
 type ErrorStateProps = {
   onRetry?: () => void;
@@ -10,6 +13,8 @@ export default function ErrorState({
   onRetry,
   message = "Something went wrong",
 }: ErrorStateProps) {
+  const token = getCookie("access_token");
+  const user_role = getCookie("user_role");
   return (
     <div className="bg-background flex items-center justify-center animate-fade-in py-8 min-h-screen">
       <div className="max-w-xl w-full text-center">
@@ -25,12 +30,22 @@ export default function ErrorState({
             We couldn’t load the data. Please try again.
           </p>
 
-          {onRetry && (
-            <Button onClick={onRetry}>
-              <RefreshCcw className="mr-2 h-4 w-4" />
-              Retry
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {onRetry && (
+              <Button onClick={onRetry}>
+                <RefreshCcw className="mr-2 h-4 w-4" />
+                Retry
+              </Button>
+            )}
+            {token && user_role && (
+              <Button asChild className="bg-destructive!">
+                <Link href={`${user_role}/dashboard`}>
+                  <LayoutDashboard />{" "}
+                  <span className="hidden md:flex">Go to Dashboard</span>
+                </Link>
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
