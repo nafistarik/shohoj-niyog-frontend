@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import logo from "@/assets/logos/logo.png";
 import Image from "next/image";
 import { getCookie } from "@/lib/utils";
-import { LayoutDashboard, LogInIcon, User2Icon } from "lucide-react";
+import { LayoutDashboard, LogInIcon, LogOut, User2Icon } from "lucide-react";
 
 const navItems = [
   { label: "Features", href: "#features" },
@@ -50,39 +50,29 @@ function Navbar() {
         <div className="flex items-center space-x-3">
           {token && user_role ? (
             <div className="flex gap-2 mr-2">
-              <Button onClick={handleLogout} variant="outline">
-                Logout
-              </Button>
-
-              <Button
-                variant="outline"
-                asChild
-                className="px-2! py-0.5! md:px-4! md:py-2!"
-              >
+              <Button variant="outline" asChild>
                 <Link href={`${user_role}/dashboard`}>
-                  {" "}
                   <LayoutDashboard />{" "}
                   <span className="hidden md:flex">Go to Dashboard</span>
                 </Link>
               </Button>
+              <Button variant="outline" onClick={handleLogout}>
+                <LogOut /> <span className="hidden md:flex">Logout</span>{" "}
+              </Button>
             </div>
           ) : (
             <div className="flex gap-2 mr-2">
+              <Button variant="outline" asChild>
+                <Link href="/login">
+                  {" "}
+                  <LogInIcon /> <span className="hidden md:flex">Sign In</span>
+                </Link>
+              </Button>
               <Button asChild>
                 <Link href="/signup">
                   {" "}
                   <User2Icon />{" "}
                   <span className="hidden md:flex">Get Started</span>
-                </Link>
-              </Button>
-
-              <Button
-                variant="outline"
-                asChild
-              >
-                <Link href="/login">
-                  {" "}
-                  <LogInIcon /> <span className="hidden md:flex">Sign In</span>
                 </Link>
               </Button>
             </div>
