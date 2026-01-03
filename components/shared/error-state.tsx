@@ -39,7 +39,7 @@ export default function ErrorState({
             )}
             {token && user_role && (
               <Button asChild className="bg-destructive!">
-                <Link href={`${user_role}/dashboard`}>
+                <Link href={`/${user_role}/dashboard`}>
                   <LayoutDashboard />{" "}
                   <span className="hidden md:flex">Go to Dashboard</span>
                 </Link>

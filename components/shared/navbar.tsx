@@ -51,7 +51,7 @@ function Navbar() {
           {token && user_role ? (
             <div className="flex gap-2 mr-2">
               <Button asChild size="sm">
-                <Link href={`${user_role}/dashboard`}>
+                <Link href={`/${user_role}/dashboard`}>
                   <LayoutDashboard />{" "}
                   <span className="hidden md:flex">Go to Dashboard</span>
                 </Link>
