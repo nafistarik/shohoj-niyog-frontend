@@ -11,6 +11,7 @@
 
 import { patchData } from "@/lib/api/methods";
 import { postData } from "@/lib/api/methods";
+import { deleteData } from "@/lib/api/methods";
 
 export interface CreateSessionPayload {
   position: string;
@@ -35,3 +36,7 @@ export const createSessionApi = (payload: CreateSessionPayload) =>
 
 export const decideMutation = (payload: DecidePayload) =>
   patchData<DecidePayload, null>("/api/decide/", payload);
+
+export const deleteSessionMutation = async (sessionId: string) => {
+  return deleteData(`/api/delete/${sessionId}`);
+};

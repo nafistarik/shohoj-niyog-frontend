@@ -123,7 +123,7 @@ export default function CreateSessionPage() {
 
       setFormData((prev) => ({
         ...prev,
-        scheduled: newDate.toDateString(),
+        scheduled: newDate.toISOString(),
       }));
     } else {
       setFormData((prev) => ({

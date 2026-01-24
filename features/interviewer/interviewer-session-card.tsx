@@ -8,18 +8,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, Users, Eye, MoreVertical, ChartArea } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Calendar, Users, Eye, ChartArea, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 import { LevelBadge } from "@/components/shared/level-badge";
+import { useState } from "react";
+import { useMutation } from "@/hooks/use-mutation";
+import { deleteSessionMutation } from "@/lib/api/interviewer";
+import ModalWrapper from "@/components/shared/ModalWrapper";
+import { useRouter } from "next/navigation";
 
 export default function InterviewerSessionCard({ session }: { session: any }) {
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const { mutate: deleteSession, loading: deleteLoading } = useMutation(
+    deleteSessionMutation,
+  );
+  const router = useRouter();
   return (
     <Card key={session.id} className="animate-fade-in">
       <CardHeader className="pb-3">
@@ -34,27 +38,13 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
                 : session.stack}
             </CardDescription>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary">
-                <MoreVertical />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href={`/interviewer/session/${session.id}`}>
-                  <Eye className="w-4 h-4" />
-                  View Details
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href={`/interviewer/session/${session.id}/edit`}>
-                  <Eye className="w-4 h-4" />
-                  Edit Session
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button
+            variant="destructive"
+            size="icon"
+            onClick={() => setIsDeleteOpen(true)}
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -93,6 +83,38 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
           </Button>
         </div>
       </CardContent>
+      <ModalWrapper open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold">
+            Are you sure you want to delete this interview?
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            This action cannot be undone.
+          </p>
+
+          <div className="flex justify-end gap-2 pt-4">
+            <Button variant="outline" onClick={() => setIsDeleteOpen(false)}>
+              Cancel
+            </Button>
+
+            <Button
+              variant="destructive"
+              disabled={deleteLoading}
+              onClick={() => {
+                deleteSession(session.id, {
+                  successMessage: "Interview deleted successfully",
+                  onSuccess: () => {
+                    setIsDeleteOpen(false);
+                    router.refresh();
+                  },
+                });
+              }}
+            >
+              {deleteLoading ? "Deleting..." : "Delete"}
+            </Button>
+          </div>
+        </div>
+      </ModalWrapper>
     </Card>
   );
 }
