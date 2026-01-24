@@ -39,11 +39,12 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
             </CardDescription>
           </div>
           <Button
-            variant="destructive"
-            size="icon"
+            variant="ghost"
+            size="sm"
             onClick={() => setIsDeleteOpen(true)}
+            className="hover:bg-red-100!"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-4 h-4 text-destructive" />
           </Button>
         </div>
       </CardHeader>

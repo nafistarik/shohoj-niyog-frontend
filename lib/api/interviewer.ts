@@ -38,5 +38,5 @@ export const decideMutation = (payload: DecidePayload) =>
   patchData<DecidePayload, null>("/api/decide/", payload);
 
 export const deleteSessionMutation = async (sessionId: string) => {
-  return deleteData(`/api/delete/${sessionId}`);
+  return deleteData(`/api/delete/${sessionId}/`);
 };
