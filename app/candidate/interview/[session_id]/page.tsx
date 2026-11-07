@@ -22,13 +22,13 @@ const VideoInterview: React.FC = () => {
   const [recordings, setRecordings] = useState<Record<number, Blob>>({});
   const [isRecording, setIsRecording] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cameraReady, setCameraReady] = useState(false);
 
   const router = useRouter();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const pendingSubmitRef = useRef(false); // Track if we're waiting to submit
 
   const pathname = usePathname();
   const pathParts = pathname.split("/");
@@ -42,30 +42,22 @@ const VideoInterview: React.FC = () => {
 
   const submitRecordings = useCallback(
     async (finalRecordings: Record<number, Blob>) => {
-      if (isSubmitting) {
-        console.log("Submission already in progress");
-        return;
-      }
+      if (isSubmitting) return;
 
       setIsSubmitting(true);
-      console.log(
-        "submitRecordings called with recordings:",
-        Object.keys(finalRecordings).length,
-        "videos"
-      );
+      setError("");
 
       try {
-        console.log("Preparing FormData with recordings:", finalRecordings);
         const formData = new FormData();
         formData.append("session_id", sessionId);
 
+        // The backend matches videos to questions by order only, so they go in question order.
         Object.entries(finalRecordings).forEach(([index, blob]) => {
           formData.append("video", blob, `ques${Number(index) + 1}.webm`);
-          console.log(`Appended recording for question ${index}`);
         });
 
         const token = getCookie("access_token");
-        const response = await axios.post(
+        await axios.post(
           `${API_BASE_URL}/api/response/`,
           formData,
           {
@@ -76,13 +68,10 @@ const VideoInterview: React.FC = () => {
           }
         );
 
-        console.log("✅ Recordings uploaded successfully!", response.data);
         streamRef.current?.getTracks().forEach((t) => t.stop());
-        console.log("Stopped all media tracks after submission");
 
         router.push("/candidate/dashboard");
-      } catch (err) {
-        console.error("❌ Upload failed:", err);
+      } catch {
         setError("Failed to submit recordings. Please try again.");
         setIsSubmitting(false);
       }
@@ -92,28 +81,23 @@ const VideoInterview: React.FC = () => {
 
   const stopRecordingAsync = useCallback((): Promise<Blob | null> => {
     return new Promise((resolve) => {
-      if (
-        !mediaRecorderRef.current ||
-        mediaRecorderRef.current.state === "inactive"
-      ) {
-        console.log("No active recording to stop.");
+      const recorder = mediaRecorderRef.current;
+      if (!recorder || recorder.state === "inactive") {
         resolve(null);
         return;
       }
 
-      console.log("Stopping current recording...");
-
-      const handleStop = () => {
-        const blob = new Blob(chunksRef.current, { type: "video/webm" });
-        console.log("Recording stopped, blob created:", blob.size, "bytes");
-        chunksRef.current = [];
-        resolve(blob);
-      };
-
-      mediaRecorderRef.current.addEventListener("stop", handleStop, {
-        once: true,
-      });
-      mediaRecorderRef.current.stop();
+      // The only stop listener: a second one would empty chunksRef before this one reads it.
+      recorder.addEventListener(
+        "stop",
+        () => {
+          const blob = new Blob(chunksRef.current, { type: "video/webm" });
+          chunksRef.current = [];
+          resolve(blob);
+        },
+        { once: true }
+      );
+      recorder.stop();
       setIsRecording(false);
     });
   }, []);
@@ -121,7 +105,6 @@ const VideoInterview: React.FC = () => {
   useEffect(() => {
     const initMedia = async () => {
       try {
-        console.log("Initializing media devices...");
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
@@ -130,108 +113,60 @@ const VideoInterview: React.FC = () => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
-        console.log("Camera and mic initialized:", stream);
-      } catch (error) {
-        console.error("Error accessing media devices:", error);
-        setError("Failed to access camera/microphone");
+        setCameraReady(true);
+      } catch {
+        setError(
+          "Failed to access camera/microphone. Allow access and reload the page to start the interview."
+        );
       }
     };
 
     initMedia();
 
     return () => {
-      console.log("Cleaning up media devices...");
       if (mediaRecorderRef.current?.state === "recording") {
-        console.log("Stopping active recording before cleanup...");
         mediaRecorderRef.current.stop();
       }
       streamRef.current?.getTracks().forEach((t) => t.stop());
-      console.log("Media tracks stopped.");
     };
   }, []);
 
   const startRecording = useCallback(() => {
-    if (!streamRef.current) {
-      console.log("Cannot start recording: no stream available");
+    if (!streamRef.current || mediaRecorderRef.current?.state === "recording")
       return;
-    }
-    if (isRecording) {
-      console.log("Already recording, skipping startRecording");
-      return;
-    }
 
-    console.log("Starting recording for question index:", currentQIndex);
     chunksRef.current = [];
     const mediaRecorder = new MediaRecorder(streamRef.current);
     mediaRecorderRef.current = mediaRecorder;
-    setIsRecording(true);
-
     mediaRecorder.ondataavailable = (e) => {
-      console.log("ondataavailable event:", e.data.size, "bytes");
       if (e.data.size > 0) {
         chunksRef.current.push(e.data);
       }
     };
-
-    // Note: We handle onstop differently now when submitting
-    mediaRecorder.onstop = () => {
-      console.log("MediaRecorder stopped for question index:", currentQIndex);
-      setIsRecording(false);
-
-      // Only update state if we're not about to submit
-      if (!pendingSubmitRef.current) {
-        const blob = new Blob(chunksRef.current, { type: "video/webm" });
-        setRecordings((prev) => {
-          const newState = { ...prev, [currentQIndex]: blob };
-          console.log("Updated recordings state:", newState);
-          return newState;
-        });
-        chunksRef.current = [];
-      }
-    };
-
     mediaRecorder.start();
-    console.log("MediaRecorder started. MAX_TIME reset to", MAX_TIME);
     setTimeLeft(MAX_TIME);
-  }, [isRecording, currentQIndex]);
+    setIsRecording(true);
+  }, []);
 
   const handleNext = useCallback(async () => {
-    console.log("handleNext called. Current question index:", currentQIndex);
+    const isLast =
+      !!questions?.length && currentQIndex === questions.length - 1;
+    let allRecordings = recordings;
 
-    if (questions?.length && currentQIndex === questions?.length - 1) {
-      console.log("Last question reached. Stopping and submitting...");
-      pendingSubmitRef.current = true;
-
-      // Stop recording and wait for the blob
-      const finalBlob = await stopRecordingAsync();
-
-      // Build complete recordings object
-      const allRecordings = { ...recordings };
-      if (finalBlob) {
-        allRecordings[currentQIndex] = finalBlob;
-        console.log(
-          "Added final recording. Total recordings:",
-          Object.keys(allRecordings).length
-        );
+    if (mediaRecorderRef.current?.state === "recording") {
+      const blob = await stopRecordingAsync();
+      if (blob) {
+        allRecordings = { ...recordings, [currentQIndex]: blob };
+        setRecordings(allRecordings);
       }
+    } else if (!recordings[currentQIndex]) {
+      // Nothing recorded for this question yet, or a timer tick and a click both fired.
+      return;
+    }
 
-      // Now submit with ALL recordings including the last one
+    if (isLast) {
       await submitRecordings(allRecordings);
     } else {
-      console.log("Moving to next question...");
-
-      // Stop current recording and wait for blob
-      const blob = await stopRecordingAsync();
-
-      if (blob) {
-        setRecordings((prev) => {
-          const newState = { ...prev, [currentQIndex]: blob };
-          console.log("Updated recordings state:", newState);
-          return newState;
-        });
-      }
-
-      // Move to next question
       setCurrentQIndex((prev) => prev + 1);
     }
   }, [
@@ -242,26 +177,21 @@ const VideoInterview: React.FC = () => {
     submitRecordings,
   ]);
 
+  // The clock runs only while a recording is running, so it never starts before the camera and questions are ready.
   useEffect(() => {
+    if (!isRecording) return;
     if (timeLeft <= 0) {
-      console.log("Time expired for question:", currentQIndex);
       handleNext();
       return;
     }
     const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
     return () => clearTimeout(timer);
-  }, [timeLeft, handleNext, currentQIndex]);
+  }, [isRecording, timeLeft, handleNext]);
 
   useEffect(() => {
-    if (!streamRef.current || questions?.length === 0 || isSubmitting) return;
-
-    console.log("Auto-starting recording for question:", currentQIndex);
-    const timer = setTimeout(() => {
-      startRecording();
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [currentQIndex, questions?.length, startRecording, isSubmitting]);
+    if (!cameraReady || !questions?.length) return;
+    startRecording();
+  }, [cameraReady, currentQIndex, questions?.length, startRecording]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -349,10 +279,17 @@ const VideoInterview: React.FC = () => {
                   </div>
                 </div>
 
+                {error && (
+                  <p className="text-sm text-destructive">{error}</p>
+                )}
+
                 {/* Controls */}
                 <button
                   onClick={handleNext}
-                  disabled={isSubmitting}
+                  disabled={
+                    isSubmitting ||
+                    (!isRecording && !recordings[currentQIndex])
+                  }
                   className="w-full py-3 px-4 rounded-xl bg-primary text-primary-foreground font-semibold flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
@@ -375,7 +312,17 @@ const VideoInterview: React.FC = () => {
               <div className="space-y-4">
                 <div className="relative rounded-xl overflow-hidden border border-border bg-black aspect-video">
                   <video
-                    ref={videoRef}
+                    ref={(el) => {
+                      videoRef.current = el;
+                      // The stream can arrive while the loading screen is up, before this element exists.
+                      if (
+                        el &&
+                        streamRef.current &&
+                        el.srcObject !== streamRef.current
+                      ) {
+                        el.srcObject = streamRef.current;
+                      }
+                    }}
                     autoPlay
                     muted
                     className="w-full h-full object-cover"
@@ -403,32 +350,23 @@ const VideoInterview: React.FC = () => {
                           : "bg-secondary text-secondary-foreground"
                       }`}
                     >
-                      {recordings[currentQIndex] ? "Recorded" : "Recording..."}
+                      {isRecording
+                        ? "Recording..."
+                        : recordings[currentQIndex]
+                        ? "Recorded"
+                        : "Waiting for camera..."}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Question navigation */}
+            {/* Question progress: display only, since skipping a question would shift every later video onto the wrong question */}
             <div className="mt-8 pt-6 border-t border-border">
               <div className="flex justify-center space-x-2">
                 {questions?.map((_, index) => (
-                  <button
+                  <span
                     key={index}
-                    onClick={async () => {
-                      if (index !== currentQIndex && !isSubmitting) {
-                        const blob = await stopRecordingAsync();
-                        if (blob) {
-                          setRecordings((prev) => ({
-                            ...prev,
-                            [currentQIndex]: blob,
-                          }));
-                        }
-                        setCurrentQIndex(index);
-                      }
-                    }}
-                    disabled={isSubmitting}
                     className={`w-3 h-3 rounded-full ${
                       index === currentQIndex
                         ? "bg-primary"
@@ -436,7 +374,7 @@ const VideoInterview: React.FC = () => {
                         ? "bg-green-500"
                         : "bg-muted-foreground/30"
                     }`}
-                    aria-label={`Go to question ${index + 1}`}
+                    aria-label={`Question ${index + 1}`}
                   />
                 ))}
               </div>
