@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { getCookie } from "@/lib/utils";
+import { useCookie } from "@/hooks/use-cookie";
 import { AlertTriangle, LayoutDashboard, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 
@@ -13,8 +13,8 @@ export default function ErrorState({
   onRetry,
   message = "Something went wrong",
 }: ErrorStateProps) {
-  const token = getCookie("access_token");
-  const user_role = getCookie("user_role");
+  const token = useCookie("access_token");
+  const user_role = useCookie("user_role");
   return (
     <div className="bg-background flex items-center justify-center animate-fade-in py-8 min-h-screen">
       <div className="max-w-xl w-full text-center">

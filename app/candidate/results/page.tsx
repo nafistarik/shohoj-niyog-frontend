@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { CheckCircle, Clock, FileText } from "lucide-react";
-import type { CandidateResponse, InterviewSession } from "@/lib/types";
+import type { CandidateResult, Decision } from "@/lib/types";
 import EmptyState from "@/components/shared/empty-state";
 import StatCard from "@/components/shared/stat-card";
 import { PageHeader } from "@/components/shared/page-header";
@@ -13,34 +13,30 @@ import { decideMutation } from "@/lib/api/interviewer";
 import LoadingState from "@/components/shared/loading-state";
 import ErrorState from "@/components/shared/error-state";
 
-interface CandidateResultWithSession extends CandidateResponse {
-  session?: InterviewSession;
-}
-
 export default function CandidateResultsPage() {
-  const [resultsData, setResultsData] = useState<any[]>([]);
+  const [resultsData, setResultsData] = useState<CandidateResult[]>([]);
 
   const {
-    data: fetchedResults = [],
+    data: fetchedResults,
     loading: resultsLoading,
     error: resultsError,
     refetch: refetchResults,
-  } = useFetch<any[]>("/api/results/");
+  } = useFetch<CandidateResult[]>("/api/results/");
   useEffect(() => {
     if (fetchedResults?.length) setResultsData(fetchedResults);
   }, [fetchedResults]);
 
   const { mutate: updateDecision, loading: decisionLoading } =
     useMutation(decideMutation);
-  const handleDecisionChange = (resultId: string, newDecision: string) => {
+  const handleDecisionChange = (sessionId: string, newDecision: Decision) => {
     // Optimistically update UI
-    setResultsData(
-      resultsData.map((r) =>
-        r.id === resultId ? { ...r, decision: newDecision } : r
+    setResultsData((prev) =>
+      prev.map((r) =>
+        r.session_id === sessionId ? { ...r, decision: newDecision } : r
       )
     );
     updateDecision(
-      { session_id: resultId, decision: newDecision },
+      { session_id: sessionId, decision: newDecision },
       {
         successMessage: "Decision updated",
         onError: () => {
@@ -82,7 +78,7 @@ export default function CandidateResultsPage() {
                 icon={<CheckCircle className="w-6 h-6 text-primary" />}
                 title={`${
                   resultsData.filter(
-                    (r: any) =>
+                    (r) =>
                       r.decision === "interested" || r.decision === "accept"
                   ).length
                 }`}
@@ -91,7 +87,7 @@ export default function CandidateResultsPage() {
               <StatCard
                 icon={<Clock className="w-6 h-6 text-primary" />}
                 title={`${
-                  resultsData.filter((r: any) => r.decision === "pending")
+                  resultsData.filter((r) => r.decision === "pending")
                     .length
                 }`}
                 description="Pending Review"
@@ -99,11 +95,11 @@ export default function CandidateResultsPage() {
             </div>
 
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-2xl font-bold text-foreground">
                 Interview Results
               </h2>
 
-              {resultsData.map((result: any) => (
+              {resultsData.map((result) => (
                 <CandidateResultCard
                   result={result}
                   updateDecision={handleDecisionChange}

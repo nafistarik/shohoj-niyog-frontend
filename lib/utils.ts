@@ -1,11 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Decision } from "./types";
-
-export interface InterviewSession {
-  scheduled: string;
-  [key: string]: any;
-}
+import type { CandidateSession, Decision } from "./types";
 
 type CookieOptions = {
   path?: string;
@@ -92,25 +87,27 @@ export const getAllowedOptions = (
 };
 
 export function getUpcomingInterviews(
-  sessions: any[] | null,
+  sessions: CandidateSession[] | null,
   now: Date = new Date()
-): any[] {
+): CandidateSession[] {
   return (
     sessions?.filter(
-      (session) => new Date(session.scheduled_time).getTime() > now.getTime()
-    ) || []
+      (session) =>
+        !!session.scheduled_time &&
+        new Date(session.scheduled_time).getTime() > now.getTime()
+    ) ?? []
   );
 }
 
 export function getNextInterview(
-  sessions: any[] | null,
+  sessions: CandidateSession[] | null,
   now: Date = new Date()
-): any | null {
+): CandidateSession | null {
   if (!sessions || sessions.length === 0) return null;
 
   return sessions.reduce((closest, current) => {
-    const closestTime = new Date(closest.scheduled_time).getTime();
-    const currentTime = new Date(current.scheduled_time).getTime();
+    const closestTime = new Date(closest.scheduled_time ?? "").getTime();
+    const currentTime = new Date(current.scheduled_time ?? "").getTime();
     const nowTime = now.getTime();
 
     return currentTime - nowTime < closestTime - nowTime ? current : closest;

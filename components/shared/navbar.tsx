@@ -5,26 +5,23 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import logo from "@/assets/logos/logo.png";
 import Image from "next/image";
-import { clearCookie, getCookie } from "@/lib/utils";
+import { clearSession } from "@/lib/auth/token";
+import { useCookie } from "@/hooks/use-cookie";
 import { LayoutDashboard, LogInIcon, LogOut, User2Icon } from "lucide-react";
 
 const navItems = [
   { label: "Features", href: "#features" },
-  { label: "About", href: "#about" },
-  { label: "Testimonials", href: "#testimonials" },
   { label: "FAQ", href: "#faq" },
 ];
 
 function Navbar() {
   const router = useRouter();
   const handleLogout = () => {
-    clearCookie("access_token");
-    clearCookie("user_role");
-    clearCookie("user_name");
+    clearSession();
     router.push("/login");
   };
-  const token = getCookie("access_token");
-  const user_role = getCookie("user_role");
+  const token = useCookie("access_token");
+  const user_role = useCookie("user_role");
   return (
     <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-sidebar-border glass-effect">
       <div className="container mx-auto max-w-6xl py-4 px-4 flex items-center justify-between animate-fade-in">

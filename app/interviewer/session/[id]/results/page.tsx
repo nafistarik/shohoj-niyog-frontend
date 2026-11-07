@@ -15,9 +15,10 @@ import LoadingState from "@/components/shared/loading-state";
 import { decideMutation } from "@/lib/api/interviewer";
 import { useMutation } from "@/hooks/use-mutation";
 import EmptyState from "@/components/shared/empty-state";
+import type { CandidateResponse, Decision, InterviewSession } from "@/lib/types";
 
 export default function SessionResultsPage() {
-  const [resultsData, setResultsData] = useState<any[]>([]);
+  const [resultsData, setResultsData] = useState<CandidateResponse[]>([]);
   const pathname = usePathname();
   const pathParts = pathname.split("/"); // ['', 'interviewer', 'session', '123', 'results']
   const sessionId = pathParts[3];
@@ -25,15 +26,18 @@ export default function SessionResultsPage() {
   const {
     data: session,
     loading: sessionLoading,
-    error: sessionError,
-  } = useFetch<any>(sessionId ? `/api/find/${sessionId}` : null);
+  } = useFetch<InterviewSession>(
+    sessionId ? `/api/find/${sessionId}` : null
+  );
 
   const {
-    data: resultData = [],
+    data: resultData,
     loading: resultsLoading,
     error: resultsError,
     refetch: refetchResults,
-  } = useFetch<any[]>(sessionId ? `/api/results/${sessionId}` : null);
+  } = useFetch<CandidateResponse[]>(
+    sessionId ? `/api/results/${sessionId}` : null
+  );
   useEffect(() => {
     if (resultData?.length) {
       setResultsData(resultData);
@@ -42,14 +46,14 @@ export default function SessionResultsPage() {
 
   const { mutate: updateDecisions, loading: decisionLoading } =
     useMutation(decideMutation);
-  const handleDecisionChange = (candidateId: string, decision: string) => {
+  const handleDecisionChange = (candidateId: string, decision: Decision) => {
     // optimistic UI
     setResultsData((prev) =>
       prev.map((r) => (r.candidate_id === candidateId ? { ...r, decision } : r))
     );
     updateDecisions(
       {
-        session_id: sessionId!,
+        session_id: sessionId,
         candidate_id: candidateId,
         decision,
       },
@@ -61,23 +65,23 @@ export default function SessionResultsPage() {
       }
     );
   };
-  const highestScore = Math.max(...resultsData.map((r) => r.total_score));
+  const highestScore = resultsData.length
+    ? Math.max(...resultsData.map((r) => r.total_score))
+    : null;
 
+  // Results are the point of this page; the session only adds context, so its failure just hides those parts.
   if (resultsError) return <ErrorState message={resultsError} />;
-  if (resultsLoading) return <LoadingState data="Interview Results" />;
-  if (sessionError) return <ErrorState message={sessionError} />;
-  if (sessionLoading) return <LoadingState data="Interview Session" />;
+  if (resultsLoading || sessionLoading)
+    return <LoadingState data="Interview Results" />;
 
   return (
-    <div className="min-h-screen bg-white pb-12">
-      {session && (
-        <PageHeader
-          title={`${session.position} - Results`}
-          description="Review candidate responses and make decisions"
-          backLabel="Back to Session"
-          backHref={`/interviewer/session/${sessionId}`}
-        />
-      )}
+    <div className="min-h-screen bg-background pb-12">
+      <PageHeader
+        title={session ? `${session.position} - Results` : "Interview Results"}
+        description="Review candidate responses and make decisions"
+        backLabel="Back to Session"
+        backHref={`/interviewer/session/${sessionId}`}
+      />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {resultsData.length === 0 ? (
@@ -118,30 +122,36 @@ export default function SessionResultsPage() {
               />
             </div>
 
-            <Card>
-              <CardContent>
-                <div className="flex flex-col md:flex-row md:items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">
-                      Session Details
-                    </h3>
-                    <p className="mt-1 text-muted-foreground">
-                      <LevelBadge level={session.level} /> • {session.stack}
-                    </p>
-                    {session.scheduled && (
-                      <div className="flex items-center text-muted-foreground mt-2">
-                        <Calendar className="w-4 h-4 mr-1 text-primary/70" />
-                        Scheduled: {formatDate(session.scheduled)}
-                      </div>
-                    )}
+            {session && (
+              <Card>
+                <CardContent>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        Session Details
+                      </h3>
+                      <p className="mt-1 text-muted-foreground">
+                        <LevelBadge level={session.level} /> •{" "}
+                        {Array.isArray(session.stack)
+                          ? session.stack.join(", ")
+                          : session.stack}
+                      </p>
+                      {session.scheduled && (
+                        <div className="flex items-center text-muted-foreground mt-2">
+                          <Calendar className="w-4 h-4 mr-1 text-primary/70" />
+                          Scheduled: {formatDate(session.scheduled)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-4 md:mt-0 text-sm text-muted-foreground">
+                      {session.qa_pairs?.length ?? 0} questions •{" "}
+                      {session.allowed_candidates?.length ?? 0} candidates
+                      invited
+                    </div>
                   </div>
-                  <div className="mt-4 md:mt-0 text-sm text-muted-foreground">
-                    {session.qa_pairs.length} questions •{" "}
-                    {session.allowed_candidates.length} candidates invited
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-foreground">

@@ -10,6 +10,15 @@ export interface ApiResponseBase {
 export interface ApiResponse<T> extends ApiResponseBase {
   data: T | null;
 }
+/** Pulls the backend's `error` text out of an error response, if it sent one. */
+const getErrorMessage = (parsed: unknown): string | undefined =>
+  typeof parsed === "object" &&
+  parsed !== null &&
+  "error" in parsed &&
+  typeof parsed.error === "string"
+    ? parsed.error
+    : undefined;
+
 export const fetchApi = async <T>(
   endpoint: string,
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
@@ -27,7 +36,7 @@ export const fetchApi = async <T>(
         success: false,
         error: true,
         status: response.status,
-        message: (parsed as any)?.error || "Request failed",
+        message: getErrorMessage(parsed) || "Request failed",
         data: null,
       };
     }

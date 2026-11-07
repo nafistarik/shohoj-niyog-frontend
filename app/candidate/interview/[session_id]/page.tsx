@@ -5,15 +5,15 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import { SkipForward, Clock, Video, Mic, Send } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
-import { API_BASE_URL } from "@/lib/constants";
+import { ANSWER_TIME_LIMIT_SECONDS, API_BASE_URL } from "@/lib/constants";
 import { getCookie } from "@/lib/utils";
 import { useFetch } from "@/hooks/use-fetch";
+import type { InterviewQuestion } from "@/lib/types";
+import LoadingState from "@/components/shared/loading-state";
+import ErrorState from "@/components/shared/error-state";
+import EmptyState from "@/components/shared/empty-state";
 
-type Question = {
-  question: string;
-};
-
-const MAX_TIME = 120;
+const MAX_TIME = ANSWER_TIME_LIMIT_SECONDS;
 
 const VideoInterview: React.FC = () => {
   const [error, setError] = useState("");
@@ -35,10 +35,10 @@ const VideoInterview: React.FC = () => {
   const sessionId = pathParts[3];
 
   const {
-    data: questions = [],
+    data: questions,
     loading: loadingQuestions,
     error: fetchError,
-  } = useFetch<Question[]>(sessionId ? `/api/find/${sessionId}` : null);
+  } = useFetch<InterviewQuestion[]>(sessionId ? `/api/find/${sessionId}` : null);
 
   const submitRecordings = useCallback(
     async (finalRecordings: Record<number, Blob>) => {
@@ -201,9 +201,17 @@ const VideoInterview: React.FC = () => {
 
   const progress = ((MAX_TIME - timeLeft) / MAX_TIME) * 100;
 
-  if (loadingQuestions) return <p>Loading session...</p>;
-  if (fetchError) return <p style={{ color: "red" }}>{error}</p>;
-  if (questions?.length === 0) return <p>No questions available</p>;
+  if (loadingQuestions) return <LoadingState data="Interview Questions" />;
+  if (fetchError) return <ErrorState message={fetchError} />;
+  if (!questions?.length)
+    return (
+      <EmptyState
+        title="No questions available"
+        description="This interview has no questions yet. Please contact the interviewer."
+        actionLabel="Go to dashboard"
+        actionHref="/candidate/dashboard"
+      />
+    );
 
   return (
     <div className="min-h-screen">

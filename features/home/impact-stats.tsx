@@ -21,7 +21,7 @@ export function ImpactCard({ start, end, isVisible, label }: ImpactCardProps) {
   const value = useCountUp(start, end, true, isVisible);
 
   return (
-    <div className="p-6 rounded-lg bg-white glass-effect shadow-soft animate-fade-in space-y-2">
+    <div className="p-6 rounded-lg bg-card glass-effect shadow-soft animate-fade-in space-y-2">
       <p className="text-4xl md:text-5xl font-extrabold text-primary">
         {value}
       </p>

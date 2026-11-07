@@ -22,16 +22,17 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { getAllowedOptions, isSelectEnabled } from "@/lib/utils";
-import { DECISIONS } from "@/lib/static/decision";
+import { DECISIONS, toDecision } from "@/lib/static/decision";
+import type { CandidateResponse, Decision } from "@/lib/types";
 
 export default function CandidateResultCard({
   result,
   updateDecision,
   highestScore,
 }: {
-  result: any;
-  updateDecision: (candidateId: string, decision: string) => void;
-  highestScore: number;
+  result: CandidateResponse;
+  updateDecision: (candidateId: string, decision: Decision) => void;
+  highestScore: number | null;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -85,13 +86,15 @@ export default function CandidateResultCard({
   return (
     <Card
       className={`${
-        highestScore == result.total_score ? "bg-green-100" : "bg-white"
-      } dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col`}
+        highestScore === result.total_score
+          ? "bg-green-100 dark:bg-green-900/30"
+          : "bg-card"
+      } border-border shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col`}
     >
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <CardTitle className="text-lg font-semibold text-slate-900 dark:text-white">
+            <CardTitle className="text-lg font-semibold text-foreground">
               {result.candidate_name}
             </CardTitle>
             <CardDescription className="flex items-center mt-1">
@@ -109,7 +112,7 @@ export default function CandidateResultCard({
                 >
                   {result.total_score.toFixed(1)}
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400 ml-1">
+                <div className="text-sm text-muted-foreground ml-1">
                   / 10
                 </div>
               </div>
@@ -138,9 +141,10 @@ export default function CandidateResultCard({
 
               <Select
                 value={result.decision}
-                onValueChange={(value) =>
-                  updateDecision(result.candidate_id, value)
-                }
+                onValueChange={(value) => {
+                  const decision = toDecision(value);
+                  if (decision) updateDecision(result.candidate_id, decision);
+                }}
                 disabled={!enabled}
               >
                 <SelectTrigger>
@@ -168,20 +172,20 @@ export default function CandidateResultCard({
       </CardHeader>
 
       {isExpanded && (
-        <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6">
-          <h4 className="font-medium text-slate-900 dark:text-white mb-4 flex items-center">
+        <div className="border-t border-border bg-muted/50 p-6">
+          <h4 className="font-medium text-foreground mb-4 flex items-center">
             <MessageSquare className="w-4 h-4 mr-2" />
             Question Responses
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {result.responses.map((response: any, index: number) => (
+            {(result.responses ?? []).map((response, index) => (
               <div
                 key={response.question_id}
-                className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700 "
+                className="bg-card rounded-lg p-4 border border-border "
               >
                 <div className="flex justify-between items-start mb-3">
-                  <div className="font-medium text-slate-900 dark:text-white">
+                  <div className="font-medium text-foreground">
                     Question {index + 1}
                   </div>
                   <div className="flex items-center">
@@ -196,7 +200,7 @@ export default function CandidateResultCard({
                   </div>
                 </div>
 
-                <div className="text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 rounded-md p-3">
+                <div className="text-sm text-foreground/80 bg-muted rounded-md p-3">
                   {response.given_answer || "No response provided"}
                 </div>
               </div>

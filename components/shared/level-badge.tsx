@@ -40,8 +40,8 @@ export function LevelBadge({
 }: LevelBadgeProps) {
   const normalizedLevel = level?.toLowerCase();
   const style = levelStyles[normalizedLevel] ?? {
-    className: "bg-slate-100 text-slate-700 border-slate-200",
-    iconClass: "fill-slate-500 text-slate-500",
+    className: "bg-muted text-muted-foreground border-border",
+    iconClass: "fill-muted-foreground text-muted-foreground",
   };
 
   return (

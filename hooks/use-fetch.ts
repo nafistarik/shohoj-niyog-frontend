@@ -4,7 +4,8 @@ import { showError } from "@/lib/toast";
 
 export function useFetch<T>(endpoint: string | null, showToast = false) {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
+  // Starts true when there is something to fetch, so the first render shows the loading state instead of empty data.
+  const [loading, setLoading] = useState(endpoint !== null);
   const [error, setError] = useState("");
 
   const fetchData = useCallback(async () => {

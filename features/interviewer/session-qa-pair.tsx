@@ -11,7 +11,7 @@ function Label({
 }) {
   return (
     <label
-      className={`text-sm font-medium text-slate-600 ${className}`}
+      className={`text-sm font-medium text-muted-foreground ${className}`}
       {...props}
     >
       {children}
@@ -38,18 +38,18 @@ function SessionQAPair({
               {index + 1}
             </span>
           </div>
-          <h3 className="font-semibold text-slate-900">Question {index + 1}</h3>
+          <h3 className="font-semibold text-foreground">Question {index + 1}</h3>
         </div>
       </div>
-      <p className="text-slate-700 mb-4 leading-relaxed pl-11">{qa.question}</p>
-      <div className="bg-slate-50/50 p-4 rounded-lg border border-slate-200/50">
+      <p className="text-foreground/80 mb-4 leading-relaxed pl-11">{qa.question}</p>
+      <div className="bg-muted/50 p-4 rounded-lg border border-border">
         <div className="flex items-center mb-2">
           <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-          <Label className="text-xs font-medium text-slate-600 uppercase tracking-wide">
+          <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Expected Answer
           </Label>
         </div>
-        <p className="text-sm text-slate-700 mt-1 leading-relaxed">
+        <p className="text-sm text-foreground/80 mt-1 leading-relaxed">
           {qa.answer}
         </p>
       </div>

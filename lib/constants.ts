@@ -1,36 +1,6 @@
-export const API_BASE_URL = "https://16.16.186.219.sslip.io";
+// shortcut: falls back to the current backend so existing deploys keep working; drop the fallback once every environment sets the variable.
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://16.16.186.219.sslip.io";
 
-export const API_ENDPOINTS = {
-  // Auth endpoints
-  SIGNUP: "/accounts/signup",
-  LOGIN: "/accounts/login",
-
-  // Interview session endpoints
-  CREATE_SESSION: "/api/gen",
-  FIND_ALL_SESSIONS: "/api/findall/",
-  FIND_SESSION: "/api/find",
-  SESSION_RESULTS: "/api/results",
-
-  // Response endpoints
-  SUBMIT_RESPONSE: "/api/response/",
-  UPDATE_DECISION: "/api/decide/",
-} as const;
-
-export const USER_ROLES = {
-  CANDIDATE: "candidate",
-  INTERVIEWER: "interviewer",
-} as const;
-
-export const DECISION_STATUS = {
-  PENDING: "pending",
-  INTERESTED: "interested",
-  NOT_INTERESTED: "not_interested",
-  ACCEPT: "accept",
-  REJECT: "reject",
-} as const;
-
-export const SKILL_LEVELS = {
-  BEGINNER: "Beginner",
-  INTERMEDIATE: "Intermediate",
-  ADVANCED: "Advanced",
-} as const;
+/** How long a candidate has to answer one question, in seconds. */
+export const ANSWER_TIME_LIMIT_SECONDS = 120;

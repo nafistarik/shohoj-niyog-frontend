@@ -1,32 +1,9 @@
-export interface User {
-  _id: string;
-  username: string;
-  email: string;
-  phone: string;
-  password: string;
-  role: "candidate" | "interviewer";
-  created: string;
-}
-
-export interface LoginResponse {
-  access: string;
-  refresh: string;
-  username: string;
-  role: "candidate" | "interviewer";
-  user_id: string;
-}
-
-export interface InterviewSession {
-  id: string;
-  position: string;
-  stack: string | string[];
-  level: string;
-  created_by: string;
-  qa_pairs: QuestionAnswer[];
-  allowed_candidates: string[];
-  scheduled?: string;
-  num_questions?: number;
-}
+export type Decision =
+  | "pending"
+  | "interested"
+  | "not_interested"
+  | "accept"
+  | "reject";
 
 export interface QuestionAnswer {
   question_id: string;
@@ -34,6 +11,33 @@ export interface QuestionAnswer {
   answer: string;
 }
 
+/** A session as the interviewer sees it, from `/api/findall/` and `/api/find/:id`. */
+export interface InterviewSession {
+  id: string;
+  position: string;
+  stack: string | string[];
+  level: string;
+  created_by?: string;
+  qa_pairs?: QuestionAnswer[] | null;
+  allowed_candidates?: string[];
+  scheduled?: string | null;
+}
+
+/** A session in the candidate's list, from `/api/findall/`. */
+export interface CandidateSession {
+  id: string;
+  position?: string | null;
+  company?: string | null;
+  scheduled_time?: string | null;
+  qa_pairs?: QuestionAnswer[] | null;
+}
+
+/** A question as the candidate gets it, from `/api/find/:id`: no ideal answer. */
+export interface InterviewQuestion {
+  question: string;
+}
+
+/** One candidate's scored answers, from `/api/results/:session_id/`. */
 export interface CandidateResponse {
   id: string;
   session_id: string;
@@ -46,7 +50,15 @@ export interface CandidateResponse {
     score: number;
   }[];
   total_score: number;
-  decision: "pending" | "interested" | "not_interested" | "accept" | "reject";
+  decision: Decision;
+}
+
+/** The candidate's own result for one session, from `/api/results/`. */
+export interface CandidateResult {
+  session_id: string;
+  position?: string | null;
+  company?: string | null;
+  decision: Decision;
 }
 
 export interface CreateSessionPayload {
@@ -57,16 +69,3 @@ export interface CreateSessionPayload {
   num_questions: number;
   scheduled: string;
 }
-
-export interface DecisionPayload {
-  session_id: string;
-  candidate_id: string;
-  decision: "interested" | "not_interested" | "accept" | "reject";
-}
-
-export type Decision =
-  | "pending"
-  | "interested"
-  | "not_interested"
-  | "accept"
-  | "reject";

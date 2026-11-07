@@ -13,7 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DECISIONS } from "@/lib/static/decision";
+import { DECISIONS, toDecision } from "@/lib/static/decision";
+import type { CandidateResult, Decision } from "@/lib/types";
 import { getAllowedOptions, isSelectEnabled } from "@/lib/utils";
 import { CheckCircle, Clock, XCircle } from "lucide-react";
 
@@ -105,7 +106,13 @@ const getStatusTextColor = (decision: string) => {
   }
 };
 
-export default function CandidateResultCard({ result, updateDecision }: any) {
+export default function CandidateResultCard({
+  result,
+  updateDecision,
+}: {
+  result: CandidateResult;
+  updateDecision: (sessionId: string, decision: Decision) => void;
+}) {
   const enabled = isSelectEnabled("candidate", result.decision);
   const allowedOptions = getAllowedOptions("candidate", result.decision);
   const visibleOptions = enabled
@@ -119,7 +126,6 @@ export default function CandidateResultCard({ result, updateDecision }: any) {
 
   return (
     <Card
-      key={result.session_id}
       className="bg-card border-border shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
     >
       <CardHeader>
@@ -129,20 +135,11 @@ export default function CandidateResultCard({ result, updateDecision }: any) {
               {result.position || "Interview Session"}
             </CardTitle>
             <CardDescription className="flex flex-wrap items-center gap-2 mt-2">
-              <span className="bg-muted rounded-md px-2 py-1 text-xs">
-                {/* {result.session?.stack
-                  ? Array.isArray(result.session.stack)
-                    ? result.session.stack.join(", ")
-                    : result.session.stack
-                  : "Technology Stack"} */}
-                {result.company}
-              </span>
-              {/* {result.session?.scheduled && (
-                <div className="flex items-center text-muted-foreground">
-                  <Calendar className="w-3 h-3 mr-1" />
-                  {formatDate(result.session.scheduled)}
-                </div>
-              )} */}
+              {result.company && (
+                <span className="bg-muted rounded-md px-2 py-1 text-xs">
+                  {result.company}
+                </span>
+              )}
             </CardDescription>
           </div>
           <div className="mt-4 md:mt-0">
@@ -174,7 +171,10 @@ export default function CandidateResultCard({ result, updateDecision }: any) {
           </div>
           <Select
             value={result.decision}
-            onValueChange={(value) => updateDecision(result.session_id, value)}
+            onValueChange={(value) => {
+              const decision = toDecision(value);
+              if (decision) updateDecision(result.session_id, decision);
+            }}
             disabled={!enabled}
           >
             <SelectTrigger className="w-40 border-border">

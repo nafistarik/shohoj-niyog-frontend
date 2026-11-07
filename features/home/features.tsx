@@ -42,7 +42,7 @@ export function FeatureCard({
 }: FeatureCardProps) {
   return (
     <Card
-      className={`animate-slide-in bg-white glass-effect ${className || ""}`}
+      className={`animate-slide-in bg-card glass-effect ${className || ""}`}
     >
       <CardHeader>
           <CardTitle className="font-heading text-foreground flex items-center justify-start py-0 my-0 gap-2">

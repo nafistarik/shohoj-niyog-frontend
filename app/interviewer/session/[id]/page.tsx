@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,47 +21,22 @@ import { CustomLabel } from "@/components/shared/custom-label";
 import { useFetch } from "@/hooks/use-fetch";
 import ErrorState from "@/components/shared/error-state";
 import LoadingState from "@/components/shared/loading-state";
+import type { InterviewSession } from "@/lib/types";
 
 export default function SessionDetailsPage() {
-  const [copiedEmails, setCopiedEmails] = useState<string[]>([]);
-  const [copiedLink, setCopiedLink] = useState<string | null>(null);
-
   const pathname = usePathname();
   const sessionId = pathname.split("/")[3];
-
-  const copyToClipboard = async (text: string, identifier: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      if (identifier.includes("@")) {
-        setCopiedEmails([...copiedEmails, identifier]);
-        setTimeout(() => {
-          setCopiedEmails(copiedEmails.filter((e) => e !== identifier));
-        }, 2000);
-      } else {
-        setCopiedLink(identifier);
-        setTimeout(() => setCopiedLink(null), 2000);
-      }
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
-
-  const generateInviteLink = (candidateEmail: string) => {
-    return `${window.location.origin}/candidate/interview/${
-      session.id
-    }?email=${encodeURIComponent(candidateEmail)}`;
-  };
 
   const {
     data: session,
     loading,
     error,
-  } = useFetch<any>(`/api/find/${sessionId}`);
+  } = useFetch<InterviewSession>(`/api/find/${sessionId}`);
   if (error) return <ErrorState message={error} />;
   if (loading) return <LoadingState data="Interview Sessions" />;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-background">
       <PageHeader
         title={session?.position}
         description="Interview Session Details"
@@ -83,9 +57,9 @@ export default function SessionDetailsPage() {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Session Info */}
           <div className="lg:col-span-1 space-y-6">
-            <Card className="border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="border-border shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg font-semibold text-slate-900 flex items-center">
+                <CardTitle className="text-lg font-semibold text-foreground flex items-center">
                   <FileText className="w-5 h-5 mr-2 text-primary" />
                   Session Information
                 </CardTitle>
@@ -93,7 +67,7 @@ export default function SessionDetailsPage() {
               <CardContent className="space-y-5">
                 <div>
                   <CustomLabel>Position</CustomLabel>
-                  <p className="text-slate-900 font-medium text-lg">
+                  <p className="text-foreground font-medium text-lg">
                     {session?.position}
                   </p>
                 </div>
@@ -101,11 +75,14 @@ export default function SessionDetailsPage() {
                 <div>
                   <CustomLabel>Technology Stack</CustomLabel>
                   <div className="flex flex-wrap gap-2">
-                    {session?.stack.split(", ").map((tech: string) => (
+                    {(Array.isArray(session?.stack)
+                      ? session.stack
+                      : session?.stack.split(", ") ?? []
+                    ).map((tech) => (
                       <Badge
                         key={tech}
                         variant="secondary"
-                        className="bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-200 px-3 py-1"
+                        className="bg-secondary text-primary border-border px-3 py-1"
                       >
                         <Code className="w-3 h-3 mr-1" />
                         {tech}
@@ -123,10 +100,10 @@ export default function SessionDetailsPage() {
 
                 <div>
                   <CustomLabel>Questions</CustomLabel>
-                  <div className="flex items-center text-slate-900">
+                  <div className="flex items-center text-foreground">
                     <FileText className="w-4 h-4 mr-2 text-primary" />
                     <span className="font-semibold">
-                      {session?.qa_pairs.length} questions
+                      {session?.qa_pairs?.length ?? 0} questions
                     </span>
                   </div>
                 </div>
@@ -134,7 +111,7 @@ export default function SessionDetailsPage() {
                 {session?.scheduled && (
                   <div>
                     <CustomLabel>Scheduled Date</CustomLabel>
-                    <div className="flex items-center text-slate-900">
+                    <div className="flex items-center text-foreground">
                       <Calendar className="w-4 h-4 mr-2 text-primary" />
                       <span className="font-medium">
                         {formatDate(session?.scheduled)}
@@ -146,23 +123,17 @@ export default function SessionDetailsPage() {
             </Card>
 
             {/* Invited Candidates */}
-            <Card className="border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="border-border shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg font-semibold text-slate-900 flex items-center">
+                <CardTitle className="text-lg font-semibold text-foreground flex items-center">
                   <Users className="w-5 h-5 mr-2 text-primary" />
-                  Invited Candidates ({session?.allowed_candidates.length})
+                  Invited Candidates ({session?.allowed_candidates?.length ?? 0})
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {session?.allowed_candidates.map((email: string) => (
-                    <AllowedCandidatesItem
-                      email={email}
-                      key={email}
-                      copiedEmails={copiedEmails}
-                      copyToClipboard={copyToClipboard}
-                      generateInviteLink={generateInviteLink}
-                    />
+                  {session?.allowed_candidates?.map((email) => (
+                    <AllowedCandidatesItem email={email} key={email} />
                   ))}
                 </div>
               </CardContent>
@@ -171,34 +142,21 @@ export default function SessionDetailsPage() {
 
           {/* Questions & Answers */}
           <div className="lg:col-span-2">
-            <Card className="border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="border-border shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle className="text-xl font-semibold text-slate-900">
+                <CardTitle className="text-xl font-semibold text-foreground">
                   Interview Questions
                 </CardTitle>
-                <CardDescription className="text-slate-600">
+                <CardDescription className="text-muted-foreground">
                   AI-generated questions tailored for {session?.position}{" "}
                   position
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {session?.qa_pairs.map(
-                    (
-                      qa: {
-                        question_id: string;
-                        question: string;
-                        answer: string;
-                      },
-                      index: number
-                    ) => (
-                      <SessionQAPair
-                        qa={qa}
-                        index={index}
-                        key={qa.question_id}
-                      />
-                    )
-                  )}
+                  {session?.qa_pairs?.map((qa, index) => (
+                    <SessionQAPair qa={qa} index={index} key={qa.question_id} />
+                  ))}
                 </div>
               </CardContent>
             </Card>

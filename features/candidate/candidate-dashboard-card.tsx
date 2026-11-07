@@ -7,10 +7,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
+import { ANSWER_TIME_LIMIT_SECONDS } from "@/lib/constants";
+import type { CandidateSession } from "@/lib/types";
 import { Calendar, Play, Zap } from "lucide-react";
 import Link from "next/link";
 
-export default function CandidateDashboardCard({ session }: { session: any }) {
+export default function CandidateDashboardCard({
+  session,
+}: {
+  session: CandidateSession;
+}) {
+  const questionCount = session.qa_pairs?.length;
+
   return (
     <Card
       key={session?.id}
@@ -24,7 +32,7 @@ export default function CandidateDashboardCard({ session }: { session: any }) {
             <CardTitle className="text-lg font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
               {session?.position}
             </CardTitle>
-            {session.company && (
+            {session?.company && (
               <CardDescription className="mt-1 line-clamp-1 text-muted-foreground">
                 Company: {session?.company}
               </CardDescription>
@@ -50,15 +58,17 @@ export default function CandidateDashboardCard({ session }: { session: any }) {
           <ul className="text-xs text-muted-foreground space-y-1">
             <li className="flex">
               <span className="text-primary mr-1">•</span>
-              Record video responses to {session?.qa_pairs?.length} questions
+              Record a video answer to{" "}
+              {questionCount ? `each of the ${questionCount} questions` : "each question"}
             </li>
             <li className="flex">
               <span className="text-primary mr-1">•</span>
-              Take your time - no time limit per question
+              You get {ANSWER_TIME_LIMIT_SECONDS / 60} minutes per question; it
+              moves on by itself when time runs out
             </li>
             <li className="flex">
               <span className="text-primary mr-1">•</span>
-              Review and re-record if needed
+              Questions come in order, and each answer is recorded once
             </li>
           </ul>
         </div>

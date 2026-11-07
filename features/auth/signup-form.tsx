@@ -127,7 +127,7 @@ const SignupForm = () => {
           <Input
             id="company"
             type="text"
-            placeholder="Enter your full name"
+            placeholder="Enter your company name"
             value={formData.company}
             onChange={(e) => handleInputChange("company", e.target.value)}
             required
@@ -183,6 +183,7 @@ const SignupForm = () => {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
           >
             {showPassword ? (
@@ -213,6 +214,7 @@ const SignupForm = () => {
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            aria-label={showConfirmPassword ? "Hide password" : "Show password"}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
           >
             {showConfirmPassword ? (

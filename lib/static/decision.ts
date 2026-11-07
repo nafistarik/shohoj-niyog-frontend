@@ -7,3 +7,7 @@ export const DECISIONS: { value: Decision; label: string }[] = [
   { value: "accept", label: "Accept" },
   { value: "reject", label: "Reject" },
 ];
+
+/** Maps a select's string value back to a known decision, or `undefined` for anything else. */
+export const toDecision = (value: string): Decision | undefined =>
+  DECISIONS.find((option) => option.value === value)?.value;

@@ -159,6 +159,10 @@ export default function CreateSessionPage() {
       setError("Scheduled date & time is required");
       return;
     }
+    if (new Date(formData.scheduled).getTime() <= Date.now()) {
+      setError("Scheduled date & time must be in the future");
+      return;
+    }
 
     createSession(formData, {
       successMessage: "Interview session created successfully!",
@@ -255,6 +259,7 @@ export default function CreateSessionPage() {
                           type="button"
                           onClick={() => removeStack(stack)}
                           className="ml-1 rounded-full hover:bg-muted/50"
+                          aria-label={`Remove ${stack}`}
                         >
                           <X className="w-3 h-3 text-primary" />
                         </button>
@@ -364,6 +369,7 @@ export default function CreateSessionPage() {
                           type="button"
                           onClick={() => removeCandidate(email)}
                           className="text-muted-foreground hover:text-primary"
+                          aria-label={`Remove ${email}`}
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -375,7 +381,7 @@ export default function CreateSessionPage() {
 
               <div className="space-y-4 animate-slide-in delay-900">
                 <Label className="font-body text-foreground">
-                  Scheduled Date & Time (Optional)
+                  Scheduled Date & Time
                 </Label>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -407,6 +413,7 @@ export default function CreateSessionPage() {
                           mode="single"
                           selected={date}
                           onSelect={setDate}
+                          disabled={{ before: new Date() }}
                           initialFocus
                         />
                       </PopoverContent>

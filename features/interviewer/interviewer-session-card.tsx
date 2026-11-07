@@ -17,15 +17,21 @@ import { useMutation } from "@/hooks/use-mutation";
 import { deleteSessionMutation } from "@/lib/api/interviewer";
 import ModalWrapper from "@/components/shared/ModalWrapper";
 import { useRouter } from "next/navigation";
+import type { InterviewSession } from "@/lib/types";
 
-export default function InterviewerSessionCard({ session }: { session: any }) {
+export default function InterviewerSessionCard({
+  session,
+}: {
+  session: InterviewSession;
+}) {
+  const invitedCount = session.allowed_candidates?.length ?? 0;
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { mutate: deleteSession, loading: deleteLoading } = useMutation(
     deleteSessionMutation,
   );
   const router = useRouter();
   return (
-    <Card key={session.id} className="animate-fade-in">
+    <Card className="animate-fade-in">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -42,7 +48,8 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
             variant="ghost"
             size="sm"
             onClick={() => setIsDeleteOpen(true)}
-            className="hover:bg-red-100!"
+            className="hover:bg-destructive/10!"
+            aria-label="Delete session"
           >
             <Trash2 className="w-4 h-4 text-destructive" />
           </Button>
@@ -51,10 +58,6 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <LevelBadge level={session.level} />
-          {/* <span className="text-sm text-muted-foreground">
-            {session.qa_pairs?.length} question
-            {session.qa_pairs?.length !== 1 ? "s" : ""}
-          </span> */}
         </div>
 
         <div className="space-y-2">
@@ -66,8 +69,8 @@ export default function InterviewerSessionCard({ session }: { session: any }) {
           </div>
           <div className="flex items-center text-sm text-muted-foreground">
             <Users className="w-4 h-4 mr-2" />
-            {session.allowed_candidates.length} candidate
-            {session.allowed_candidates.length !== 1 ? "s" : ""} invited
+            {invitedCount} candidate
+            {invitedCount !== 1 ? "s" : ""} invited
           </div>
         </div>
 

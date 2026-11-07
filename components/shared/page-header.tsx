@@ -7,7 +7,7 @@ import { Plus, ArrowLeft, LogOut } from "lucide-react";
 import Image from "next/image";
 import logo from "@/assets/logos/logo_icon.png";
 import { useRouter } from "next/navigation";
-import { clearCookie, getCookie } from "@/lib/utils";
+import { clearSession } from "@/lib/auth/token";
 
 interface PageHeaderProps {
   title?: string;
@@ -36,9 +36,7 @@ export function PageHeader({
 }: PageHeaderProps) {
   const router = useRouter();
   const handleLogout = () => {
-    clearCookie("access_token");
-    clearCookie("user_role");
-    clearCookie("user_name");
+    clearSession();
     router.push("/login");
   };
   return (

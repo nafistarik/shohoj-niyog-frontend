@@ -1,34 +1,14 @@
-// import { getData } from "@/lib/api/methods";
+import { deleteData, patchData, postData } from "@/lib/api/methods";
+import type { CreateSessionPayload, Decision } from "@/lib/types";
 
-// export interface InterviewSession {
-//   id: string;
-//   scheduled: string;
-//   allowed_candidates: any[];
-// }
-
-// export const getInterviewerSessions = () =>
-//   getData<InterviewSession[]>("/api/findall/");
-
-import { patchData } from "@/lib/api/methods";
-import { postData } from "@/lib/api/methods";
-import { deleteData } from "@/lib/api/methods";
-
-export interface CreateSessionPayload {
-  position: string;
-  stacks: string[];
-  level: string;
-  allowed_candidates: string[];
-  num_questions: number;
-  scheduled: string;
-}
 export interface CreateSessionResponse {
   Session_ID: string;
 }
 
 type DecidePayload = {
-  session_id?: string;
+  session_id: string;
   candidate_id?: string;
-  decision: string;
+  decision: Decision;
 };
 
 export const createSessionApi = (payload: CreateSessionPayload) =>

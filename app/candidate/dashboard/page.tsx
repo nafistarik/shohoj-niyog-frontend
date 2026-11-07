@@ -8,21 +8,22 @@ import { PageHeader } from "@/components/shared/page-header";
 import CandidateDashboardCard from "../../../features/candidate/candidate-dashboard-card";
 import {
   formatDate,
-  getCookie,
   getNextInterview,
   getUpcomingInterviews,
 } from "@/lib/utils";
+import { useCookie } from "@/hooks/use-cookie";
+import type { CandidateSession } from "@/lib/types";
 import LoadingState from "@/components/shared/loading-state";
 import ErrorState from "@/components/shared/error-state";
 import { useFetch } from "@/hooks/use-fetch";
 
 export default function CandidateDashboard() {
-  const userName = getCookie("user_name");
+  const userName = useCookie("user_name");
   const {
-    data: sessions = [],
+    data: sessions,
     loading,
     error,
-  } = useFetch<any[]>("/api/findall/");
+  } = useFetch<CandidateSession[]>("/api/findall/");
   if (loading) return <LoadingState data="Interview Sessions" />;
   if (error) return <ErrorState message={error} />;
 
@@ -35,7 +36,7 @@ export default function CandidateDashboard() {
       <PageHeader
         title="My Interviews"
         description="Participate in video interviews and track your progress"
-        welcomeText={`Welcome, ${userName}`}
+        welcomeText={userName ? `Welcome, ${userName}` : undefined}
       >
         <Button variant="outline" asChild size="sm">
           <Link href="/candidate/results">
@@ -50,19 +51,19 @@ export default function CandidateDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard
             icon={<Award className="w-6 h-6 text-primary" />}
-            title={`${sessions?.length}`}
+            title={`${sessions?.length ?? 0}`}
             description="Total Interviews"
           />
           <StatCard
             icon={<Clock className="w-6 h-6 text-primary" />}
-            title={`${upcomingInterviews?.length}`}
+            title={`${upcomingInterviews.length}`}
             description="Upcoming Interviews"
           />
           <StatCard
             icon={<CalendarDays className="w-6 h-6 text-primary" />}
-            title={`${nextInterview ? nextInterview.position : "🚫"}`}
+            title={nextInterview ? nextInterview.position ?? "Interview" : "🚫"}
             description={`${
-              nextInterview
+              nextInterview?.scheduled_time
                 ? formatDate(nextInterview.scheduled_time)
                 : "No upcoming interviews"
             }`}
@@ -71,7 +72,7 @@ export default function CandidateDashboard() {
       </section>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {sessions?.length === 0 ? (
+        {!sessions?.length ? (
           <EmptyState
             title="No interviews available"
             description="You haven't been invited to any interviews yet. Check back later or contact the interviewer."
@@ -80,7 +81,7 @@ export default function CandidateDashboard() {
           />
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {sessions?.map((session, index) => (
+            {sessions.map((session) => (
               <CandidateDashboardCard session={session} key={session.id} />
             ))}
           </div>
